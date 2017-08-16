@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "563396371703",
+    "firebase_url": "https://socialfood-a9ae3.firebaseio.com",
+    "project_id": "socialfood-a9ae3",
+    "storage_bucket": "socialfood-a9ae3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:563396371703:android:fb46c7a2be60ef4e",
+        "android_client_info": {
+          "package_name": "com.zimny.socialfood"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "563396371703-3qs66schvbh3i36v4vq9svvfikkdebbg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDwVZH18CyaT-lWpTRvrFZI-VhyckxAIAA"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
