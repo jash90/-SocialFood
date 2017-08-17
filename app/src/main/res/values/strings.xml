@@ -8,4 +8,6 @@
     <string name="Upload">SignIn</string>
     <string name="OpenDrawer">Open Drawer</string>
     <string name="CloseDrawer">Close Drawer</string>
+    <string name="drawer_item_settings">settings</string>
+    <string name="drawer_item_home">home</string>
 </resources>

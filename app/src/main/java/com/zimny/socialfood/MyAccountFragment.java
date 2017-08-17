@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.PopupMenu;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -16,34 +17,35 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import com.elvishew.xlog.XLog;
 import com.esafirm.imagepicker.features.ImagePicker;
 import com.esafirm.imagepicker.model.Image;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.mikepenz.fontawesome_typeface_library.FontAwesome;
+import com.mikepenz.google_material_typeface_library.GoogleMaterial;
+import com.mikepenz.materialdrawer.AccountHeader;
+import com.mikepenz.materialdrawer.AccountHeaderBuilder;
+import com.mikepenz.materialdrawer.Drawer;
+import com.mikepenz.materialdrawer.DrawerBuilder;
+import com.mikepenz.materialdrawer.model.DividerDrawerItem;
+import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
+import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
+import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
+import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
+import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 import com.rengwuxian.materialedittext.MaterialEditText;
-import com.zimny.socialfood.model.Address;
 import com.zimny.socialfood.model.User;
 
-
-import java.sql.Date;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 import static android.app.Activity.RESULT_OK;
 import static com.zimny.socialfood.Utils.ToolBox.MyToast;
@@ -72,6 +74,7 @@ public class MyAccountFragment extends Fragment {
     CircleImageView image;
     @BindView(R.id.logout)
     Button logout;
+
     private User user;
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor sharedPreferencesEditor;
@@ -79,11 +82,12 @@ public class MyAccountFragment extends Fragment {
     FirebaseAuth firebaseAuth;
     FirebaseUser firebaseUser;
     DatabaseReference databaseReference;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View  v =inflater.inflate(R.layout.fragment_myaccount,container,false);
-        ButterKnife.bind(this,v);
+        View v = inflater.inflate(R.layout.fragment_myaccount, container, false);
+        ButterKnife.bind(this, v);
         sharedPreferences = getActivity().getSharedPreferences("Name", Context.MODE_PRIVATE);
         sharedPreferencesEditor = sharedPreferences.edit();
         firebaseAuth = FirebaseAuth.getInstance();
@@ -93,29 +97,31 @@ public class MyAccountFragment extends Fragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 user = dataSnapshot.getValue(User.class);
-                if (user!=null) {
-                    if (user.getFirstname()!=null)
-                    firstname.setText(user.getFirstname());
-                    if (user.getLastname()!=null)
-                    lastname.setText(user.getLastname());
-                    if (user.getAddress()!=null) {
-                        if(user.getAddress().getNameStreet()!=null) {
+                if (user != null) {
+                    if (user.getFirstname() != null)
+                        firstname.setText(user.getFirstname());
+                    if (user.getLastname() != null)
+                        lastname.setText(user.getLastname());
+                    if (user.getAddress() != null) {
+                        if (user.getAddress().getNameStreet() != null) {
                             street.setText(user.getAddress().getNameStreet());
                         }
-                        if (user.getAddress().getNumberBuilding()!=0) {
+                        if (user.getAddress().getNumberBuilding() != 0) {
                             numberBuilding.setText(Integer.toString(user.getAddress().getNumberBuilding()));
                         }
-                        if (user.getAddress().getNumberHouse()!=0) {
+                        if (user.getAddress().getNumberHouse() != 0) {
                             numberHome.setText(Integer.toString(user.getAddress().getNumberHouse()));
                         }
-                        if(user.getAddress().getCity()!=null) {
+                        if (user.getAddress().getCity() != null) {
                             city.setText(user.getAddress().getCity());
                         }
-                        if(user.getAddress().getPostalCode()!=null) {
+                        if (user.getAddress().getPostalCode() != null) {
                             postalCode.setText(user.getAddress().getPostalCode());
                         }
+
                     }
                 }
+
             }
 
             @Override
@@ -123,10 +129,12 @@ public class MyAccountFragment extends Fragment {
 
             }
         });
+
+
         image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PopupMenu popupMenu = new PopupMenu(MyAccountFragment.this.getActivity(),image);
+                PopupMenu popupMenu = new PopupMenu(MyAccountFragment.this.getActivity(), image);
                 popupMenu.inflate(R.menu.menu);
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
@@ -148,7 +156,7 @@ public class MyAccountFragment extends Fragment {
                 FragmentManager fm = getFragmentManager();
                 FragmentTransaction ft = fm.beginTransaction();
                 LoginFragment fragment = new LoginFragment();
-                ft.replace(R.id.content,fragment);
+                ft.replace(R.id.content, fragment);
                 ft.commit();
             }
         });
@@ -167,7 +175,7 @@ public class MyAccountFragment extends Fragment {
                     user.getAddress().setNumberHouse(Integer.parseInt(numberHome.getText().toString()));
                 }
                 databaseReference.child("users").child(firebaseUser.getUid()).setValue(user);
-                MyToast("Dane zmienione",getContext());
+                MyToast("Dane zmienione", getContext());
             }
         });
         return v;
@@ -176,8 +184,8 @@ public class MyAccountFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_CODE_PICKER && resultCode == RESULT_OK && data != null) {
-           List<Image> images = ImagePicker.getImages(data);
-           image.setImageBitmap(BitmapFactory.decodeFile(images.get(0).getPath()));
+            List<Image> images = ImagePicker.getImages(data);
+            image.setImageBitmap(BitmapFactory.decodeFile(images.get(0).getPath()));
         }
     }
 }

@@ -4,6 +4,7 @@ package com.zimny.socialfood.model;
 import com.google.firebase.database.IgnoreExtraProperties;
 
 import java.util.Date;
+import java.util.List;
 
 
 @IgnoreExtraProperties
@@ -15,6 +16,12 @@ public class User {
     private String lastname;
     private Address address;
     private Date birthday;
+    private List<Restaurant> restaurants;
+    private List<Food> foods;
+    private List<Group> groups;
+    private List<Order> orders;
+    private Order shoppingBasket;
+    private List<Relationship> relationships;
 
     public String getUid() {
         return uid;
@@ -64,31 +71,87 @@ public class User {
         this.birthday = birthday;
     }
 
+    public List<Restaurant> getRestaurants() {
+        return restaurants;
+    }
+
+    public void setRestaurants(List<Restaurant> restaurants) {
+        this.restaurants = restaurants;
+    }
+
+    public List<Food> getFoods() {
+        return foods;
+    }
+
+    public void setFoods(List<Food> foods) {
+        this.foods = foods;
+    }
+
+    public List<Group> getGroups() {
+        return groups;
+    }
+
+    public void setGroups(List<Group> groups) {
+        this.groups = groups;
+    }
+
+    public List<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
+    }
+
+    public Order getShoppingBasket() {
+        return shoppingBasket;
+    }
+
+    public void setShoppingBasket(Order shoppingBasket) {
+        this.shoppingBasket = shoppingBasket;
+    }
+
+    public List<Relationship> getRelationships() {
+        return relationships;
+    }
+
+    public void setRelationships(List<Relationship> relationships) {
+        this.relationships = relationships;
+    }
+
     public User() {
     }
 
-    public User(String username) {
-        this.username = username;
-    }
-
-    public User(String uid, String username, String firstname, String lastname, Address address, Date birthday) {
+    public User(String uid, String username, String firstname, String lastname, Address address, Date birthday, List<Restaurant> restaurants, List<Food> foods, List<Group> groups, List<Order> orders, Order shoppingBasket, List<Relationship> relationships) {
         this.uid = uid;
         this.username = username;
         this.firstname = firstname;
         this.lastname = lastname;
         this.address = address;
         this.birthday = birthday;
+        this.restaurants = restaurants;
+        this.foods = foods;
+        this.groups = groups;
+        this.orders = orders;
+        this.shoppingBasket = shoppingBasket;
+        this.relationships = relationships;
     }
 
     @Override
     public String toString() {
         return "User{" +
-                "uid=" + uid +
+                "uid='" + uid + '\'' +
                 ", username='" + username + '\'' +
                 ", firstname='" + firstname + '\'' +
                 ", lastname='" + lastname + '\'' +
                 ", address=" + address +
                 ", birthday=" + birthday +
+                ", restaurants=" + restaurants +
+                ", foods=" + foods +
+                ", groups=" + groups +
+                ", orders=" + orders +
+                ", shoppingBasket=" + shoppingBasket +
+                ", relationships=" + relationships +
                 '}';
     }
 }
