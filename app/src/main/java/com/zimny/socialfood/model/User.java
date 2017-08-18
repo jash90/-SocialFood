@@ -1,6 +1,7 @@
 package com.zimny.socialfood.model;
 
 
+
 import com.google.firebase.database.IgnoreExtraProperties;
 
 import java.util.Date;
@@ -22,6 +23,8 @@ public class User {
     private List<Order> orders;
     private Order shoppingBasket;
     private List<Relationship> relationships;
+
+
 
     public String getUid() {
         return uid;

@@ -1,0 +1,11 @@
+
+nsquid:S3776"RRefactor this method to reduce its Cognitive Complexity from 37 to the 15 allowed.(˜ıÉ8â±¨«ß+
+¢squid:S1186"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(–ªæ¡ûÿÿÿÿ8â±¨«ß+
+ysquid:S00120"WRename this package name to match the regular expression '^[a-z]+(\.[a-z][a-z0-9]*)*$'.(­¸Õ¿ùÿÿÿÿ8ËÎ©ß+
+gsquid:UselessImportCheck"9Remove this unused import 'android.content.IntentFilter'.(ò³ñ£ÿÿÿÿÿ8â±¨«ß+
+¢squid:S1186"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(™Èˆèøÿÿÿÿ8â±¨«ß+
+gsquid:UselessImportCheck">Remove this unused import 'android.content.BroadcastReceiver'.(Ãğõğ8â±¨«ß+
+squid:S1186"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(¹Ş‰8â±¨«ß+
+bsquid:S2184"FCast one of the operands of this multiplication operation to a "long".(‰× Ø8Ïµä«ß+
+nsquid:S00117"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(‰× Ø8Ïµä«ß+
+Ysquid:UselessImportCheck"0Remove this unused import 'java.io.InputStream'.(¹»º8‹¯òªß+
