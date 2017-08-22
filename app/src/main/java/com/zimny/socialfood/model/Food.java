@@ -10,9 +10,9 @@ public class Food {
     private String name;
     private double cost;
     private List<Tag> tags;
-    private String descriptcion;
-    private String uid;
-    private String uidRestaurant;
+    private String description;
+    private Long uid;
+    private Restaurant restaurant;
 
     public String getName() {
         return name;
@@ -38,40 +38,40 @@ public class Food {
         this.tags = tags;
     }
 
-    public String getDescriptcion() {
-        return descriptcion;
+    public String getDescription() {
+        return description;
     }
 
-    public void setDescriptcion(String descriptcion) {
-        this.descriptcion = descriptcion;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public String getUid() {
+    public Long getUid() {
         return uid;
     }
 
-    public void setUid(String uid) {
+    public void setUid(Long uid) {
         this.uid = uid;
     }
 
-    public String getUidRestaurant() {
-        return uidRestaurant;
+    public Restaurant getRestaurant() {
+        return restaurant;
     }
 
-    public void setUidRestaurant(String uidRestaurant) {
-        this.uidRestaurant = uidRestaurant;
+    public void setRestaurant(Restaurant restaurant) {
+        this.restaurant = restaurant;
     }
 
     public Food() {
     }
 
-    public Food(String name, double cost, List<Tag> tags, String descriptcion, String uid, String uidRestaurant) {
+    public Food(String name, double cost, List<Tag> tags, String description, Long uid, Restaurant restaurant) {
         this.name = name;
         this.cost = cost;
         this.tags = tags;
-        this.descriptcion = descriptcion;
+        this.description = description;
         this.uid = uid;
-        this.uidRestaurant = uidRestaurant;
+        this.restaurant = restaurant;
     }
 
     @Override
@@ -80,9 +80,9 @@ public class Food {
                 "name='" + name + '\'' +
                 ", cost=" + cost +
                 ", tags=" + tags +
-                ", descriptcion='" + descriptcion + '\'' +
-                ", uid='" + uid + '\'' +
-                ", uidRestaurant='" + uidRestaurant + '\'' +
+                ", description='" + description + '\'' +
+                ", uid=" + uid +
+                ", restaurant=" + restaurant +
                 '}';
     }
 }

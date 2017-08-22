@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.zimny.socialfood.Activity.LoginActivity">
+    tools:context="com.zimny.socialfood.activity.LoginActivity">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -17,8 +17,7 @@
             android:layout_height="150dp"
             android:layout_gravity="center"
             android:layout_margin="10dp"
-            android:background="@drawable/shadow"
-            android:src="@drawable/ic_app" />
+            android:background="@drawable/shadow" />
 
         <com.rengwuxian.materialedittext.MaterialEditText
             android:id="@+id/firstname"

@@ -1,14 +1,14 @@
 
-gsquid:UselessImportCheck">Remove this unused import 'android.content.BroadcastReceiver'.(Ãğõğ8Å¤Ó«ß+
-^squid:UselessImportCheck"5Remove this unused import 'com.bumptech.glide.Glide'.(Ñˆ…Ë8³Ö¦ß+
-[squid:UselessImportCheck"3Remove this unused import 'android.content.Intent'.(³ğ‹G8Å¤Ó«ß+
-bsquid:S2184"FCast one of the operands of this multiplication operation to a "long".(‰× Ø8ùÀ¬«ß+
-jsquid:MaximumInheritanceDepth"<This class has 8 parents which is greater than 5 authorized.(²Ú±8 Ì‡£ß+
-[squid:S1854":Remove this useless assignment to local variable "result".(î“Ãşÿÿÿÿ8ùÀ¬«ß+
-wsquid:S1450"[Remove the "firebaseAuth" field and declare it as a local variable in the relevant methods.(“ø8 Ì‡£ß+
-Lsquid:S1481"+Remove this unused "result" local variable.(î“Ãşÿÿÿÿ8ùÀ¬«ß+
-ysquid:S00120"WRename this package name to match the regular expression '^[a-z]+(\.[a-z][a-z0-9]*)*$'.(â±²´ÿÿÿÿÿ8 Ì‡£ß+
-nsquid:S00117"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(‰× Ø8ùÀ¬«ß+
-gsquid:UselessImportCheck"9Remove this unused import 'android.content.IntentFilter'.(ò³ñ£ÿÿÿÿÿ8Å¤Ó«ß+
-Psquid:S1066"/Merge this if statement with the enclosing one.(¿…‘’øÿÿÿÿ8ùÀ¬«ß+
-asquid:UselessImportCheck"3Remove this unused import 'com.elvishew.xlog.XLog'.(ÀÇ¤Çşÿÿÿÿ8­Á•¦ß+
+csquid:MaximumInheritanceDepth"<This class has 7 parents which is greater than 5 authorized.(²Ú±
+[squid:S2184"FCast one of the operands of this multiplication operation to a "long".(‰× Ø
+Isquid:S1066"/Merge this if statement with the enclosing one.(¿…‘’øÿÿÿÿ
+rsquid:S00120"WRename this package name to match the regular expression '^[a-z]+(\.[a-z][a-z0-9]*)*$'.(â±²´ÿÿÿÿÿ
+psquid:S1450"[Remove the "firebaseAuth" field and declare it as a local variable in the relevant methods.(“ø
+Esquid:S1481"+Remove this unused "result" local variable.(î“Ãşÿÿÿÿ
+Wsquid:UselessImportCheck"5Remove this unused import 'com.bumptech.glide.Glide'.(Ñˆ…Ë
+Tsquid:S1854":Remove this useless assignment to local variable "result".(î“Ãşÿÿÿÿ
+Tsquid:UselessImportCheck"3Remove this unused import 'android.content.Intent'.(³ğ‹G
+`squid:UselessImportCheck">Remove this unused import 'android.content.BroadcastReceiver'.(Ãğõğ
+`squid:UselessImportCheck"9Remove this unused import 'android.content.IntentFilter'.(ò³ñ£ÿÿÿÿÿ
+Zsquid:UselessImportCheck"3Remove this unused import 'com.elvishew.xlog.XLog'.(ÀÇ¤Çşÿÿÿÿ
+gsquid:S00117"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(‰× Ø

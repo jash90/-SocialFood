@@ -12,6 +12,7 @@ public class Restaurant {
     private int phone;
     private String uid;
     private List<Tag> tags;
+    private String name;
 
     public List<Food> getFoods() {
         return foods;
@@ -53,15 +54,24 @@ public class Restaurant {
         this.tags = tags;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public Restaurant() {
     }
 
-    public Restaurant(List<Food> foods, Address address, int phone, String uid, List<Tag> tags) {
+    public Restaurant(List<Food> foods, Address address, int phone, String uid, List<Tag> tags, String name) {
         this.foods = foods;
         this.address = address;
         this.phone = phone;
         this.uid = uid;
         this.tags = tags;
+        this.name = name;
     }
 
     @Override
@@ -72,6 +82,7 @@ public class Restaurant {
                 ", phone=" + phone +
                 ", uid='" + uid + '\'' +
                 ", tags=" + tags +
+                ", name='" + name + '\'' +
                 '}';
     }
 }
