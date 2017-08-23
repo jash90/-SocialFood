@@ -8,11 +8,25 @@ import java.util.List;
 
 public class Food {
     private String name;
-    private double cost;
+    private double price;
     private List<Tag> tags;
     private String description;
     private Long uid;
     private Restaurant restaurant;
+    private String type;
+
+    public Food() {
+    }
+
+    public Food(String name, double price, List<Tag> tags, String description, Long uid, Restaurant restaurant, String type) {
+        this.name = name;
+        this.price = price;
+        this.tags = tags;
+        this.description = description;
+        this.uid = uid;
+        this.restaurant = restaurant;
+        this.type = type;
+    }
 
     public String getName() {
         return name;
@@ -22,12 +36,12 @@ public class Food {
         this.name = name;
     }
 
-    public double getCost() {
-        return cost;
+    public double getPrice() {
+        return price;
     }
 
-    public void setCost(double cost) {
-        this.cost = cost;
+    public void setPrice(double price) {
+        this.price = price;
     }
 
     public List<Tag> getTags() {
@@ -62,27 +76,24 @@ public class Food {
         this.restaurant = restaurant;
     }
 
-    public Food() {
+    public String getType() {
+        return type;
     }
 
-    public Food(String name, double cost, List<Tag> tags, String description, Long uid, Restaurant restaurant) {
-        this.name = name;
-        this.cost = cost;
-        this.tags = tags;
-        this.description = description;
-        this.uid = uid;
-        this.restaurant = restaurant;
+    public void setType(String type) {
+        this.type = type;
     }
 
     @Override
     public String toString() {
         return "Food{" +
                 "name='" + name + '\'' +
-                ", cost=" + cost +
+                ", price=" + price +
                 ", tags=" + tags +
                 ", description='" + description + '\'' +
                 ", uid=" + uid +
                 ", restaurant=" + restaurant +
+                ", type='" + type + '\'' +
                 '}';
     }
 }

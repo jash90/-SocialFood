@@ -1,7 +1,6 @@
 package com.zimny.socialfood.model;
 
 
-
 import com.google.firebase.database.IgnoreExtraProperties;
 
 import java.util.Date;
@@ -24,7 +23,27 @@ public class User {
     private Order shoppingBasket;
     private List<Relationship> relationships;
 
+    public User() {
+    }
 
+    public User(String username) {
+        this.username = username;
+    }
+
+    public User(String uid, String username, String firstname, String lastname, Address address, Date birthday, List<Restaurant> restaurants, List<Food> foods, List<Group> groups, List<Order> orders, Order shoppingBasket, List<Relationship> relationships) {
+        this.uid = uid;
+        this.username = username;
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.address = address;
+        this.birthday = birthday;
+        this.restaurants = restaurants;
+        this.foods = foods;
+        this.groups = groups;
+        this.orders = orders;
+        this.shoppingBasket = shoppingBasket;
+        this.relationships = relationships;
+    }
 
     public String getUid() {
         return uid;
@@ -119,24 +138,6 @@ public class User {
     }
 
     public void setRelationships(List<Relationship> relationships) {
-        this.relationships = relationships;
-    }
-
-    public User() {
-    }
-
-    public User(String uid, String username, String firstname, String lastname, Address address, Date birthday, List<Restaurant> restaurants, List<Food> foods, List<Group> groups, List<Order> orders, Order shoppingBasket, List<Relationship> relationships) {
-        this.uid = uid;
-        this.username = username;
-        this.firstname = firstname;
-        this.lastname = lastname;
-        this.address = address;
-        this.birthday = birthday;
-        this.restaurants = restaurants;
-        this.foods = foods;
-        this.groups = groups;
-        this.orders = orders;
-        this.shoppingBasket = shoppingBasket;
         this.relationships = relationships;
     }
 

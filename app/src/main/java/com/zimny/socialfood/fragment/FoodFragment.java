@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-
 import com.elvishew.xlog.XLog;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -20,8 +19,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.zimny.socialfood.adapter.FoodAdapter;
 import com.zimny.socialfood.R;
+import com.zimny.socialfood.adapter.FoodAdapter;
 import com.zimny.socialfood.model.Food;
 import com.zimny.socialfood.model.Restaurant;
 
@@ -39,6 +38,7 @@ public class FoodFragment extends Fragment {
     FoodAdapter foodAdapter;
     ArrayList<Food> foods = new ArrayList<>();
     ArrayList<Restaurant> restaurants = new ArrayList<>();
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -49,7 +49,7 @@ public class FoodFragment extends Fragment {
         if (firebaseAuth != null) {
             FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
             final DatabaseReference databaseReference = firebaseDatabase.getReference();
-            final Query queryRestaurant = databaseReference.child("restaurant");
+            final Query queryRestaurant = databaseReference.child("restaurants");
             queryRestaurant.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshots) {
@@ -65,18 +65,30 @@ public class FoodFragment extends Fragment {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshots) {
                                 for (DataSnapshot dataSnapshot : dataSnapshots.getChildren()) {
-                                    Food f = dataSnapshot.getValue(Food.class);
-                                    XLog.d(f);
-                                    f.setRestaurant(r);
-                                    foods.add(f);
+                                    final String s = dataSnapshot.getKey();
+                                    XLog.d(s);
+                                    databaseReference.child("foods").child(r.getUid()).child(s).addValueEventListener(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(DataSnapshot dataSnapshots) {
+                                            for (DataSnapshot dataSnapshot : dataSnapshots.getChildren()) {
+                                                Food f = dataSnapshot.getValue(Food.class);
+                                                XLog.d(f);
+                                                XLog.d(dataSnapshot);
+                                                f.setRestaurant(r);
+                                                f.setType(s);
+                                                foods.add(f);
+                                            }
+                                            foodAdapter.notifyDataSetChanged();
+                                        }
+
+
+                                        @Override
+                                        public void onCancelled(DatabaseError databaseError) {
+
+                                        }
+                                    });
                                 }
-                                XLog.d(foods);
-                                foodAdapter = new FoodAdapter(foods);
-                                recyclerView.setAdapter(foodAdapter);
-                                RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
-                                recyclerView.setLayoutManager(layoutManager);
-                                recyclerView.setItemAnimator(new DefaultItemAnimator());
-                                recyclerView.setAdapter(foodAdapter);
+
                             }
 
                             @Override
@@ -93,8 +105,12 @@ public class FoodFragment extends Fragment {
 
                 }
             });
-
-
+            foodAdapter = new FoodAdapter(foods);
+            recyclerView.setAdapter(foodAdapter);
+            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
+            recyclerView.setLayoutManager(layoutManager);
+            recyclerView.setItemAnimator(new DefaultItemAnimator());
+            recyclerView.setAdapter(foodAdapter);
 
         }
         return v;

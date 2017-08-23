@@ -11,6 +11,24 @@ public class Address {
     private String postalCode;
 
 
+    public Address() {
+    }
+
+    public Address(String nameStreet, int numberHouse, int numberBuilding, String city, String postalCode) {
+        this.nameStreet = nameStreet;
+        this.numberHouse = numberHouse;
+        this.numberBuilding = numberBuilding;
+        this.city = city;
+        this.postalCode = postalCode;
+    }
+
+    public Address(String nameStreet, int numberHouse, String city, String postalCode) {
+        this.nameStreet = nameStreet;
+        this.numberHouse = numberHouse;
+        this.city = city;
+        this.postalCode = postalCode;
+    }
+
     public String getNameStreet() {
         return nameStreet;
     }
@@ -51,32 +69,13 @@ public class Address {
         this.postalCode = postalCode;
     }
 
-    public Address() {
-    }
-
-    public Address(String nameStreet, int numberHouse, int numberBuilding, String city, String postalCode) {
-        this.nameStreet = nameStreet;
-        this.numberHouse = numberHouse;
-        this.numberBuilding = numberBuilding;
-        this.city = city;
-        this.postalCode = postalCode;
-    }
-
-    public Address(String nameStreet, int numberHouse, String city, String postalCode) {
-        this.nameStreet = nameStreet;
-        this.numberHouse = numberHouse;
-        this.city = city;
-        this.postalCode = postalCode;
-    }
-
     @Override
     public String toString() {
-        if (numberBuilding>0){
-            return String.format("%s %d/%d %s %s",nameStreet,numberHouse,numberBuilding, postalCode ,city);
+        if (numberBuilding > 0) {
+            return String.format("%s %d/%d %s %s", nameStreet, numberHouse, numberBuilding, postalCode, city);
+        } else {
+            return String.format("%s %d %s %s", nameStreet, numberHouse, postalCode, city);
         }
-        else{
-            return String.format("%s %d %s %s",nameStreet,numberHouse, postalCode ,city);
-        }
-            
+
     }
 }

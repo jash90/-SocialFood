@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar3"
@@ -36,8 +36,8 @@
         android:layout_marginRight="20dp"
         android:hint="Password"
         android:inputType="textPassword"
-        app:met_floatingLabel="highlight"
-        android:text="12345"/>
+        android:text="123456"
+        app:met_floatingLabel="highlight" />
 
     <com.rengwuxian.materialedittext.MaterialEditText
         android:id="@+id/confirmpassword"
@@ -48,8 +48,8 @@
         android:layout_marginRight="20dp"
         android:hint="Confirm password"
         android:inputType="textPassword"
-        app:met_floatingLabel="highlight"
-        android:text="12345"/>
+        android:text="123456"
+        app:met_floatingLabel="highlight" />
 
     <Button
         android:id="@+id/register"

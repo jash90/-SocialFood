@@ -9,6 +9,15 @@ public class Relationship {
     private String uidFriend1;
     private String uidFriend2;
 
+    public Relationship() {
+    }
+
+    public Relationship(String uid, String uidFriend1, String uidFriend2) {
+        this.uid = uid;
+        this.uidFriend1 = uidFriend1;
+        this.uidFriend2 = uidFriend2;
+    }
+
     public String getUid() {
         return uid;
     }
@@ -30,15 +39,6 @@ public class Relationship {
     }
 
     public void setUidFriend2(String uidFriend2) {
-        this.uidFriend2 = uidFriend2;
-    }
-
-    public Relationship() {
-    }
-
-    public Relationship(String uid, String uidFriend1, String uidFriend2) {
-        this.uid = uid;
-        this.uidFriend1 = uidFriend1;
         this.uidFriend2 = uidFriend2;
     }
 

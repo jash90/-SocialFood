@@ -8,6 +8,8 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -17,9 +19,12 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.elvishew.xlog.XLog;
+import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -43,9 +48,11 @@ import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IProfile;
+import com.mikepenz.materialdrawer.util.AbstractDrawerImageLoader;
+import com.mikepenz.materialdrawer.util.DrawerImageLoader;
+import com.zimny.socialfood.R;
 import com.zimny.socialfood.fragment.MainFragment;
 import com.zimny.socialfood.fragment.MyAccountFragment;
-import com.zimny.socialfood.R;
 import com.zimny.socialfood.model.User;
 
 import butterknife.BindView;
@@ -58,8 +65,6 @@ import butterknife.ButterKnife;
 public class MainActivity extends AppCompatActivity {
     @BindView(R.id.toolbar)
     Toolbar toolbar;
-    private FirebaseAuth firebaseAuth;
-    private FirebaseUser firebaseUser;
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor sharedPreferencesEditor;
     User user;
@@ -67,6 +72,9 @@ public class MainActivity extends AppCompatActivity {
     ProfileDrawerItem profileDrawerItem;
     AccountHeader accountHeader;
     Bitmap userProfile = null;
+    Drawer drawer;
+    private FirebaseAuth firebaseAuth;
+    private FirebaseUser firebaseUser;
     private IntentFilter intentFilter = new IntentFilter("changeImageProfile");
     private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
@@ -117,7 +125,33 @@ public class MainActivity extends AppCompatActivity {
                     }
                 })
                 .build();
-        final Drawer result = new DrawerBuilder()
+        Drawer.OnDrawerItemClickListener onDrawerItemClickListener = new Drawer.OnDrawerItemClickListener() {
+            @Override
+            public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                switch (position) {
+                    case 11:
+                        XLog.d(position);
+                        firebaseAuth.signOut();
+                        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                        intent.putExtra("logout", false);
+                        startActivity(intent);
+                        return true;
+                    case 10:
+                        FragmentManager fm = getSupportFragmentManager();
+                        FragmentTransaction ft = fm.beginTransaction();
+                        MyAccountFragment myAccountFragment = new MyAccountFragment();
+                        ft.replace(R.id.content, myAccountFragment);
+                        ft.addToBackStack("fragment");
+                        ft.commit();
+                        drawer.closeDrawer();
+                        return true;
+                    default:
+                        return false;
+
+                }
+            }
+        };
+        drawer = new DrawerBuilder()
                 .withActivity(this)
                 .withAccountHeader(accountHeader)
                 .withSavedInstance(savedInstanceState)
@@ -134,49 +168,78 @@ public class MainActivity extends AppCompatActivity {
                         new PrimaryDrawerItem().withName("Groups").withIcon(FontAwesome.Icon.faw_users),
                         new PrimaryDrawerItem().withName("Friends").withIcon(FontAwesome.Icon.faw_user_circle_o).withBadge("20"),
                         new DividerDrawerItem(),
-                        new PrimaryDrawerItem().withName("Settings").withIcon(GoogleMaterial.Icon.gmd_settings)
+                        new PrimaryDrawerItem().withName("Settings").withIcon(GoogleMaterial.Icon.gmd_settings),
+                        new PrimaryDrawerItem().withName("Logout").withIcon(GoogleMaterial.Icon.gmd_exit_to_app)
                 )
-                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
-                    @Override
-                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-                        return true;
-                    }
-                })
+                .withOnDrawerItemClickListener(onDrawerItemClickListener)
                 .build();
+
         if (firebaseUser != null) {
             databaseReference.child("users").child(firebaseUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     user = dataSnapshot.getValue(User.class);
                     if (user != null) {
-                        if (user.getFirstname() != null && user.getLastname() != null) {
-                            FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
-                            StorageReference storageRef = firebaseStorage.getReference();
-                            StorageReference imageRef = storageRef.child(String.format("%s.png", firebaseUser.getUid()));
-                            final long ONE_MEGABYTE = 1024 * 1024;
-                            imageRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-                                @Override
-                                public void onSuccess(byte[] bytes) {
-                                    userProfile = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                                    profileDrawerItem = new ProfileDrawerItem().withName(user.getFirstname() + " " + user.getLastname()).withEmail(firebaseUser.getEmail()).withIcon(userProfile);
-                                    accountHeader.addProfiles(profileDrawerItem);
-                                }
-                            }).addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception exception) {
-                                    profileDrawerItem = new ProfileDrawerItem().withName(user.getFirstname() + " " + user.getLastname()).withEmail(firebaseUser.getEmail()).withIcon(R.drawable.ic_app);
-                                    Toast.makeText(getBaseContext(), exception.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-                                    accountHeader.addProfiles(profileDrawerItem);
-                                }
-                            });
+                        FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
+                        StorageReference storageRef = firebaseStorage.getReference();
+                        StorageReference imageRef = storageRef.child(String.format("%s.png", firebaseUser.getUid()));
+                        DrawerImageLoader.init(new AbstractDrawerImageLoader() {
+                                                   @Override
+                                                   public void set(ImageView imageView, Uri uri, Drawable placeholder) {
+                                                     Glide.with(getApplicationContext())
+                                                             .using(new FirebaseImageLoader())
+                                                             .load()
+                                                   }
 
-                        }
+                                                   @Override
+                                                   public void cancel(ImageView imageView) {
+                                                       Glide.clear(imageView);
+                                                   }
+
+                                                   @Override
+                                                   public Drawable placeholder(Context ctx) {
+                                                       return super.placeholder(ctx);
+                                                   }
+
+                                                   @Override
+                                                   public Drawable placeholder(Context ctx, String tag) {
+                                                       return super.placeholder(ctx, tag);
+                                                   }
+                                               };
+//                        try {
+//                          Glide.with(getApplicationContext())
+//                                  .using(new FirebaseImageLoader())
+//                                  .load(imageRef)
+//                                  .into(profileDrawerItem);
+//                                    userProfile = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+//                                    profileDrawerItem = new ProfileDrawerItem().withIcon(userProfile);
+//                                    if (user.getLastname() != null && user.getFirstname() != null) {
+//                                        profileDrawerItem.withName(String.format("%s %s", user.getFirstname(), user.getLastname()));
+//                                    }
+//                                    if (user.getUsername() != null) {
+//                                        profileDrawerItem.withEmail(user.getUsername());
+//                                    }
+//                                    accountHeader.addProfiles(profileDrawerItem);
+//
+//                        } catch (Exception ex) {
+//                            profileDrawerItem = new ProfileDrawerItem().withIcon(R.drawable.ic_app);
+//                            XLog.d("catch", ex);
+//                            if (user.getLastname() != null && user.getFirstname() != null) {
+//                                profileDrawerItem.withName(String.format("%s %s", user.getFirstname(), user.getLastname()));
+//                            }
+//                            if (user.getUsername() != null) {
+//                                profileDrawerItem.withEmail(user.getUsername());
+//                            }
+//                            accountHeader.addProfiles(profileDrawerItem);
+//                        }
+
+
                     }
                 }
 
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
-                    Toast.makeText(getBaseContext(), databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getBaseContext(), databaseError.getDetails(), Toast.LENGTH_SHORT).show();
                 }
             });
 
@@ -195,6 +258,7 @@ public class MainActivity extends AppCompatActivity {
         ft.commit();
 
     }
+
     @Override
     public void onResume() {
         super.onResume();
@@ -207,6 +271,7 @@ public class MainActivity extends AppCompatActivity {
         unregisterReceiver(broadcastReceiver);
         super.onPause();
     }
+
     public class MyReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {

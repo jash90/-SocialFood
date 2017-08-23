@@ -13,6 +13,17 @@ public class Group {
     private String uidAdmin;
     private List<Tag> tags;
 
+    public Group() {
+    }
+
+    public Group(String uid, List<User> users, Address address, String uidAdmin, List<Tag> tags) {
+        this.uid = uid;
+        this.users = users;
+        this.address = address;
+        this.uidAdmin = uidAdmin;
+        this.tags = tags;
+    }
+
     public String getUid() {
         return uid;
     }
@@ -50,17 +61,6 @@ public class Group {
     }
 
     public void setTags(List<Tag> tags) {
-        this.tags = tags;
-    }
-
-    public Group() {
-    }
-
-    public Group(String uid, List<User> users, Address address, String uidAdmin, List<Tag> tags) {
-        this.uid = uid;
-        this.users = users;
-        this.address = address;
-        this.uidAdmin = uidAdmin;
         this.tags = tags;
     }
 

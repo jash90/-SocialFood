@@ -103,6 +103,7 @@
     </content>
     <orderEntry type="jdk" jdkName="Android API 26 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" exported="" name="palette-v7-23.4.0" level="project" />
     <orderEntry type="library" exported="" name="support-core-ui-26.0.0" level="project" />
     <orderEntry type="library" exported="" name="stetho-okhttp3-1.5.0" level="project" />
     <orderEntry type="library" exported="" name="fontawesome-typeface-4.7.0.1" level="project" />
@@ -128,9 +129,11 @@
     <orderEntry type="library" exported="" name="firebase-storage-11.0.4" level="project" />
     <orderEntry type="library" exported="" name="materialdrawer-5.9.5" level="project" />
     <orderEntry type="library" exported="" name="fastadapter-2.6.3" level="project" />
+    <orderEntry type="library" exported="" name="library-1.4" level="project" />
     <orderEntry type="library" exported="" scope="TEST" name="javawriter-2.1.1" level="project" />
     <orderEntry type="library" exported="" name="appcompat-v7-26.0.0" level="project" />
     <orderEntry type="library" exported="" name="firebase-storage-common-11.0.4" level="project" />
+    <orderEntry type="library" exported="" name="firebase-ui-storage-0.6.0" level="project" />
     <orderEntry type="library" exported="" name="play-services-tasks-11.0.4" level="project" />
     <orderEntry type="library" exported="" name="iconics-core-2.9.1" level="project" />
     <orderEntry type="library" exported="" name="butterknife-8.8.0" level="project" />
@@ -144,6 +147,7 @@
     <orderEntry type="library" exported="" name="firebase-auth-11.0.4" level="project" />
     <orderEntry type="library" exported="" name="play-services-basement-11.0.4" level="project" />
     <orderEntry type="library" exported="" name="google-material-typeface-3.0.1.1.original" level="project" />
+    <orderEntry type="library" exported="" name="glide-3.7.0" level="project" />
     <orderEntry type="library" exported="" name="jsr305-2.0.1" level="project" />
     <orderEntry type="library" exported="" name="transition-26.0.0" level="project" />
     <orderEntry type="library" exported="" name="play-services-base-11.0.4" level="project" />

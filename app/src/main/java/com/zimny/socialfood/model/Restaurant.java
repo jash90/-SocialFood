@@ -14,6 +14,18 @@ public class Restaurant {
     private List<Tag> tags;
     private String name;
 
+    public Restaurant() {
+    }
+
+    public Restaurant(List<Food> foods, Address address, int phone, String uid, List<Tag> tags, String name) {
+        this.foods = foods;
+        this.address = address;
+        this.phone = phone;
+        this.uid = uid;
+        this.tags = tags;
+        this.name = name;
+    }
+
     public List<Food> getFoods() {
         return foods;
     }
@@ -59,18 +71,6 @@ public class Restaurant {
     }
 
     public void setName(String name) {
-        this.name = name;
-    }
-
-    public Restaurant() {
-    }
-
-    public Restaurant(List<Food> foods, Address address, int phone, String uid, List<Tag> tags, String name) {
-        this.foods = foods;
-        this.address = address;
-        this.phone = phone;
-        this.uid = uid;
-        this.tags = tags;
         this.name = name;
     }
 

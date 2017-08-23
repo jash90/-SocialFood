@@ -8,6 +8,14 @@ public class Tag {
     private String uid;
     private String name;
 
+    public Tag() {
+    }
+
+    public Tag(String uid, String name) {
+        this.uid = uid;
+        this.name = name;
+    }
+
     public String getUid() {
         return uid;
     }
@@ -21,14 +29,6 @@ public class Tag {
     }
 
     public void setName(String name) {
-        this.name = name;
-    }
-
-    public Tag() {
-    }
-
-    public Tag(String uid, String name) {
-        this.uid = uid;
         this.name = name;
     }
 

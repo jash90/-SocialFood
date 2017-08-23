@@ -8,7 +8,7 @@ import android.widget.Toast;
  */
 
 public class ToolBox {
-    public static void MyToast(String s,Context context ){
-        Toast.makeText(context,s,Toast.LENGTH_SHORT).show();
+    public static void MyToast(String s, Context context) {
+        Toast.makeText(context, s, Toast.LENGTH_SHORT).show();
     }
 }

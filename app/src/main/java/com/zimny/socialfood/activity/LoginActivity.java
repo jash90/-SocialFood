@@ -39,6 +39,7 @@ public class LoginActivity extends AppCompatActivity {
     FirebaseAuth firebaseAuth;
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor sharedPreferencesEditor;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,13 +53,20 @@ public class LoginActivity extends AppCompatActivity {
                 login(login.getText().toString(), password.getText().toString());
             }
         });
-        if (login.getText().toString().isEmpty() && password.getText().toString().isEmpty()){
+        Intent intent = getIntent();
+        Boolean logoutFlag = intent.getBooleanExtra("logout", true);
+        String user = intent.getStringExtra("user");
+        String pass = intent.getStringExtra("pass");
+        if (user != null && pass != null) {
+            login(user, pass);
+        }
+        if (!login.getText().toString().isEmpty() && !password.getText().toString().isEmpty() && logoutFlag) {
             login(login.getText().toString(), password.getText().toString());
         }
         signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(LoginActivity.this,RegisterActivity.class);
+                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
                 startActivity(intent);
             }
         });
@@ -70,12 +78,12 @@ public class LoginActivity extends AppCompatActivity {
         try {
 
             firebaseAuth = FirebaseAuth.getInstance();
-            firebaseAuth.signInWithEmailAndPassword(username,password)
+            firebaseAuth.signInWithEmailAndPassword(username, password)
                     .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                         @Override
                         public void onSuccess(AuthResult authResult) {
-                            MyToast(String.format("You sign as %s .",authResult.getUser().getEmail()),getBaseContext());
-                            Intent intent = new Intent(LoginActivity.this,MainActivity.class);
+                            MyToast(String.format("You sign as %s .", authResult.getUser().getEmail()), getBaseContext());
+                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                             startActivity(intent);
 
                         }
@@ -83,17 +91,15 @@ public class LoginActivity extends AppCompatActivity {
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            MyToast("Firebase : "+e.getLocalizedMessage(),getBaseContext());
+                            MyToast("Firebase : " + e.getLocalizedMessage(), getBaseContext());
                         }
                     });
 
 
-               }
-               catch (Exception ex){
-                  MyToast("App : "+ex.getLocalizedMessage(),getBaseContext());
-              }
+        } catch (Exception ex) {
+            MyToast("App : " + ex.getLocalizedMessage(), getBaseContext());
         }
-
+    }
 
 
 }

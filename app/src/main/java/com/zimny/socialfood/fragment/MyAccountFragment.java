@@ -17,7 +17,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
-
 import com.elvishew.xlog.XLog;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -33,7 +32,6 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.squareup.picasso.Picasso;
-import com.zimny.socialfood.activity.LoginActivity;
 import com.zimny.socialfood.R;
 import com.zimny.socialfood.model.User;
 
@@ -49,6 +47,7 @@ import static com.zimny.socialfood.utils.ToolBox.MyToast;
 public class MyAccountFragment extends Fragment {
 
 
+    private static final int REQUEST_CODE_PICKER = 2000;
     @BindView(R.id.firstname)
     MaterialEditText firstname;
     @BindView(R.id.lastname)
@@ -67,20 +66,16 @@ public class MyAccountFragment extends Fragment {
     Button save;
     @BindView(R.id.image)
     CircleImageView image;
-    @BindView(R.id.logout)
-    Button logout;
-
-    private User user;
-
+    // @BindView(R.id.logout)
+    //  Button logout;
     SharedPreferences sharedPreferences;
 
     SharedPreferences.Editor sharedPreferencesEditor;
-    private static final int REQUEST_CODE_PICKER = 2000;
-
     FirebaseAuth firebaseAuth;
     FirebaseUser firebaseUser;
     DatabaseReference databaseReference;
     Bitmap userProfile = null;
+    private User user;
 
     @Nullable
     @Override
@@ -106,7 +101,8 @@ public class MyAccountFragment extends Fragment {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {
-                // Handle any errors
+                //  Toast.makeText(getContext(),exception.getLocalizedMessage(),Toast.LENGTH_SHORT).show();
+                XLog.d(exception.getLocalizedMessage());
             }
         });
         databaseReference.child("users").child(firebaseUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -157,14 +153,14 @@ public class MyAccountFragment extends Fragment {
             }
         });
 
-        logout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                firebaseAuth.signOut();
-                Intent intent = new Intent(getContext(), LoginActivity.class);
-                startActivity(intent);
-            }
-        });
+//        logout.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                firebaseAuth.signOut();
+//                Intent intent = new Intent(getContext(), LoginActivity.class);
+//                startActivity(intent);
+//            }
+//        });
 
         save.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -226,7 +222,7 @@ public class MyAccountFragment extends Fragment {
                         .into(image);
 
                 userProfile = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), data.getData());
-                sharedPreferencesEditor.putString("image",data.getData().toString());
+                sharedPreferencesEditor.putString("image", data.getData().toString());
                 sharedPreferencesEditor.commit();
             } catch (java.io.IOException e) {
                 Toast.makeText(getContext(), e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();

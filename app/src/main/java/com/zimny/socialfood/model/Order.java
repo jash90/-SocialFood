@@ -13,6 +13,17 @@ public class Order {
     private String uidGroup;
     private boolean paying;
 
+    public Order() {
+    }
+
+    public Order(List<Food> foods, String uid, String uidUser, String uidGroup, boolean paying) {
+        this.foods = foods;
+        this.uid = uid;
+        this.uidUser = uidUser;
+        this.uidGroup = uidGroup;
+        this.paying = paying;
+    }
+
     public List<Food> getFoods() {
         return foods;
     }
@@ -50,17 +61,6 @@ public class Order {
     }
 
     public void setPaying(boolean paying) {
-        this.paying = paying;
-    }
-
-    public Order() {
-    }
-
-    public Order(List<Food> foods, String uid, String uidUser, String uidGroup, boolean paying) {
-        this.foods = foods;
-        this.uid = uid;
-        this.uidUser = uidUser;
-        this.uidGroup = uidGroup;
         this.paying = paying;
     }
 
