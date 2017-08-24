@@ -1,5 +1,6 @@
 package com.zimny.socialfood.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -12,16 +13,26 @@ public class Group {
     private Address address;
     private String uidAdmin;
     private List<Tag> tags;
+    private String name;
 
     public Group() {
     }
 
-    public Group(String uid, List<User> users, Address address, String uidAdmin, List<Tag> tags) {
+    public Group(String uid, List<User> users, Address address, String uidAdmin, List<Tag> tags, String name) {
         this.uid = uid;
         this.users = users;
         this.address = address;
         this.uidAdmin = uidAdmin;
         this.tags = tags;
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getUid() {
@@ -72,6 +83,7 @@ public class Group {
                 ", address=" + address +
                 ", uidAdmin='" + uidAdmin + '\'' +
                 ", tags=" + tags +
+                ", name='" + name + '\'' +
                 '}';
     }
 }

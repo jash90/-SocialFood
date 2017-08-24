@@ -13,18 +13,21 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.elvishew.xlog.XLog;
-import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -51,9 +54,12 @@ import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 import com.mikepenz.materialdrawer.util.AbstractDrawerImageLoader;
 import com.mikepenz.materialdrawer.util.DrawerImageLoader;
 import com.zimny.socialfood.R;
+import com.zimny.socialfood.fragment.FoodFragment;
 import com.zimny.socialfood.fragment.MainFragment;
 import com.zimny.socialfood.fragment.MyAccountFragment;
 import com.zimny.socialfood.model.User;
+
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -114,6 +120,7 @@ public class MainActivity extends AppCompatActivity {
         firebaseUser = firebaseAuth.getCurrentUser();
         databaseReference = FirebaseDatabase.getInstance().getReference();
         registerReceiver(broadcastReceiver, intentFilter);
+        profileDrawerItem = new ProfileDrawerItem();
         accountHeader = new AccountHeaderBuilder()
                 .withActivity(this)
                 .withHeaderBackground(R.color.primary)
@@ -125,23 +132,39 @@ public class MainActivity extends AppCompatActivity {
                     }
                 })
                 .build();
+        DrawerImageLoader.init(new AbstractDrawerImageLoader() {
+            @Override
+            public void set(ImageView imageView, Uri uri, Drawable placeholder) {
+                Glide.with(imageView.getContext()).load(uri).placeholder(placeholder).into(imageView);
+            }
+
+            @Override
+            public void cancel(ImageView imageView) {
+                Glide.clear(imageView);
+            }
+        });
         Drawer.OnDrawerItemClickListener onDrawerItemClickListener = new Drawer.OnDrawerItemClickListener() {
             @Override
             public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                FragmentManager fm = getSupportFragmentManager();
+                FragmentTransaction ft = fm.beginTransaction();
+                XLog.d(position);
                 switch (position) {
-                    case 11:
-                        XLog.d(position);
+                    case 1:
+                        MainFragment mainFragment = new MainFragment();
+                        ft.replace(R.id.content, mainFragment);
+                        ft.commit();
+                        drawer.closeDrawer();
+                        return true;
+                    case 13:
                         firebaseAuth.signOut();
                         Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                         intent.putExtra("logout", false);
                         startActivity(intent);
                         return true;
-                    case 10:
-                        FragmentManager fm = getSupportFragmentManager();
-                        FragmentTransaction ft = fm.beginTransaction();
+                    case 12:
                         MyAccountFragment myAccountFragment = new MyAccountFragment();
                         ft.replace(R.id.content, myAccountFragment);
-                        ft.addToBackStack("fragment");
                         ft.commit();
                         drawer.closeDrawer();
                         return true;
@@ -159,6 +182,8 @@ public class MainActivity extends AppCompatActivity {
                 .withTranslucentStatusBar(false)
                 .withToolbar(toolbar)
                 .addDrawerItems(
+                        new PrimaryDrawerItem().withName("Main").withIcon(GoogleMaterial.Icon.gmd_home),
+                        new DividerDrawerItem(),
                         new PrimaryDrawerItem().withName("Favorites Restaurant").withIcon(GoogleMaterial.Icon.gmd_store),
                         new PrimaryDrawerItem().withName("Favorites Food").withIcon(GoogleMaterial.Icon.gmd_restaurant_menu),
                         new DividerDrawerItem(),
@@ -180,60 +205,28 @@ public class MainActivity extends AppCompatActivity {
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     user = dataSnapshot.getValue(User.class);
                     if (user != null) {
+                        if (user.getFirstname() != null && user.getLastname() != null) {
+                            profileDrawerItem.withName(String.format("%s %s", user.getFirstname(), user.getLastname()));
+                        }
+                        if (user.getUsername() != null) {
+                            profileDrawerItem.withEmail(user.getUsername());
+                        }
                         FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
                         StorageReference storageRef = firebaseStorage.getReference();
                         StorageReference imageRef = storageRef.child(String.format("%s.png", firebaseUser.getUid()));
-                        DrawerImageLoader.init(new AbstractDrawerImageLoader() {
-                                                   @Override
-                                                   public void set(ImageView imageView, Uri uri, Drawable placeholder) {
-                                                     Glide.with(getApplicationContext())
-                                                             .using(new FirebaseImageLoader())
-                                                             .load()
-                                                   }
-
-                                                   @Override
-                                                   public void cancel(ImageView imageView) {
-                                                       Glide.clear(imageView);
-                                                   }
-
-                                                   @Override
-                                                   public Drawable placeholder(Context ctx) {
-                                                       return super.placeholder(ctx);
-                                                   }
-
-                                                   @Override
-                                                   public Drawable placeholder(Context ctx, String tag) {
-                                                       return super.placeholder(ctx, tag);
-                                                   }
-                                               };
-//                        try {
-//                          Glide.with(getApplicationContext())
-//                                  .using(new FirebaseImageLoader())
-//                                  .load(imageRef)
-//                                  .into(profileDrawerItem);
-//                                    userProfile = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-//                                    profileDrawerItem = new ProfileDrawerItem().withIcon(userProfile);
-//                                    if (user.getLastname() != null && user.getFirstname() != null) {
-//                                        profileDrawerItem.withName(String.format("%s %s", user.getFirstname(), user.getLastname()));
-//                                    }
-//                                    if (user.getUsername() != null) {
-//                                        profileDrawerItem.withEmail(user.getUsername());
-//                                    }
-//                                    accountHeader.addProfiles(profileDrawerItem);
-//
-//                        } catch (Exception ex) {
-//                            profileDrawerItem = new ProfileDrawerItem().withIcon(R.drawable.ic_app);
-//                            XLog.d("catch", ex);
-//                            if (user.getLastname() != null && user.getFirstname() != null) {
-//                                profileDrawerItem.withName(String.format("%s %s", user.getFirstname(), user.getLastname()));
-//                            }
-//                            if (user.getUsername() != null) {
-//                                profileDrawerItem.withEmail(user.getUsername());
-//                            }
-//                            accountHeader.addProfiles(profileDrawerItem);
-//                        }
-
-
+                        imageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri uri) {
+                                profileDrawerItem.withIcon(uri);
+                                accountHeader.addProfiles(profileDrawerItem);
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                profileDrawerItem.withIcon(R.drawable.ic_app);
+                                accountHeader.addProfiles(profileDrawerItem);
+                            }
+                        });
                     }
                 }
 
@@ -248,21 +241,26 @@ public class MainActivity extends AppCompatActivity {
         toolbar.setBackgroundColor(ContextCompat.getColor(this, R.color.primary));
         toolbar.setSubtitleTextColor(ContextCompat.getColor(this, android.R.color.white));
         toolbar.setTitleTextColor(ContextCompat.getColor(this, android.R.color.white));
-        toolbar.setNavigationIcon(new IconicsDrawable(this).icon(GoogleMaterial.Icon.gmd_menu).color(Color.WHITE).sizeDp(16));
+        toolbar.setNavigationIcon(new
+
+                IconicsDrawable(this).
+                icon(GoogleMaterial.Icon.gmd_menu).
+                color(Color.WHITE).
+                sizeDp(16));
 
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
         MainFragment mainFragment = new MainFragment();
         ft.replace(R.id.content, mainFragment);
-        ft.addToBackStack("fragment");
         ft.commit();
+
 
     }
 
     @Override
     public void onResume() {
-        super.onResume();
         registerReceiver(broadcastReceiver, intentFilter);
+        super.onResume();
     }
 
 
@@ -272,10 +270,68 @@ public class MainActivity extends AppCompatActivity {
         super.onPause();
     }
 
+    public static class PlaceholderFragment extends Fragment {
+        private static final String ARG_SECTION_NUMBER = "section_number";
+
+        public PlaceholderFragment() {
+        }
+
+        public static PlaceholderFragment newInstance(int sectionNumber) {
+            PlaceholderFragment fragment = new PlaceholderFragment();
+            Bundle args = new Bundle();
+            args.putInt(ARG_SECTION_NUMBER, sectionNumber);
+            fragment.setArguments(args);
+            return fragment;
+        }
+
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                                 Bundle savedInstanceState) {
+            return inflater.inflate(R.layout.fragment_sample, container, false);
+
+        }
+    }
+
     public class MyReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
             Toast.makeText(context, "Intent Detected.", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public class SectionsPagerAdapter extends FragmentPagerAdapter {
+
+        public SectionsPagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            switch (position) {
+                case 0:
+                    return new FoodFragment();
+                case 1:
+                    return PlaceholderFragment.newInstance(position + 1);
+                default:
+                    return PlaceholderFragment.newInstance(position + 1);
+            }
+        }
+
+        @Override
+        public int getCount() {
+            return 2;
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            Locale l = Locale.getDefault();
+            switch (position) {
+                case 0:
+                    return "food".toUpperCase(l);
+                case 1:
+                    return "groups".toUpperCase(l);
+            }
+            return null;
         }
     }
 

@@ -44,6 +44,7 @@ public class FoodFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_food, container, false);
         ButterKnife.bind(this, v);
+        XLog.d("open");
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
         if (firebaseAuth != null) {
@@ -73,18 +74,15 @@ public class FoodFragment extends Fragment {
                                             for (DataSnapshot dataSnapshot : dataSnapshots.getChildren()) {
                                                 Food f = dataSnapshot.getValue(Food.class);
                                                 XLog.d(f);
-                                                XLog.d(dataSnapshot);
+                                                //XLog.d(dataSnapshot);
                                                 f.setRestaurant(r);
                                                 f.setType(s);
                                                 foods.add(f);
                                             }
                                             foodAdapter.notifyDataSetChanged();
                                         }
-
-
                                         @Override
                                         public void onCancelled(DatabaseError databaseError) {
-
                                         }
                                     });
                                 }

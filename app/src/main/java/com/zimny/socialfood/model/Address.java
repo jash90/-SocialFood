@@ -5,8 +5,8 @@ import com.google.firebase.database.IgnoreExtraProperties;
 @IgnoreExtraProperties
 public class Address {
     private String nameStreet;
-    private int numberHouse;
-    private int numberBuilding;
+    private String numberHouse;
+    private String numberBuilding;
     private String city;
     private String postalCode;
 
@@ -14,7 +14,7 @@ public class Address {
     public Address() {
     }
 
-    public Address(String nameStreet, int numberHouse, int numberBuilding, String city, String postalCode) {
+    public Address(String nameStreet, String numberHouse, String numberBuilding, String city, String postalCode) {
         this.nameStreet = nameStreet;
         this.numberHouse = numberHouse;
         this.numberBuilding = numberBuilding;
@@ -22,7 +22,7 @@ public class Address {
         this.postalCode = postalCode;
     }
 
-    public Address(String nameStreet, int numberHouse, String city, String postalCode) {
+    public Address(String nameStreet, String numberHouse, String city, String postalCode) {
         this.nameStreet = nameStreet;
         this.numberHouse = numberHouse;
         this.city = city;
@@ -37,19 +37,19 @@ public class Address {
         this.nameStreet = nameStreet;
     }
 
-    public int getNumberHouse() {
+    public String  getNumberHouse() {
         return numberHouse;
     }
 
-    public void setNumberHouse(int numberHouse) {
+    public void setNumberHouse(String numberHouse) {
         this.numberHouse = numberHouse;
     }
 
-    public int getNumberBuilding() {
+    public String getNumberBuilding() {
         return numberBuilding;
     }
 
-    public void setNumberBuilding(int numberBuilding) {
+    public void setNumberBuilding(String numberBuilding) {
         this.numberBuilding = numberBuilding;
     }
 
@@ -71,7 +71,7 @@ public class Address {
 
     @Override
     public String toString() {
-        if (numberBuilding > 0) {
+        if (numberBuilding != null) {
             return String.format("%s %d/%d %s %s", nameStreet, numberHouse, numberBuilding, postalCode, city);
         } else {
             return String.format("%s %d %s %s", nameStreet, numberHouse, postalCode, city);

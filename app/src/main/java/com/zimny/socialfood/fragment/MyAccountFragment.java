@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.elvishew.xlog.XLog;
@@ -33,6 +34,7 @@ import com.google.firebase.storage.UploadTask;
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.squareup.picasso.Picasso;
 import com.zimny.socialfood.R;
+import com.zimny.socialfood.model.Address;
 import com.zimny.socialfood.model.User;
 
 import java.io.ByteArrayOutputStream;
@@ -87,7 +89,7 @@ public class MyAccountFragment extends Fragment {
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
         databaseReference = FirebaseDatabase.getInstance().getReference();
-        FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
+        final FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
         StorageReference storageRef = firebaseStorage.getReference();
         final StorageReference imageRef = storageRef.child(String.format("%s.png", firebaseUser.getUid()));
         XLog.d(String.format("%s.png", firebaseUser.getUid()));
@@ -118,19 +120,36 @@ public class MyAccountFragment extends Fragment {
                         if (user.getAddress().getNameStreet() != null) {
                             street.setText(user.getAddress().getNameStreet());
                         }
-                        if (user.getAddress().getNumberBuilding() != 0) {
-                            numberBuilding.setText(Integer.toString(user.getAddress().getNumberBuilding()));
+                        else{
+                            user.getAddress().setNameStreet("");
                         }
-                        if (user.getAddress().getNumberHouse() != 0) {
-                            numberHome.setText(Integer.toString(user.getAddress().getNumberHouse()));
+                        if (user.getAddress().getNumberBuilding() != null) {
+                            numberBuilding.setText(user.getAddress().getNumberBuilding());
+                        }
+                        else{
+                            user.getAddress().setNumberBuilding("");
+                        }
+                        if (user.getAddress().getNumberHouse() != null) {
+                            numberHome.setText(user.getAddress().getNumberHouse());
+                        }
+                        else{
+                            user.getAddress().setNumberHouse("");
                         }
                         if (user.getAddress().getCity() != null) {
                             city.setText(user.getAddress().getCity());
+                        }else{
+                            user.getAddress().setCity("");
                         }
                         if (user.getAddress().getPostalCode() != null) {
                             postalCode.setText(user.getAddress().getPostalCode());
+                        }else{
+                            user.getAddress().setPostalCode("");
                         }
 
+                    }
+                    else{
+                        Address address = new Address("","","","","");
+                        user.setAddress(address);
                     }
 
                 }
@@ -165,16 +184,26 @@ public class MyAccountFragment extends Fragment {
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                user.setFirstname(firstname.getText().toString());
-                user.setLastname(lastname.getText().toString());
-                user.getAddress().setNameStreet(street.getText().toString());
-                user.getAddress().setCity(city.getText().toString());
-                user.getAddress().setPostalCode(postalCode.getText().toString());
+                if (!firstname.getText().toString().isEmpty()) {
+                    user.setFirstname(firstname.getText().toString());
+                }
+                if (!lastname.getText().toString().isEmpty()) {
+                    user.setLastname(lastname.getText().toString());
+                }
+                if (!street.getText().toString().isEmpty()) {
+                    user.getAddress().setNameStreet(street.getText().toString());
+                }
+                if (!city.getText().toString().isEmpty()) {
+                    user.getAddress().setCity(city.getText().toString());
+                }
+                if (!postalCode.getText().toString().isEmpty()) {
+                    user.getAddress().setPostalCode(postalCode.getText().toString());
+                }
                 if (!numberBuilding.getText().toString().isEmpty()) {
-                    user.getAddress().setNumberBuilding(Integer.parseInt(numberBuilding.getText().toString()));
+                    user.getAddress().setNumberBuilding(numberBuilding.getText().toString());
                 }
                 if (!numberHome.getText().toString().isEmpty()) {
-                    user.getAddress().setNumberHouse(Integer.parseInt(numberHome.getText().toString()));
+                    user.getAddress().setNumberHouse(numberHome.getText().toString());
                 }
                 databaseReference.child("users").child(firebaseUser.getUid()).setValue(user);
                 if (userProfile != null) {
@@ -229,4 +258,17 @@ public class MyAccountFragment extends Fragment {
             }
         }
     }
+
+    public void editTextToString(String string, EditText editText) {
+        if (!editText.getText().toString().isEmpty()) {
+            string = editText.getText().toString();
+        }
+    }
+
+    public void stringToEditText(EditText editText, String string) {
+        if (string != null) {
+            editText.setText(string);
+        }
+    }
+
 }

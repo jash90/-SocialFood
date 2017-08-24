@@ -15,6 +15,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.zimny.socialfood.R;
 
@@ -47,6 +48,8 @@ public class LoginActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         sharedPreferences = getSharedPreferences("Name", Context.MODE_PRIVATE);
         sharedPreferencesEditor = sharedPreferences.edit();
+        firebaseAuth = FirebaseAuth.getInstance();
+        FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
         signIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -60,8 +63,11 @@ public class LoginActivity extends AppCompatActivity {
         if (user != null && pass != null) {
             login(user, pass);
         }
-        if (!login.getText().toString().isEmpty() && !password.getText().toString().isEmpty() && logoutFlag) {
-            login(login.getText().toString(), password.getText().toString());
+        if (firebaseUser != null) {
+            MyToast(String.format("You sign as %s .", firebaseUser.getEmail()), getBaseContext());
+            Intent loginActivity = new Intent(LoginActivity.this, MainActivity.class);
+            startActivity(loginActivity);
+            finish();
         }
         signup.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,6 +91,7 @@ public class LoginActivity extends AppCompatActivity {
                             MyToast(String.format("You sign as %s .", authResult.getUser().getEmail()), getBaseContext());
                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                             startActivity(intent);
+                            finish();
 
                         }
                     })
