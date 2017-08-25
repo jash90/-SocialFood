@@ -81,6 +81,7 @@ public class FoodFragment extends Fragment {
                                             }
                                             foodAdapter.notifyDataSetChanged();
                                         }
+
                                         @Override
                                         public void onCancelled(DatabaseError databaseError) {
                                         }

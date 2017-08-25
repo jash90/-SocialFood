@@ -1,6 +1,5 @@
 package com.zimny.socialfood.model;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**

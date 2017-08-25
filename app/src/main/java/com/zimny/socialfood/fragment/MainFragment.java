@@ -1,6 +1,5 @@
 package com.zimny.socialfood.fragment;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -11,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.elvishew.xlog.XLog;
 import com.zimny.socialfood.R;
 
 import net.yanzm.mth.MaterialTabHost;
@@ -32,7 +30,7 @@ public class MainFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                Bundle savedInstanceState) {
+                             Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_main, container, false);
         ButterKnife.bind(this, v);
 
@@ -80,7 +78,7 @@ public class MainFragment extends Fragment {
             TextView tv = (TextView) view.findViewById(R.id.text);
             tv.setText("Here is page ");
             return view;
-}
+        }
     }
 
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
@@ -93,7 +91,7 @@ public class MainFragment extends Fragment {
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    return new FoodFragment();
+                    return new AdminFragment();
                 case 1:
                     return new GroupsFragment();
             }

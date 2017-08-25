@@ -4,12 +4,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.zimny.socialfood.R;
-import com.zimny.socialfood.model.Food;
 import com.zimny.socialfood.model.Group;
 
 import java.util.ArrayList;
@@ -32,7 +29,7 @@ public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.ViewHolder
 
     @Override
     public GroupsAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View viewHolder = LayoutInflater.from(parent.getContext()).inflate(R.layout.group_row,parent,false);
+        View viewHolder = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_group, parent, false);
         return new GroupsAdapter.ViewHolder(viewHolder);
     }
 
@@ -50,6 +47,7 @@ public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.ViewHolder
     public int getItemCount() {
         return groups.size();
     }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.nameGroup)

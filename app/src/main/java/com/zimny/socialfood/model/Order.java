@@ -1,5 +1,6 @@
 package com.zimny.socialfood.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -14,6 +15,11 @@ public class Order {
     private boolean paying;
 
     public Order() {
+        this.foods = new ArrayList<>();
+        this.uid = "";
+        this.uidUser = "";
+        this.uidGroup = "";
+        this.paying = false;
     }
 
     public Order(List<Food> foods, String uid, String uidUser, String uidGroup, boolean paying) {

@@ -18,6 +18,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.LayoutInflaterCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -42,6 +43,7 @@ import com.google.firebase.storage.StorageReference;
 import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
+import com.mikepenz.iconics.context.IconicsLayoutInflater2;
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.Drawer;
@@ -54,6 +56,7 @@ import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 import com.mikepenz.materialdrawer.util.AbstractDrawerImageLoader;
 import com.mikepenz.materialdrawer.util.DrawerImageLoader;
 import com.zimny.socialfood.R;
+import com.zimny.socialfood.fragment.AdminFragment;
 import com.zimny.socialfood.fragment.FoodFragment;
 import com.zimny.socialfood.fragment.MainFragment;
 import com.zimny.socialfood.fragment.MyAccountFragment;
@@ -110,6 +113,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        LayoutInflaterCompat.setFactory2(getLayoutInflater(), new IconicsLayoutInflater2(getDelegate()));
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
@@ -198,7 +202,6 @@ public class MainActivity extends AppCompatActivity {
                 )
                 .withOnDrawerItemClickListener(onDrawerItemClickListener)
                 .build();
-
         if (firebaseUser != null) {
             databaseReference.child("users").child(firebaseUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
@@ -250,8 +253,8 @@ public class MainActivity extends AppCompatActivity {
 
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
-        MainFragment mainFragment = new MainFragment();
-        ft.replace(R.id.content, mainFragment);
+        AdminFragment adminFragment = new AdminFragment();
+        ft.replace(R.id.content, adminFragment);
         ft.commit();
 
 

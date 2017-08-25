@@ -5,25 +5,17 @@ package com.zimny.socialfood.model;
  */
 
 public class Relationship {
-    private String uid;
     private String uidFriend1;
     private String uidFriend2;
+    private Boolean invite;
 
     public Relationship() {
     }
 
-    public Relationship(String uid, String uidFriend1, String uidFriend2) {
-        this.uid = uid;
+    public Relationship(String uidFriend1, String uidFriend2, Boolean invite) {
         this.uidFriend1 = uidFriend1;
         this.uidFriend2 = uidFriend2;
-    }
-
-    public String getUid() {
-        return uid;
-    }
-
-    public void setUid(String uid) {
-        this.uid = uid;
+        this.invite = invite;
     }
 
     public String getUidFriend1() {
@@ -42,12 +34,20 @@ public class Relationship {
         this.uidFriend2 = uidFriend2;
     }
 
+    public Boolean getInvite() {
+        return invite;
+    }
+
+    public void setInvite(Boolean invite) {
+        this.invite = invite;
+    }
+
     @Override
     public String toString() {
         return "Relationship{" +
-                "uid='" + uid + '\'' +
-                ", uidFriend1='" + uidFriend1 + '\'' +
+                "uidFriend1='" + uidFriend1 + '\'' +
                 ", uidFriend2='" + uidFriend2 + '\'' +
+                ", invite=" + invite +
                 '}';
     }
 }

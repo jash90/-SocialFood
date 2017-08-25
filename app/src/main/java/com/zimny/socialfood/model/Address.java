@@ -12,6 +12,11 @@ public class Address {
 
 
     public Address() {
+        this.nameStreet = "";
+        this.numberHouse = "";
+        this.numberBuilding = "";
+        this.city = "";
+        this.postalCode = "";
     }
 
     public Address(String nameStreet, String numberHouse, String numberBuilding, String city, String postalCode) {
@@ -37,7 +42,7 @@ public class Address {
         this.nameStreet = nameStreet;
     }
 
-    public String  getNumberHouse() {
+    public String getNumberHouse() {
         return numberHouse;
     }
 
@@ -72,9 +77,9 @@ public class Address {
     @Override
     public String toString() {
         if (numberBuilding != null) {
-            return String.format("%s %d/%d %s %s", nameStreet, numberHouse, numberBuilding, postalCode, city);
+            return String.format("%s %s/%s %s %s", nameStreet, numberHouse, numberBuilding, postalCode, city);
         } else {
-            return String.format("%s %d %s %s", nameStreet, numberHouse, postalCode, city);
+            return String.format("%s %s %s %s", nameStreet, numberHouse, postalCode, city);
         }
 
     }

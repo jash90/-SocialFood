@@ -5,23 +5,13 @@ package com.zimny.socialfood.model;
  */
 
 public class Tag {
-    private String uid;
     private String name;
 
     public Tag() {
     }
 
-    public Tag(String uid, String name) {
-        this.uid = uid;
+    public Tag(String name) {
         this.name = name;
-    }
-
-    public String getUid() {
-        return uid;
-    }
-
-    public void setUid(String uid) {
-        this.uid = uid;
     }
 
     public String getName() {
@@ -35,8 +25,7 @@ public class Tag {
     @Override
     public String toString() {
         return "Tag{" +
-                "uid='" + uid + '\'' +
-                ", name='" + name + '\'' +
+                "name='" + name + '\'' +
                 '}';
     }
 }

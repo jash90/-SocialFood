@@ -15,6 +15,7 @@ public class Restaurant {
     private String name;
 
     public Restaurant() {
+        this.setAddress(new Address());
     }
 
     public Restaurant(List<Food> foods, Address address, int phone, String uid, List<Tag> tags, String name) {
@@ -23,6 +24,11 @@ public class Restaurant {
         this.phone = phone;
         this.uid = uid;
         this.tags = tags;
+        this.name = name;
+    }
+
+    public Restaurant(String name, int phone) {
+        this.phone = phone;
         this.name = name;
     }
 

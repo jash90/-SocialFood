@@ -63,7 +63,7 @@
                 app:met_floatingLabel="highlight" />
 
             <com.rengwuxian.materialedittext.MaterialEditText
-                android:id="@+id/numberHome"
+                android:id="@+id/numberHouse"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"

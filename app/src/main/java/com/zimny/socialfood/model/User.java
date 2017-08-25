@@ -3,6 +3,7 @@ package com.zimny.socialfood.model;
 
 import com.google.firebase.database.IgnoreExtraProperties;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -24,6 +25,18 @@ public class User {
     private List<Relationship> relationships;
 
     public User() {
+        uid = "";
+        username = "";
+        firstname = "";
+        lastname = "";
+        address = new Address();
+        birthday = null;
+        restaurants = new ArrayList<>();
+        foods = new ArrayList<>();
+        groups = new ArrayList<>();
+        orders = new ArrayList<>();
+        shoppingBasket = new Order();
+        relationships = new ArrayList<>();
     }
 
     public User(String username) {
@@ -143,19 +156,6 @@ public class User {
 
     @Override
     public String toString() {
-        return "User{" +
-                "uid='" + uid + '\'' +
-                ", username='" + username + '\'' +
-                ", firstname='" + firstname + '\'' +
-                ", lastname='" + lastname + '\'' +
-                ", address=" + address +
-                ", birthday=" + birthday +
-                ", restaurants=" + restaurants +
-                ", foods=" + foods +
-                ", groups=" + groups +
-                ", orders=" + orders +
-                ", shoppingBasket=" + shoppingBasket +
-                ", relationships=" + relationships +
-                '}';
+        return String.format("%s %s, %s", firstname, lastname, address.getCity());
     }
 }

@@ -56,7 +56,7 @@ public class MyAccountFragment extends Fragment {
     MaterialEditText lastname;
     @BindView(R.id.street)
     MaterialEditText street;
-    @BindView(R.id.numberHome)
+    @BindView(R.id.numberHouse)
     MaterialEditText numberHome;
     @BindView(R.id.numberBuilding)
     MaterialEditText numberBuilding;
@@ -119,36 +119,32 @@ public class MyAccountFragment extends Fragment {
                     if (user.getAddress() != null) {
                         if (user.getAddress().getNameStreet() != null) {
                             street.setText(user.getAddress().getNameStreet());
-                        }
-                        else{
+                        } else {
                             user.getAddress().setNameStreet("");
                         }
                         if (user.getAddress().getNumberBuilding() != null) {
                             numberBuilding.setText(user.getAddress().getNumberBuilding());
-                        }
-                        else{
+                        } else {
                             user.getAddress().setNumberBuilding("");
                         }
                         if (user.getAddress().getNumberHouse() != null) {
                             numberHome.setText(user.getAddress().getNumberHouse());
-                        }
-                        else{
+                        } else {
                             user.getAddress().setNumberHouse("");
                         }
                         if (user.getAddress().getCity() != null) {
                             city.setText(user.getAddress().getCity());
-                        }else{
+                        } else {
                             user.getAddress().setCity("");
                         }
                         if (user.getAddress().getPostalCode() != null) {
                             postalCode.setText(user.getAddress().getPostalCode());
-                        }else{
+                        } else {
                             user.getAddress().setPostalCode("");
                         }
 
-                    }
-                    else{
-                        Address address = new Address("","","","","");
+                    } else {
+                        Address address = new Address("", "", "", "", "");
                         user.setAddress(address);
                     }
 
