@@ -152,6 +152,7 @@
     <orderEntry type="library" exported="" name="jsr305-2.0.1" level="project" />
     <orderEntry type="library" exported="" name="transition-26.0.0" level="project" />
     <orderEntry type="library" exported="" name="play-services-base-11.0.4" level="project" />
+    <orderEntry type="library" exported="" name="multiselectspinner-1.0.12" level="project" />
     <orderEntry type="library" exported="" name="MaterialTabs-0.11" level="project" />
     <orderEntry type="library" exported="" name="guava-23.0-android" level="project" />
     <orderEntry type="library" exported="" scope="TEST" name="espresso-core-2.2.2" level="project" />

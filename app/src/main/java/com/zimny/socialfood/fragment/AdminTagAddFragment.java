@@ -44,7 +44,7 @@ public class AdminTagAddFragment extends Fragment {
                     DatabaseReference databaseReference = firebaseDatabase.getReference();
                     if (!nameTag.getText().toString().isEmpty()) {
                         String uid = databaseReference.child("tags").push().getKey();
-                        final Tag tag = new Tag(nameTag.getText().toString());
+                        final Tag tag = new Tag(nameTag.getText().toString(), uid);
                         databaseReference.child("tags").child(uid).setValue(tag).addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {

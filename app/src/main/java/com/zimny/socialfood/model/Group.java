@@ -1,10 +1,10 @@
 package com.zimny.socialfood.model;
 
+import com.google.firebase.database.Exclude;
+import com.google.firebase.database.IgnoreExtraProperties;
+
 import java.util.List;
 
-/**
- * Created by ideo7 on 17.08.2017.
- */
 
 public class Group {
     private String uid;
@@ -41,7 +41,7 @@ public class Group {
     public void setUid(String uid) {
         this.uid = uid;
     }
-
+    @Exclude
     public List<User> getUsers() {
         return users;
     }
@@ -66,6 +66,7 @@ public class Group {
         this.uidAdmin = uidAdmin;
     }
 
+    @Exclude
     public List<Tag> getTags() {
         return tags;
     }

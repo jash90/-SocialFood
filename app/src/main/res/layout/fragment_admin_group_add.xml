@@ -105,45 +105,30 @@
                 android:hint="Postal Code"
                 app:met_floatingLabel="highlight" />
 
-            <Spinner
-                android:id="@+id/user"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:layout_marginTop="10dp"
-                android:spinnerMode="dialog"
-                android:textAlignment="center"></Spinner>
-
-            <me.gujun.android.taggroup.TagGroup
+            <io.apptik.widget.multiselectspinner.MultiSelectSpinner
                 android:id="@+id/users"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
-                android:layout_marginTop="10dp"></me.gujun.android.taggroup.TagGroup>
-
-            <Spinner
-                android:id="@+id/tag"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
                 android:layout_marginTop="10dp"
+                android:gravity="center"
                 android:spinnerMode="dialog"
-                android:textAlignment="center"></Spinner>
+                android:textAlignment="center"></io.apptik.widget.multiselectspinner.MultiSelectSpinner>
 
-            <me.gujun.android.taggroup.TagGroup
+            <io.apptik.widget.multiselectspinner.MultiSelectSpinner
                 android:id="@+id/tags"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
-                android:layout_marginTop="10dp"></me.gujun.android.taggroup.TagGroup>
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:textAlignment="center"
+                android:spinnerMode="dialog"></io.apptik.widget.multiselectspinner.MultiSelectSpinner>
+
 
             <Button
                 android:id="@+id/save"

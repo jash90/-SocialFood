@@ -82,13 +82,6 @@ public class Restaurant {
 
     @Override
     public String toString() {
-        return "Restaurant{" +
-                "foods=" + foods +
-                ", address=" + address +
-                ", phone=" + phone +
-                ", uid='" + uid + '\'' +
-                ", tags=" + tags +
-                ", name='" + name + '\'' +
-                '}';
+        return String.format("%s %s", name, address);
     }
 }

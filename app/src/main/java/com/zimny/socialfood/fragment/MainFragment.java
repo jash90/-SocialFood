@@ -91,7 +91,7 @@ public class MainFragment extends Fragment {
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    return new AdminFragment();
+                    return new FoodFragment();
                 case 1:
                     return new GroupsFragment();
             }

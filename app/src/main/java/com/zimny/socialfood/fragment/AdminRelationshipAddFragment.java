@@ -63,7 +63,7 @@ public class AdminRelationshipAddFragment extends Fragment {
         if (user != null) {
             FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
             final DatabaseReference databaseReference = firebaseDatabase.getReference();
-            databaseReference.child("users").addListenerForSingleValueEvent(new ValueEventListener() {
+            databaseReference.child("users").addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshots) {
                     for (DataSnapshot dataSnapshot : dataSnapshots.getChildren()) {

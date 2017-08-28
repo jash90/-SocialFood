@@ -112,10 +112,14 @@ public class MyAccountFragment extends Fragment {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 user = dataSnapshot.getValue(User.class);
                 if (user != null) {
-                    if (user.getFirstname() != null)
+
+                    if (user.getFirstname() != null) {
                         firstname.setText(user.getFirstname());
-                    if (user.getLastname() != null)
+                    }
+
+                    if (user.getLastname() != null) {
                         lastname.setText(user.getLastname());
+                    }
                     if (user.getAddress() != null) {
                         if (user.getAddress().getNameStreet() != null) {
                             street.setText(user.getAddress().getNameStreet());
@@ -148,6 +152,8 @@ public class MyAccountFragment extends Fragment {
                         user.setAddress(address);
                     }
 
+                } else {
+                    user = new User();
                 }
 
             }

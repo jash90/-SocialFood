@@ -11,11 +11,17 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import com.elvishew.xlog.XLog;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.zimny.socialfood.R;
 
@@ -56,7 +62,7 @@ public class LoginActivity extends AppCompatActivity {
                 login(login.getText().toString(), password.getText().toString());
             }
         });
-        Intent intent = getIntent();
+        final Intent intent = getIntent();
         Boolean logoutFlag = intent.getBooleanExtra("logout", true);
         String user = intent.getStringExtra("user");
         String pass = intent.getStringExtra("pass");
@@ -65,9 +71,31 @@ public class LoginActivity extends AppCompatActivity {
         }
         if (firebaseUser != null) {
             MyToast(String.format("You sign as %s .", firebaseUser.getEmail()), getBaseContext());
-            Intent loginActivity = new Intent(LoginActivity.this, MainActivity.class);
-            startActivity(loginActivity);
-            finish();
+            FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+            final DatabaseReference databaseReference = firebaseDatabase.getReference();
+            databaseReference.child("users").child(firebaseUser.getUid()).child("admin").addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                   if (dataSnapshot.exists()){
+                       Intent loginActivity = new Intent(LoginActivity.this, MainActivity.class);
+                       loginActivity.putExtra("admin",true);
+                       startActivity(loginActivity);
+                       finish();
+                   }
+                   else{
+                       Intent loginActivity = new Intent(LoginActivity.this, MainActivity.class);
+                       startActivity(loginActivity);
+                       finish();
+                   }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
+
         }
         signup.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,9 +117,29 @@ public class LoginActivity extends AppCompatActivity {
                         @Override
                         public void onSuccess(AuthResult authResult) {
                             MyToast(String.format("You sign as %s .", authResult.getUser().getEmail()), getBaseContext());
-                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                            startActivity(intent);
-                            finish();
+                            FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+                            final DatabaseReference databaseReference = firebaseDatabase.getReference();
+                            databaseReference.child("users").child(authResult.getUser().getUid()).child("admin").addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    if (dataSnapshot.exists()){
+                                        Intent loginActivity = new Intent(LoginActivity.this, MainActivity.class);
+                                        loginActivity.putExtra("admin",true);
+                                        startActivity(loginActivity);
+                                        finish();
+                                    }
+                                    else{
+                                        Intent loginActivity = new Intent(LoginActivity.this, MainActivity.class);
+                                        startActivity(loginActivity);
+                                        finish();
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+
+                                }
+                            });
 
                         }
                     })

@@ -6,12 +6,14 @@ package com.zimny.socialfood.model;
 
 public class Tag {
     private String name;
+    private String uid;
 
     public Tag() {
     }
 
-    public Tag(String name) {
+    public Tag(String name, String uid) {
         this.name = name;
+        this.uid = uid;
     }
 
     public String getName() {
@@ -22,10 +24,16 @@ public class Tag {
         this.name = name;
     }
 
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
+
     @Override
     public String toString() {
-        return "Tag{" +
-                "name='" + name + '\'' +
-                '}';
+        return String.format("%s",name);
     }
 }
