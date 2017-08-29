@@ -117,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
         sharedPreferences = getSharedPreferences("Name", Context.MODE_PRIVATE);
         sharedPreferencesEditor = sharedPreferences.edit();
         Intent intent = getIntent();
-        admin = intent.getBooleanExtra("admin",false);
+        admin = intent.getBooleanExtra("admin", false);
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
         databaseReference = FirebaseDatabase.getInstance().getReference();
@@ -218,7 +218,7 @@ public class MainActivity extends AppCompatActivity {
                 .withDisplayBelowStatusBar(false)
                 .withTranslucentStatusBar(false)
                 .withToolbar(toolbar)
-                .withDrawerItems(admin ? builderAdmin() :builderUser())
+                .withDrawerItems(admin ? builderAdmin() : builderUser())
 //                .addDrawerItems(
 //                        new PrimaryDrawerItem().withName("Main").withIcon(GoogleMaterial.Icon.gmd_home),
 //                        new DividerDrawerItem(),

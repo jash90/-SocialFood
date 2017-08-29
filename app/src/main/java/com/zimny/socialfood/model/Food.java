@@ -1,5 +1,7 @@
 package com.zimny.socialfood.model;
 
+import com.google.firebase.database.Exclude;
+
 import java.util.List;
 
 /**
@@ -11,14 +13,14 @@ public class Food {
     private double price;
     private List<Tag> tags;
     private String description;
-    private Long uid;
+    private String uid;
     private Restaurant restaurant;
     private String type;
 
     public Food() {
     }
 
-    public Food(String name, double price, List<Tag> tags, String description, Long uid, Restaurant restaurant, String type) {
+    public Food(String name, double price, List<Tag> tags, String description, String uid, Restaurant restaurant, String type) {
         this.name = name;
         this.price = price;
         this.tags = tags;
@@ -44,6 +46,7 @@ public class Food {
         this.price = price;
     }
 
+    @Exclude
     public List<Tag> getTags() {
         return tags;
     }
@@ -60,14 +63,15 @@ public class Food {
         this.description = description;
     }
 
-    public Long getUid() {
+    public String getUid() {
         return uid;
     }
 
-    public void setUid(Long uid) {
+    public void setUid(String uid) {
         this.uid = uid;
     }
 
+    @Exclude
     public Restaurant getRestaurant() {
         return restaurant;
     }

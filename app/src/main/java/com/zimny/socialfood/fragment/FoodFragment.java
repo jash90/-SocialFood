@@ -23,6 +23,7 @@ import com.zimny.socialfood.R;
 import com.zimny.socialfood.adapter.FoodAdapter;
 import com.zimny.socialfood.model.Food;
 import com.zimny.socialfood.model.Restaurant;
+import com.zimny.socialfood.model.Tag;
 
 import java.util.ArrayList;
 
@@ -50,44 +51,52 @@ public class FoodFragment extends Fragment {
         if (firebaseAuth != null) {
             FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
             final DatabaseReference databaseReference = firebaseDatabase.getReference();
-            final Query queryRestaurant = databaseReference.child("restaurants");
-            queryRestaurant.addValueEventListener(new ValueEventListener() {
+            Query queryFood = databaseReference.child("foods");
+            queryFood.addValueEventListener(new ValueEventListener() {
                 @Override
-                public void onDataChange(DataSnapshot dataSnapshots) {
-                    for (DataSnapshot dataSnapshot : dataSnapshots.getChildren()) {
-                        Restaurant restaurant = dataSnapshot.getValue(Restaurant.class);
-                        restaurant.setUid(dataSnapshot.getKey());
-                        XLog.d(restaurant);
-                        restaurants.add(restaurant);
-                    }
-                    for (final Restaurant r : restaurants) {
-                        Query queryFood = databaseReference.child("foods").child(r.getUid());
-                        queryFood.addValueEventListener(new ValueEventListener() {
+                public void onDataChange(final DataSnapshot dataSnapshots) {
+                    Food food = new Food();
+                    food.setType(dataSnapshots.getKey());
+                    for (final DataSnapshot dataSnapshot1 : dataSnapshots.getChildren()) {
+                        XLog.d(dataSnapshot1.getKey());
+                        databaseReference.child("foods").child(dataSnapshot1.getKey()).addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshots) {
-                                for (DataSnapshot dataSnapshot : dataSnapshots.getChildren()) {
-                                    final String s = dataSnapshot.getKey();
-                                    XLog.d(s);
-                                    databaseReference.child("foods").child(r.getUid()).child(s).addValueEventListener(new ValueEventListener() {
+                                XLog.d(dataSnapshots.getKey());
+                                for (final DataSnapshot dataSnapshot2 : dataSnapshots.getChildren()) {
+                                    final Food food = dataSnapshot2.getValue(Food.class);
+                                    food.setType(dataSnapshot1.getKey());
+                                    food.setUid(dataSnapshot2.getKey());
+                                    databaseReference.child("foods").child(dataSnapshot1.getKey()).child(dataSnapshot2.getKey()).child("restaurant").addValueEventListener(new ValueEventListener() {
                                         @Override
-                                        public void onDataChange(DataSnapshot dataSnapshots) {
-                                            for (DataSnapshot dataSnapshot : dataSnapshots.getChildren()) {
-                                                Food f = dataSnapshot.getValue(Food.class);
-                                                XLog.d(f);
-                                                //XLog.d(dataSnapshot);
-                                                f.setRestaurant(r);
-                                                f.setType(s);
-                                                foods.add(f);
-                                            }
-                                            foodAdapter.notifyDataSetChanged();
+                                        public void onDataChange(DataSnapshot dataSnapshot) {
+                                            XLog.d(dataSnapshot.getValue());
+                                            databaseReference.child("restaurants").child((String) dataSnapshot.getValue()).addValueEventListener(new ValueEventListener() {
+                                                @Override
+                                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                                    Restaurant restaurant = dataSnapshot.getValue(Restaurant.class);
+                                                    food.setRestaurant(restaurant);
+                                                    XLog.d(food);
+                                                    foods.add(food);
+                                                    foodAdapter.notifyDataSetChanged();
+                                                }
+
+                                                @Override
+                                                public void onCancelled(DatabaseError databaseError) {
+
+                                                }
+                                            });
+
                                         }
 
                                         @Override
                                         public void onCancelled(DatabaseError databaseError) {
+
                                         }
                                     });
-                                }
 
+
+                                }
                             }
 
                             @Override
@@ -96,8 +105,8 @@ public class FoodFragment extends Fragment {
                             }
                         });
                     }
-
                 }
+
 
                 @Override
                 public void onCancelled(DatabaseError databaseError) {

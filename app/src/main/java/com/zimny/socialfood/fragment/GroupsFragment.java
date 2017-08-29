@@ -17,7 +17,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.zimny.socialfood.R;
 import com.zimny.socialfood.adapter.GroupsAdapter;
@@ -30,20 +29,17 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-/**
- * Created by ideo7 on 24.08.2017.
- */
 
 public class GroupsFragment extends Fragment {
 
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
-
     GroupsAdapter groupsAdapter;
     ArrayList<Group> groups;
     ArrayList<Tag> tags;
     FirebaseAuth firebaseAuth;
     FirebaseUser firebaseUser;
+    FirebaseDatabase firebaseDatabase;
 
     @Nullable
     @Override
@@ -59,47 +55,22 @@ public class GroupsFragment extends Fragment {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-
         if (firebaseAuth != null) {
-            FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+            firebaseDatabase = FirebaseDatabase.getInstance();
             final DatabaseReference databaseReference = firebaseDatabase.getReference();
             databaseReference.child("groups").addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshots) {
-                    for (DataSnapshot dataSnapshot : dataSnapshots.getChildren()){
-                     final Group group = dataSnapshot.getValue(Group.class);
-                     group.setUid(dataSnapshot.getKey());
-                     final ArrayList<Tag> tags = new ArrayList<Tag>();
-                     databaseReference.child("groups").child(group.getUid()).child("tags").addValueEventListener(new ValueEventListener() {
-                         @Override
-                         public void onDataChange(DataSnapshot dataSnapshots) {
-                             for (DataSnapshot dataSnapshot : dataSnapshots.getChildren()){
-                                 String tag =dataSnapshot.getKey();
-                                 databaseReference.child("tags").child(tag).addValueEventListener(new ValueEventListener() {
-                                     @Override
-                                     public void onDataChange(DataSnapshot dataSnapshot) {
-                                         Tag tag = dataSnapshot.getValue(Tag.class);
-                                         tags.add(tag);
-                                         XLog.d(tags);
-                                     }
+                    for (DataSnapshot dataSnapshot : dataSnapshots.getChildren()) {
+                        final Group group = dataSnapshot.getValue(Group.class);
+                        group.setUid(dataSnapshot.getKey());
+                        XLog.d(group);
 
-                                     @Override
-                                     public void onCancelled(DatabaseError databaseError) {
-
-                                     }
-                                 });
-                             }
-                             group.setTags(tags);
-                             XLog.d(group);
-                         }
-
-                         @Override
-                         public void onCancelled(DatabaseError databaseError) {
-
-                         }
-                     });
-
+                        group.setUsers(new ArrayList<User>());
+                        groups.add(group);
+                        groupsAdapter.notifyDataSetChanged();
                     }
+
                 }
 
                 @Override
@@ -107,6 +78,8 @@ public class GroupsFragment extends Fragment {
 
                 }
             });
+
+
         }
         return v;
     }

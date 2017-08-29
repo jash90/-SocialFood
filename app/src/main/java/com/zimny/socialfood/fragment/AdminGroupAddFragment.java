@@ -1,7 +1,6 @@
 package com.zimny.socialfood.fragment;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,8 +10,6 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.elvishew.xlog.XLog;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -111,24 +108,24 @@ public class AdminGroupAddFragment extends Fragment {
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!nameGroup.getText().toString().isEmpty()){
-                    String uid =databaseReference.child("groups").push().getKey();
+                if (!nameGroup.getText().toString().isEmpty()) {
+                    String uid = databaseReference.child("groups").push().getKey();
                     Group group = new Group();
                     Address address = new Address();
                     group.setName(nameGroup.getText().toString());
-                    if (!city.getText().toString().isEmpty()){
+                    if (!city.getText().toString().isEmpty()) {
                         address.setCity(city.getText().toString());
                     }
-                    if (!street.getText().toString().isEmpty()){
+                    if (!street.getText().toString().isEmpty()) {
                         address.setNameStreet(street.getText().toString());
                     }
-                    if (!numberBuilding.getText().toString().isEmpty()){
+                    if (!numberBuilding.getText().toString().isEmpty()) {
                         address.setNumberBuilding(numberBuilding.getText().toString());
                     }
-                    if (!numberHouse.getText().toString().isEmpty()){
+                    if (!numberHouse.getText().toString().isEmpty()) {
                         address.setNumberHouse(numberHouse.getText().toString());
                     }
-                    if (!postalCode.getText().toString().isEmpty()){
+                    if (!postalCode.getText().toString().isEmpty()) {
                         address.setPostalCode(postalCode.getText().toString());
                     }
                     group.setAddress(address);
@@ -136,21 +133,21 @@ public class AdminGroupAddFragment extends Fragment {
 
 
                     ArrayList<Tag> tags = new ArrayList<>();
-                    for (int i=0;i<tagSpinner.getSelected().length;i++){
-                        if (tagSpinner.getSelected()[i]){
+                    for (int i = 0; i < tagSpinner.getSelected().length; i++) {
+                        if (tagSpinner.getSelected()[i]) {
                             databaseReference.child("groups").child(uid).child("tags").child(tagArrayList.get(i).getUid()).setValue(true);
                         }
                     }
                     ArrayList<User> users = new ArrayList<>();
-                    for (int i=0;i<userSpinner.getSelected().length;i++){
-                        if (userSpinner.getSelected()[i]){
+                    for (int i = 0; i < userSpinner.getSelected().length; i++) {
+                        if (userSpinner.getSelected()[i]) {
                             databaseReference.child("groups").child(uid).child("users").child(userArrayList.get(i).getUid()).setValue(true);
                         }
                     }
-                    
+
                     XLog.d(group);
-                }else{
-                    Toast.makeText(getContext(),"Group must have name",Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getContext(), "Group must have name", Toast.LENGTH_SHORT).show();
                 }
 
             }

@@ -1,14 +1,15 @@
 package com.zimny.socialfood.model;
 
 import com.google.firebase.database.Exclude;
-import com.google.firebase.database.IgnoreExtraProperties;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.List;
 
 
 public class Group {
     private String uid;
-    private List<User> users;
+    private ArrayList<User> users;
     private Address address;
     private String uidAdmin;
     private List<Tag> tags;
@@ -17,7 +18,7 @@ public class Group {
     public Group() {
     }
 
-    public Group(String uid, List<User> users, Address address, String uidAdmin, List<Tag> tags, String name) {
+    public Group(String uid, ArrayList<User> users, Address address, String uidAdmin, List<Tag> tags, String name) {
         this.uid = uid;
         this.users = users;
         this.address = address;
@@ -41,12 +42,13 @@ public class Group {
     public void setUid(String uid) {
         this.uid = uid;
     }
+
     @Exclude
-    public List<User> getUsers() {
+    public ArrayList<User> getUsers() {
         return users;
     }
 
-    public void setUsers(List<User> users) {
+    public void setUsers(ArrayList<User> users) {
         this.users = users;
     }
 

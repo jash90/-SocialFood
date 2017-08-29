@@ -11,7 +11,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
-import com.elvishew.xlog.XLog;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.AuthResult;
@@ -76,17 +75,16 @@ public class LoginActivity extends AppCompatActivity {
             databaseReference.child("users").child(firebaseUser.getUid()).child("admin").addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                   if (dataSnapshot.exists()){
-                       Intent loginActivity = new Intent(LoginActivity.this, MainActivity.class);
-                       loginActivity.putExtra("admin",true);
-                       startActivity(loginActivity);
-                       finish();
-                   }
-                   else{
-                       Intent loginActivity = new Intent(LoginActivity.this, MainActivity.class);
-                       startActivity(loginActivity);
-                       finish();
-                   }
+                    if (dataSnapshot.exists()) {
+                        Intent loginActivity = new Intent(LoginActivity.this, MainActivity.class);
+                        loginActivity.putExtra("admin", true);
+                        startActivity(loginActivity);
+                        finish();
+                    } else {
+                        Intent loginActivity = new Intent(LoginActivity.this, MainActivity.class);
+                        startActivity(loginActivity);
+                        finish();
+                    }
                 }
 
                 @Override
@@ -122,13 +120,12 @@ public class LoginActivity extends AppCompatActivity {
                             databaseReference.child("users").child(authResult.getUser().getUid()).child("admin").addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
-                                    if (dataSnapshot.exists()){
+                                    if (dataSnapshot.exists()) {
                                         Intent loginActivity = new Intent(LoginActivity.this, MainActivity.class);
-                                        loginActivity.putExtra("admin",true);
+                                        loginActivity.putExtra("admin", true);
                                         startActivity(loginActivity);
                                         finish();
-                                    }
-                                    else{
+                                    } else {
                                         Intent loginActivity = new Intent(LoginActivity.this, MainActivity.class);
                                         startActivity(loginActivity);
                                         finish();
