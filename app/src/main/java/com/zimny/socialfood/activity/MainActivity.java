@@ -52,7 +52,6 @@ import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 import com.mikepenz.materialdrawer.util.AbstractDrawerImageLoader;
 import com.mikepenz.materialdrawer.util.DrawerImageLoader;
 import com.zimny.socialfood.R;
-import com.zimny.socialfood.fragment.AdminFragment;
 import com.zimny.socialfood.fragment.MainFragment;
 import com.zimny.socialfood.fragment.MyAccountFragment;
 import com.zimny.socialfood.model.User;
@@ -154,9 +153,10 @@ public class MainActivity extends AppCompatActivity {
                 if (admin) {
                     switch (position) {
                         case 1:
-                            AdminFragment adminFragment = new AdminFragment();
-                            ft.replace(R.id.content, adminFragment);
-                            ft.commit();
+                            Intent intent1 = new Intent(MainActivity.this, AdminActivity.class);
+                            intent1.putExtra("logout", false);
+                            startActivity(intent1);
+                            //finish();
                             drawer.closeDrawer();
                             return true;
                         case 2:
