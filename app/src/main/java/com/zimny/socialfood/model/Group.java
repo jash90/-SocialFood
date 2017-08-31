@@ -2,7 +2,6 @@ package com.zimny.socialfood.model;
 
 import com.google.firebase.database.Exclude;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 

@@ -49,7 +49,7 @@ public class AdminActivity extends AppCompatActivity implements MaterialTabListe
         fragments.add(new AdminRestaurantAddFragment());
         fragments.add(new AdminTagAddFragment());
         fragments.add(new AdminUserAddFragment());
-        fragmentAdapter = new FragmentAdapter(getSupportFragmentManager(),fragments);
+        fragmentAdapter = new FragmentAdapter(getSupportFragmentManager(), fragments);
         viewPager.setAdapter(fragmentAdapter);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(materialTabHost));
         materialTabHost.setupWithViewPager(viewPager);
@@ -80,9 +80,9 @@ public class AdminActivity extends AppCompatActivity implements MaterialTabListe
     public class FragmentAdapter extends FragmentPagerAdapter {
         ArrayList<Fragment> fragments = new ArrayList<>();
 
-        public FragmentAdapter(FragmentManager fm,ArrayList<Fragment> fragments) {
+        public FragmentAdapter(FragmentManager fm, ArrayList<Fragment> fragments) {
             super(fm);
-            this.fragments=fragments;
+            this.fragments = fragments;
         }
 
         @Override

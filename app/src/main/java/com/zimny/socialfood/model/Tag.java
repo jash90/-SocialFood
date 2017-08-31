@@ -16,6 +16,10 @@ public class Tag {
         this.uid = uid;
     }
 
+    public Tag(String name) {
+        this.name = name;
+    }
+
     public String getName() {
         return name;
     }

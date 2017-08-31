@@ -126,8 +126,8 @@
                 android:layout_marginRight="16dp"
                 android:layout_marginTop="10dp"
                 android:gravity="center"
-                android:textAlignment="center"
-                android:spinnerMode="dialog"></io.apptik.widget.multiselectspinner.MultiSelectSpinner>
+                android:spinnerMode="dialog"
+                android:textAlignment="center"></io.apptik.widget.multiselectspinner.MultiSelectSpinner>
 
 
             <Button

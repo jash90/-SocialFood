@@ -18,7 +18,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.zimny.socialfood.R;
 import com.zimny.socialfood.model.Group;
-import com.zimny.socialfood.model.Relationship;
 import com.zimny.socialfood.model.Tag;
 import com.zimny.socialfood.model.User;
 
@@ -52,18 +51,21 @@ public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.ViewHolder
         final Group group = groups.get(position);
         final int[] mutualFriends = {0};
         holder.nameGroup.setText(group.getName());
-        holder.city.setText(group.getAddress().getCity());
+        //holder.city.setText(group.getAddress().getCity());
         //holder.mutualFriends.setText(String.format("Mutual Friends : %d", mutualFriends[0]));
         final ArrayList<User> userArrayList = new ArrayList<>();
         final MutualFriendsAdapter mutualFriendsAdapter = new MutualFriendsAdapter(userArrayList);
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         final DatabaseReference databaseReference = firebaseDatabase.getReference();
         final FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+        final ArrayList<String> tagsString = new ArrayList<>();
+        final ArrayList<Tag> tags = new ArrayList<>();
+        tags.add(new Tag(group.getAddress().getCity()));
+        tagsString.add(group.getAddress().getCity());
         databaseReference.child("groups").child(group.getUid()).child("tags").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshots) {
-                final ArrayList<String> tagsString = new ArrayList<>();
-                final ArrayList<Tag> tags = new ArrayList<>();
+
                 for (DataSnapshot dataSnapshot : dataSnapshots.getChildren()) {
                     databaseReference.child("tags").child(dataSnapshot.getKey()).addValueEventListener(new ValueEventListener() {
                         @Override
@@ -149,43 +151,41 @@ public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.ViewHolder
 //        });
 
         final ArrayList<User> users = new ArrayList<>();
-                databaseReference.child("groups").child(group.getUid()).child("users").orderByKey().addChildEventListener(new ChildEventListener() {
-                    @Override
-                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                            XLog.d(position + " NO GROUP " + dataSnapshot);
-                            User user = new User();
-                            user.setUid(dataSnapshot.getKey());
-                            users.add(user);
-                            userArrayList.add(user);
-                            group.setUsers(users);
-                            XLog.d("TAGS " + group);
-                            mutualFriendsAdapter.notifyDataSetChanged();
-                            XLog.d("TAGS " + users);
+        databaseReference.child("groups").child(group.getUid()).child("users").orderByKey().addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                XLog.d(position + " NO GROUP " + dataSnapshot);
+                User user = new User();
+                user.setUid(dataSnapshot.getKey());
+                users.add(user);
+                userArrayList.add(user);
+                group.setUsers(users);
+                XLog.d("TAGS " + group);
+                mutualFriendsAdapter.notifyDataSetChanged();
+                XLog.d("TAGS " + users);
 
-                    }
+            }
 
-                    @Override
-                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
 
-                    }
+            }
 
-                    @Override
-                    public void onChildRemoved(DataSnapshot dataSnapshot) {
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
 
-                    }
+            }
 
-                    @Override
-                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
 
-                    }
+            }
 
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
 
-                    }
-                });
-
-
+            }
+        });
 
 
 //        databaseReference.child("groups").child(group.getUid()).child("users").addChildEventListener(new ChildEventListener() {
@@ -255,8 +255,8 @@ public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.ViewHolder
 
         @BindView(R.id.nameGroup)
         TextView nameGroup;
-        @BindView(R.id.city)
-        TextView city;
+        //@BindView(R.id.city)
+        //TextView city;
         @BindView(R.id.tagGroup)
         TagGroup tagGroup;
         @BindView(R.id.recyclerView)

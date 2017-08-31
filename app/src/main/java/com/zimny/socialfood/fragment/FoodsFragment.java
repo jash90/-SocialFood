@@ -39,19 +39,19 @@ public class FoodsFragment extends Fragment {
     ArrayList<Food> foods = new ArrayList<>();
     ArrayList<Restaurant> restaurants = new ArrayList<>();
 
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_food, container, false);
         ButterKnife.bind(this, v);
-        XLog.d("open");
+        //XLog.d("open");
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
         if (firebaseAuth != null) {
             FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
             final DatabaseReference databaseReference = firebaseDatabase.getReference();
-            Query queryFood = databaseReference.child("foods");
-            queryFood.addValueEventListener(new ValueEventListener() {
+            databaseReference.child("foods").addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(final DataSnapshot dataSnapshots) {
                     Food food = new Food();

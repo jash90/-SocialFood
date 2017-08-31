@@ -14,6 +14,7 @@ import com.zimny.socialfood.R;
 
 import net.yanzm.mth.MaterialTabHost;
 
+import java.util.ArrayList;
 import java.util.Locale;
 
 import butterknife.BindView;
@@ -33,8 +34,12 @@ public class MainFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_main, container, false);
         ButterKnife.bind(this, v);
-
-        SectionsPagerAdapter pagerAdapter = new SectionsPagerAdapter(getFragmentManager());
+        ArrayList<Fragment> fragments = new ArrayList<>();
+        FoodsFragment foodsFragment = new FoodsFragment();
+        GroupsFragment groupsFragment = new GroupsFragment();
+        fragments.add(foodsFragment);
+        fragments.add(groupsFragment);
+        SectionsPagerAdapter pagerAdapter = new SectionsPagerAdapter(getFragmentManager(), fragments);
         for (int i = 0; i < pagerAdapter.getCount(); i++) {
             materialTabHost.addTab(pagerAdapter.getPageTitle(i));
         }
@@ -83,24 +88,21 @@ public class MainFragment extends Fragment {
 
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
-        public SectionsPagerAdapter(FragmentManager fm) {
+        ArrayList<Fragment> fragments = new ArrayList<>();
+
+        public SectionsPagerAdapter(FragmentManager fm, ArrayList<Fragment> fragments) {
             super(fm);
+            this.fragments = fragments;
         }
 
         @Override
         public Fragment getItem(int position) {
-            switch (position) {
-                case 0:
-                    return new FoodsFragment();
-                case 1:
-                    return new GroupsFragment();
-            }
-            return null;
+            return fragments.get(position);
         }
 
         @Override
         public int getCount() {
-            return 2;
+            return fragments.size();
         }
 
         @Override

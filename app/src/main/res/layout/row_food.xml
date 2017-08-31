@@ -65,13 +65,13 @@
                 <Button
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:background="@drawable/roundbutton"
                     android:layout_marginBottom="8dp"
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
                     android:layout_marginTop="8dp"
-                    android:textColor="@android:color/white"
-                    android:text="+" />
+                    android:background="@drawable/roundbutton"
+                    android:text="+"
+                    android:textColor="@android:color/white" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -84,13 +84,13 @@
                 <Button
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:background="@drawable/roundbutton"
                     android:layout_marginBottom="8dp"
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
                     android:layout_marginTop="8dp"
-                    android:textColor="@android:color/white"
-                    android:text="-" />
+                    android:background="@drawable/roundbutton"
+                    android:text="-"
+                    android:textColor="@android:color/white" />
 
             </LinearLayout>
         </LinearLayout>
@@ -122,8 +122,8 @@
                 android:layout_marginRight="16dp"
                 android:layout_marginTop="8dp"
                 android:layout_weight="1"
-                android:text="Empty"
-                android:gravity="left" />
+                android:gravity="left"
+                android:text="Empty" />
         </LinearLayout>
 
         <me.gujun.android.taggroup.TagGroup

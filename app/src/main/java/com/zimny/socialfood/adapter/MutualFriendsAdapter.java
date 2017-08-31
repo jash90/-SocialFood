@@ -7,15 +7,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
-import com.elvishew.xlog.XLog;
 import com.firebase.ui.storage.images.FirebaseImageLoader;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.mikepenz.fontawesome_typeface_library.FontAwesome;
-import com.mikepenz.iconics.Iconics;
 import com.mikepenz.iconics.IconicsDrawable;
-import com.squareup.picasso.Picasso;
 import com.zimny.socialfood.R;
 import com.zimny.socialfood.model.User;
 
@@ -45,17 +41,12 @@ public class MutualFriendsAdapter extends RecyclerView.Adapter<MutualFriendsAdap
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         User mutualfriend = mutualfriends.get(position);
-       // holder.userIcon.setImageBitmap();
+        // holder.userIcon.setImageBitmap();
         FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
         StorageReference storageReference = firebaseStorage.getReference();
-        StorageReference imageReference =  storageReference.child(String.format("%s.png",mutualfriend.getUid()));
+        StorageReference imageReference = storageReference.child(String.format("%s.png", mutualfriend.getUid()));
         Glide.with(holder.itemView.getContext()).using(new FirebaseImageLoader()).load(imageReference).error(new IconicsDrawable(holder.itemView.getContext()).icon(FontAwesome.Icon.faw_user_circle).sizeDp(40)).into(holder.userIcon);
         //XLog.d("MUTUAL "+mutualfriends);
-        if (mutualfriends.size()-1==position){
-            holder.threeDots.setVisibility(View.VISIBLE);
-        }else {
-            holder.threeDots.setVisibility(View.GONE);
-        }
     }
 
     @Override
@@ -64,14 +55,12 @@ public class MutualFriendsAdapter extends RecyclerView.Adapter<MutualFriendsAdap
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.threeDots)
-        ImageView threeDots;
         @BindView(R.id.userIcon)
         CircleImageView userIcon;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            ButterKnife.bind(this,itemView);
+            ButterKnife.bind(this, itemView);
         }
     }
 }
