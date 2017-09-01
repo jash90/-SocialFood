@@ -75,8 +75,8 @@
 
                     <Button
                         android:id="@+id/plusFood"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
                         android:layout_marginBottom="8dp"
                         android:layout_marginLeft="16dp"
                         android:layout_marginRight="16dp"
@@ -91,14 +91,14 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:gravity="center"
-                        android:textColor="@color/primary"
                         android:text="0"
-                        android:textAlignment="center" />
+                        android:textAlignment="center"
+                        android:textColor="@color/primary" />
 
                     <Button
                         android:id="@+id/minusFood"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
                         android:layout_marginBottom="8dp"
                         android:layout_marginLeft="16dp"
                         android:layout_marginRight="16dp"

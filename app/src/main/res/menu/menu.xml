@@ -2,6 +2,16 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/changeImage"
-        android:title="Change Image" />
+        android:id="@+id/orders"
+        android:icon="@drawable/order"
+        android:title="Orders" />
+    <item
+        android:id="@+id/food"
+        android:icon="@drawable/restaurant_menu"
+        android:title="Food" />
+    <item
+        android:id="@+id/social"
+        android:icon="@drawable/group"
+        android:title="Social" />
+
 </menu>

@@ -90,14 +90,6 @@ public class Food {
 
     @Override
     public String toString() {
-        return "Food{" +
-                "name='" + name + '\'' +
-                ", price=" + price +
-                ", tags=" + tags +
-                ", description='" + description + '\'' +
-                ", uid=" + uid +
-                ", restaurant=" + restaurant +
-                ", type='" + type + '\'' +
-                '}';
+        return String.format("%s, %.2f %s",name,price,restaurant);
     }
 }
