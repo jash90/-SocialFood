@@ -14,8 +14,10 @@ import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
 import com.zimny.socialfood.R;
+import com.zimny.socialfood.fragment.AdminBasketAddFragment;
 import com.zimny.socialfood.fragment.AdminFoodAddFragment;
 import com.zimny.socialfood.fragment.AdminGroupAddFragment;
+import com.zimny.socialfood.fragment.AdminOrderAddFragment;
 import com.zimny.socialfood.fragment.AdminRelationshipAddFragment;
 import com.zimny.socialfood.fragment.AdminRestaurantAddFragment;
 import com.zimny.socialfood.fragment.AdminTagAddFragment;
@@ -30,9 +32,9 @@ import it.neokree.materialtabs.MaterialTabListener;
 
 
 public class AdminActivity extends AppCompatActivity implements MaterialTabListener {
-    @BindView(R.id.materialHost)
+    @BindView(R.id.materialTabsAdmin)
     TabLayout materialTabHost;
-    @BindView(R.id.viewPager)
+    @BindView(R.id.viewPagerAdmin)
     ViewPager viewPager;
     ArrayList<Fragment> fragments;
     FragmentAdapter fragmentAdapter;
@@ -49,16 +51,20 @@ public class AdminActivity extends AppCompatActivity implements MaterialTabListe
         fragments.add(new AdminRestaurantAddFragment());
         fragments.add(new AdminTagAddFragment());
         fragments.add(new AdminUserAddFragment());
+        fragments.add(new AdminOrderAddFragment());
+        fragments.add(new AdminBasketAddFragment());
         fragmentAdapter = new FragmentAdapter(getSupportFragmentManager(), fragments);
         viewPager.setAdapter(fragmentAdapter);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(materialTabHost));
         materialTabHost.setupWithViewPager(viewPager);
-        materialTabHost.getTabAt(0).setIcon((new IconicsDrawable(getBaseContext()).icon(GoogleMaterial.Icon.gmd_restaurant_menu).color(Color.WHITE)));
-        materialTabHost.getTabAt(1).setIcon((new IconicsDrawable(getBaseContext()).icon(GoogleMaterial.Icon.gmd_group).color(Color.WHITE)));
-        materialTabHost.getTabAt(2).setIcon((new IconicsDrawable(getBaseContext()).icon(FontAwesome.Icon.faw_handshake_o).color(Color.WHITE)));
-        materialTabHost.getTabAt(3).setIcon((new IconicsDrawable(getBaseContext()).icon(GoogleMaterial.Icon.gmd_restaurant).color(Color.WHITE)));
-        materialTabHost.getTabAt(4).setIcon((new IconicsDrawable(getBaseContext()).icon(GoogleMaterial.Icon.gmd_local_offer).color(Color.WHITE)));
-        materialTabHost.getTabAt(5).setIcon(new IconicsDrawable(getBaseContext()).icon(GoogleMaterial.Icon.gmd_person).color(Color.WHITE));
+        materialTabHost.getTabAt(0).setIcon((new IconicsDrawable(getBaseContext()).icon(GoogleMaterial.Icon.gmd_restaurant_menu).color(Color.WHITE)).sizeDp(20));
+        materialTabHost.getTabAt(1).setIcon((new IconicsDrawable(getBaseContext()).icon(GoogleMaterial.Icon.gmd_group).color(Color.WHITE)).sizeDp(20));
+        materialTabHost.getTabAt(2).setIcon((new IconicsDrawable(getBaseContext()).icon(FontAwesome.Icon.faw_handshake_o).color(Color.WHITE)).sizeDp(20));
+        materialTabHost.getTabAt(3).setIcon((new IconicsDrawable(getBaseContext()).icon(GoogleMaterial.Icon.gmd_restaurant).color(Color.WHITE)).sizeDp(20));
+        materialTabHost.getTabAt(4).setIcon((new IconicsDrawable(getBaseContext()).icon(GoogleMaterial.Icon.gmd_local_offer).color(Color.WHITE)).sizeDp(20));
+        materialTabHost.getTabAt(5).setIcon(new IconicsDrawable(getBaseContext()).icon(GoogleMaterial.Icon.gmd_person).color(Color.WHITE).sizeDp(20));
+        materialTabHost.getTabAt(6).setIcon((new IconicsDrawable(getBaseContext()).icon(FontAwesome.Icon.faw_list_alt).color(Color.WHITE)).sizeDp(20));
+        materialTabHost.getTabAt(7).setIcon(new IconicsDrawable(getBaseContext()).icon(GoogleMaterial.Icon.gmd_shopping_basket).color(Color.WHITE).sizeDp(20));
 
     }
 
@@ -69,7 +75,7 @@ public class AdminActivity extends AppCompatActivity implements MaterialTabListe
 
     @Override
     public void onTabReselected(MaterialTab tab) {
-
+        viewPager.setCurrentItem(tab.getPosition());
     }
 
     @Override

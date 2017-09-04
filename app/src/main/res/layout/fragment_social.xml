@@ -1,13 +1,18 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.zimny.socialfood.fragment.SocialFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <net.yanzm.mth.MaterialTabHost
+        android:id="@+id/materialTabsSocial"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content"></net.yanzm.mth.MaterialTabHost>
 
-</FrameLayout>
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewPagerSocial"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></android.support.v4.view.ViewPager>
+
+</LinearLayout>

@@ -54,7 +54,7 @@
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginTop="16dp"
-        android:background="@android:color/white"
+        android:background="@drawable/round_button_white"
         android:text="Sign In"
         android:textColor="@color/primary" />
 
@@ -65,7 +65,7 @@
         android:layout_marginBottom="10dp"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
-        android:background="@color/primary"
+        android:background="@drawable/round_button_blue"
         android:text="Sign Up"
         android:textColor="@android:color/white" />
 

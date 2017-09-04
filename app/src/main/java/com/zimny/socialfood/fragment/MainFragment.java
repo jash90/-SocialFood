@@ -15,7 +15,6 @@ import com.zimny.socialfood.R;
 import net.yanzm.mth.MaterialTabHost;
 
 import java.util.ArrayList;
-import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -24,9 +23,9 @@ import butterknife.ButterKnife;
 public class MainFragment extends Fragment {
 
 
-    @BindView(R.id.materialtabs)
+    @BindView(R.id.materialTabsMain)
     MaterialTabHost materialTabHost;
-    @BindView(R.id.viewPager)
+    @BindView(R.id.viewPagerMain)
     ViewPager viewPager;
 
     @Override
@@ -36,10 +35,10 @@ public class MainFragment extends Fragment {
         ButterKnife.bind(this, v);
         ArrayList<Fragment> fragments = new ArrayList<>();
         FoodsFragment foodsFragment = new FoodsFragment();
-        GroupsFragment groupsFragment = new GroupsFragment();
+        RestaurantFragment restaurantFragment = new RestaurantFragment();
         fragments.add(foodsFragment);
-        fragments.add(groupsFragment);
-        SectionsPagerAdapter pagerAdapter = new SectionsPagerAdapter(getFragmentManager(), fragments);
+        fragments.add(restaurantFragment);
+        SectionsPagerAdapter pagerAdapter = new SectionsPagerAdapter(getChildFragmentManager(), fragments);
         for (int i = 0; i < pagerAdapter.getCount(); i++) {
             materialTabHost.addTab(pagerAdapter.getPageTitle(i));
         }
@@ -61,30 +60,6 @@ public class MainFragment extends Fragment {
         super.onResume();
     }
 
-    public static class PlaceholderFragment extends Fragment {
-        private static final String ARG_SECTION_NUMBER = "section_number";
-
-        public PlaceholderFragment() {
-        }
-
-
-        public static PlaceholderFragment newInstance(int sectionNumber) {
-            PlaceholderFragment fragment = new PlaceholderFragment();
-            Bundle args = new Bundle();
-            args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-            fragment.setArguments(args);
-            return fragment;
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            View view = inflater.inflate(R.layout.fragment_sample, container, false);
-            TextView tv = (TextView) view.findViewById(R.id.text);
-            tv.setText("Here is page ");
-            return view;
-        }
-    }
 
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
@@ -107,12 +82,11 @@ public class MainFragment extends Fragment {
 
         @Override
         public CharSequence getPageTitle(int position) {
-            Locale l = Locale.getDefault();
             switch (position) {
                 case 0:
-                    return "food".toUpperCase(l);
+                    return "food".toUpperCase();
                 case 1:
-                    return "groups".toUpperCase(l);
+                    return "restaurant".toUpperCase();
             }
             return null;
         }

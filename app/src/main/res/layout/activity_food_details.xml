@@ -184,7 +184,7 @@
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginTop="10dp"
-        android:background="@drawable/roundbutton"
+        android:background="@drawable/round_button_blue"
         android:gravity="center"
         android:text="Order"
         android:textColor="@android:color/white" />

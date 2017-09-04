@@ -17,23 +17,25 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class SocialFragment extends Fragment {
-    @BindView(R.id.materialtabs)
+    @BindView(R.id.materialTabsSocial)
     MaterialTabHost materialTabHost;
-    @BindView(R.id.viewPager)
+    @BindView(R.id.viewPagerSocial)
     ViewPager viewPager;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_social, container, false);
+        ButterKnife.bind(this, v);
         ArrayList<Fragment> fragments = new ArrayList<>();
-        ShoppingBasketFragment shoppingBasketFragment = new ShoppingBasketFragment();
-        HistoryOrderFragment historyOrderFragment = new HistoryOrderFragment();
-        fragments.add(shoppingBasketFragment);
-        fragments.add(historyOrderFragment);
-        SectionsPagerAdapter pagerAdapter = new SectionsPagerAdapter(getFragmentManager(), fragments);
+        FriendsFragment friendsFragment = new FriendsFragment();
+        GroupsFragment groupsFragment = new GroupsFragment();
+        fragments.add(friendsFragment);
+        fragments.add(groupsFragment);
+        SectionsPagerAdapter pagerAdapter = new SectionsPagerAdapter(getChildFragmentManager(), fragments);
         for (int i = 0; i < pagerAdapter.getCount(); i++) {
             materialTabHost.addTab(pagerAdapter.getPageTitle(i));
         }
@@ -74,7 +76,7 @@ public class SocialFragment extends Fragment {
             Locale l = Locale.getDefault();
             switch (position) {
                 case 0:
-                    return "food".toUpperCase(l);
+                    return "friends".toUpperCase(l);
                 case 1:
                     return "groups".toUpperCase(l);
             }

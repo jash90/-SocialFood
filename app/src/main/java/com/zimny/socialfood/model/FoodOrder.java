@@ -16,6 +16,11 @@ public class FoodOrder extends Food {
         this.count = count;
     }
 
+    public FoodOrder(Food food, int count) {
+        super(food.getName(), food.getPrice(), food.getTags(), food.getDescription(), food.getUid(), food.getRestaurant(), food.getType());
+        this.count = count;
+    }
+
     public FoodOrder(String name, double price, List<Tag> tags, String description, String uid, Restaurant restaurant, String type, int count) {
         super(name, price, tags, description, uid, restaurant, type);
         this.count = count;

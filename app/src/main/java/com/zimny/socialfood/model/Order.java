@@ -1,65 +1,45 @@
 package com.zimny.socialfood.model;
 
-import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
  * Created by ideo7 on 17.08.2017.
  */
 
-public class Order {
-    private List<Food> foods;
-    private String uid;
-    private String uidUser;
-    private String uidGroup;
+public class Order extends BaseOrder {
+    private Date date;
     private boolean paying;
+    private String uidUser;
 
     public Order() {
-        this.foods = new ArrayList<>();
-        this.uid = "";
-        this.uidUser = "";
-        this.uidGroup = "";
-        this.paying = false;
     }
 
-    public Order(List<Food> foods, String uid, String uidUser, String uidGroup, boolean paying) {
-        this.foods = foods;
-        this.uid = uid;
-        this.uidUser = uidUser;
-        this.uidGroup = uidGroup;
+    public Order(Date date, boolean paying) {
+        this.date = date;
         this.paying = paying;
     }
 
-    public List<Food> getFoods() {
-        return foods;
-    }
-
-    public void setFoods(List<Food> foods) {
-        this.foods = foods;
-    }
-
-    public String getUid() {
-        return uid;
-    }
-
-    public void setUid(String uid) {
-        this.uid = uid;
-    }
-
-    public String getUidUser() {
-        return uidUser;
-    }
-
-    public void setUidUser(String uidUser) {
+    public Order(List<FoodOrder> foodsOrders, String uidGroup, Date date, boolean paying, String uidUser) {
+        super(foodsOrders, uidGroup, paying);
+        this.date = date;
+        this.paying = paying;
         this.uidUser = uidUser;
     }
 
-    public String getUidGroup() {
-        return uidGroup;
+    public Order(BaseOrder baseOrder, Date date, boolean paying, String uidUser) {
+        super(baseOrder.getFoodOrders(), baseOrder.getUidGroup(), paying);
+        this.date = date;
+        this.paying = paying;
+        this.uidUser = uidUser;
     }
 
-    public void setUidGroup(String uidGroup) {
-        this.uidGroup = uidGroup;
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 
     public boolean isPaying() {
@@ -70,14 +50,21 @@ public class Order {
         this.paying = paying;
     }
 
+    public String getUidUser() {
+        return uidUser;
+    }
+
+    public void setUidUser(String uidUser) {
+        this.uidUser = uidUser;
+    }
+
     @Override
     public String toString() {
         return "Order{" +
-                "foods=" + foods +
-                ", uid='" + uid + '\'' +
-                ", uidUser='" + uidUser + '\'' +
-                ", uidGroup='" + uidGroup + '\'' +
+                "BaseOrder=" + super.toString() +
+                "date=" + date +
                 ", paying=" + paying +
+                ", uidUser='" + uidUser + '\'' +
                 '}';
     }
 }

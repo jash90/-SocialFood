@@ -37,7 +37,7 @@
                 android:spinnerMode="dialog"
                 android:textAlignment="center"></Spinner>
 
-            <Button
+            <TextView
                 android:id="@+id/date"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -45,11 +45,14 @@
                 android:layout_marginLeft="40dp"
                 android:layout_marginRight="40dp"
                 android:layout_marginTop="10dp"
-                android:background="@drawable/roundbutton"
+                android:background="@drawable/round_button_blue"
+                android:gravity="center"
+                android:padding="10dp"
                 android:text="Select Date"
-                android:textColor="@android:color/white">
+                android:textColor="@android:color/white"
+                android:textSize="20sp">
 
-            </Button>
+            </TextView>
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recyclerView"
@@ -88,9 +91,9 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginTop="10dp"
-                android:background="@drawable/roundbutton"
+                android:background="@drawable/round_button_white"
                 android:text="Save"
-                android:textColor="@android:color/white" />
+                android:textColor="@color/colorPrimary" />
         </LinearLayout>
     </ScrollView>
 

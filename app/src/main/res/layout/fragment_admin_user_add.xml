@@ -150,7 +150,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:text="Save" />
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/round_button_white"
+                android:text="Save"
+                android:textColor="@color/colorPrimary" />
         </LinearLayout>
     </ScrollView>
 

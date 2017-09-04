@@ -20,9 +20,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class OrderAndHistoryOrderFragment extends Fragment {
-    @BindView(R.id.materialtabs)
+    @BindView(R.id.materialTabsOrderHistory)
     MaterialTabHost materialTabHost;
-    @BindView(R.id.viewPager)
+    @BindView(R.id.viewPagerOrderHistory)
     ViewPager viewPager;
 
     @Override
@@ -35,7 +35,7 @@ public class OrderAndHistoryOrderFragment extends Fragment {
         HistoryOrderFragment historyOrderFragment = new HistoryOrderFragment();
         fragments.add(shoppingBasketFragment);
         fragments.add(historyOrderFragment);
-        SectionsPagerAdapter pagerAdapter = new SectionsPagerAdapter(getFragmentManager(), fragments);
+        SectionsPagerAdapter pagerAdapter = new SectionsPagerAdapter(getChildFragmentManager(), fragments);
         for (int i = 0; i < pagerAdapter.getCount(); i++) {
             materialTabHost.addTab(pagerAdapter.getPageTitle(i));
         }

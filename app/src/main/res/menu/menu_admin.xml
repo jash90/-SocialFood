@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/orders"
+        android:icon="@drawable/order"
+        android:title="Orders" />
+    <item
+        android:id="@+id/food"
+        android:icon="@drawable/restaurant_menu"
+        android:title="Food" />
+    <item
+        android:id="@+id/social"
+        android:icon="@drawable/group"
+        android:title="Social" />
+
+    <item
+        android:id="@+id/admin"
+        android:icon="@drawable/admin"
+        android:title="Admin" />
+
+</menu>

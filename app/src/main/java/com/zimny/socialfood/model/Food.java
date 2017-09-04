@@ -90,6 +90,6 @@ public class Food {
 
     @Override
     public String toString() {
-        return String.format("%s, %.2f %s",name,price,restaurant);
+        return String.format("%s, %.2f %s", name, price, restaurant);
     }
 }

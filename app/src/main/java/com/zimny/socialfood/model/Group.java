@@ -78,13 +78,6 @@ public class Group {
 
     @Override
     public String toString() {
-        return "Group{" +
-                "uid='" + uid + '\'' +
-                ", users=" + users +
-                ", address=" + address +
-                ", uidAdmin='" + uidAdmin + '\'' +
-                ", tags=" + tags +
-                ", name='" + name + '\'' +
-                '}';
+        return String.format("%s %s %s %s", name, address, users, tags);
     }
 }
