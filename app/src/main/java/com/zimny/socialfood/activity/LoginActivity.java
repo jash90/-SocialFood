@@ -76,12 +76,12 @@ public class LoginActivity extends AppCompatActivity {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     if (dataSnapshot.exists()) {
-                        Intent loginActivity = new Intent(LoginActivity.this, Main_Activity_v2.class);
+                        Intent loginActivity = new Intent(LoginActivity.this, FlatMainActivity.class);
                         loginActivity.putExtra("admin", true);
                         startActivity(loginActivity);
                         finish();
                     } else {
-                        Intent loginActivity = new Intent(LoginActivity.this, Main_Activity_v2.class);
+                        Intent loginActivity = new Intent(LoginActivity.this, FlatMainActivity.class);
                         startActivity(loginActivity);
                         finish();
                     }
@@ -121,12 +121,12 @@ public class LoginActivity extends AppCompatActivity {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
                                     if (dataSnapshot.exists()) {
-                                        Intent loginActivity = new Intent(LoginActivity.this, Main_Activity_v2.class);
+                                        Intent loginActivity = new Intent(LoginActivity.this, FlatMainActivity.class);
                                         loginActivity.putExtra("admin", true);
                                         startActivity(loginActivity);
                                         finish();
                                     } else {
-                                        Intent loginActivity = new Intent(LoginActivity.this, Main_Activity_v2.class);
+                                        Intent loginActivity = new Intent(LoginActivity.this, FlatMainActivity.class);
                                         startActivity(loginActivity);
                                         finish();
                                     }

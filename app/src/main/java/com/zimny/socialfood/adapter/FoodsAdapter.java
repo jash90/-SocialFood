@@ -67,7 +67,7 @@ public class FoodsAdapter extends RecyclerView.Adapter<FoodsAdapter.ViewHolder> 
         Glide.with(holder.itemView.getContext())
                 .using(new FirebaseImageLoader())
                 .load(imageRef)
-                .error(new IconicsDrawable(holder.itemView.getContext()).icon(GoogleMaterial.Icon.gmd_restaurant_menu).sizeDp(50))
+                .error(R.drawable.restaurant_menu)
                 .into(holder.foodImageCircle);
 
         holder.foodImageCircle.setOnClickListener(new View.OnClickListener() {

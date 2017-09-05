@@ -109,8 +109,7 @@
                 android:layout_marginRight="16dp"
                 android:layout_weight="2"
                 android:gravity="center"
-                android:text="Description :"
-                android:textAlignment="viewStart" />
+                android:text="Description :" />
 
             <TextView
                 android:id="@+id/description"

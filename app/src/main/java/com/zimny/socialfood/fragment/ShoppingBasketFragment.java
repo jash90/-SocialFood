@@ -72,6 +72,7 @@ public class ShoppingBasketFragment extends Fragment {
                                             if (dataSnapshot.getKey()!= null && uidFood!=null) {
                                                 if (uidFood.equals(dataSnapshot.getKey())) {
                                                     Food food = dataSnapshot.getValue(Food.class);
+                                                    food.setType(dataSnapshots.getKey());
                                                     food.setUid(dataSnapshot.getKey());
                                                     FoodOrder foodOrder2 = new FoodOrder(food, foodOrder.getCount());
                                                     foodOrders.add(foodOrder2);

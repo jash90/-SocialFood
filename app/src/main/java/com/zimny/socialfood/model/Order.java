@@ -1,5 +1,8 @@
 package com.zimny.socialfood.model;
 
+import com.google.firebase.database.Exclude;
+
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -20,7 +23,7 @@ public class Order extends BaseOrder {
         this.paying = paying;
     }
 
-    public Order(List<FoodOrder> foodsOrders, String uidGroup, Date date, boolean paying, String uidUser) {
+    public Order(ArrayList<FoodOrder> foodsOrders, String uidGroup, Date date, boolean paying, String uidUser) {
         super(foodsOrders, uidGroup, paying);
         this.date = date;
         this.paying = paying;
@@ -33,7 +36,7 @@ public class Order extends BaseOrder {
         this.paying = paying;
         this.uidUser = uidUser;
     }
-
+    @Exclude
     public Date getDate() {
         return date;
     }

@@ -216,7 +216,7 @@ public class AdminOrderAddFragment extends Fragment implements DatePickerDialog.
     public void onTimeSet(TimePicker timePicker, int h, int m) {
         calendar.set(Calendar.HOUR_OF_DAY, h);
         calendar.set(Calendar.MINUTE, m);
-        selectDate.setText(String.format("%d.%d.%d %d:%d", calendar.get(Calendar.DAY_OF_MONTH), calendar.get(Calendar.MONTH), calendar.get(Calendar.YEAR), calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE)));
+        selectDate.setText(new SimpleDateFormat("dd.MM.yyyy HH:mm").format(calendar.getTime()));
     }
 
 }

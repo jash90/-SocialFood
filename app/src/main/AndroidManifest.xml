@@ -24,7 +24,8 @@
         <activity android:name=".activity.RegisterActivity" />
         <activity android:name=".activity.AdminActivity" />
         <activity android:name=".activity.FoodDetailsActivity" />
-        <activity android:name=".activity.Main_Activity_v2"></activity>
+        <activity android:name=".activity.FlatMainActivity" />
+        <activity android:name=".activity.OrderDetails"></activity>
     </application>
 
 </manifest>

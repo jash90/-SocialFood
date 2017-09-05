@@ -143,6 +143,7 @@
     <orderEntry type="library" exported="" name="butterknife-8.8.0" level="project" />
     <orderEntry type="library" exported="" name="firebase-common-11.0.4" level="project" />
     <orderEntry type="library" exported="" name="okio-1.9.0" level="project" />
+    <orderEntry type="library" exported="" name="gson-2.2.4" level="project" />
     <orderEntry type="library" exported="" name="picasso-2.5.2" level="project" />
     <orderEntry type="library" exported="" name="mth-1.0.4" level="project" />
     <orderEntry type="library" exported="" name="constraint-layout-1.0.2" level="project" />

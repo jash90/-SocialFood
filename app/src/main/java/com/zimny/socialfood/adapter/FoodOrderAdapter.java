@@ -1,5 +1,6 @@
 package com.zimny.socialfood.adapter;
 
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,7 @@ import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.zimny.socialfood.R;
+import com.zimny.socialfood.activity.FoodDetailsActivity;
 import com.zimny.socialfood.model.FoodOrder;
 
 import java.util.ArrayList;
@@ -32,15 +34,15 @@ public class FoodOrderAdapter extends RecyclerView.Adapter<FoodOrderAdapter.View
 
     @Override
     public FoodOrderAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_order, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_shopping_basket, parent, false);
         return new FoodOrderAdapter.ViewHolder(v);
     }
 
     @Override
     public void onBindViewHolder(final FoodOrderAdapter.ViewHolder holder, final int position) {
-        FoodOrder foodOrder = foodOrders.get(position);
+        final FoodOrder foodOrder = foodOrders.get(position);
         holder.name.setText(foodOrder.getName());
-        holder.countFood.setText(String.valueOf(foodOrder.getCount()));
+        holder.countFood.setText(String.format("pcs %d",foodOrder.getCount()));
         holder.price.setText(String.format("%.2f zł",Double.valueOf(String.valueOf(foodOrder.getCount() * foodOrder.getPrice()))));
         FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
         StorageReference storageReference = firebaseStorage.getReference();
@@ -49,6 +51,15 @@ public class FoodOrderAdapter extends RecyclerView.Adapter<FoodOrderAdapter.View
                 .using(new FirebaseImageLoader())
                 .load(imageRef)
                 .into(holder.foodImageCircle);
+        holder.foodImageCircle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), FoodDetailsActivity.class);
+                intent.putExtra("uid", foodOrder.getUid());
+                intent.putExtra("type", foodOrder.getType());
+                view.getContext().startActivity(intent);
+            }
+        });
 
     }
 

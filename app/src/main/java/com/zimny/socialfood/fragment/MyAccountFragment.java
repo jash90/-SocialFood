@@ -92,7 +92,7 @@ public class MyAccountFragment extends Fragment {
         final FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
         StorageReference storageRef = firebaseStorage.getReference();
         final StorageReference imageRef = storageRef.child(String.format("%s.png", firebaseUser.getUid()));
-        XLog.d(String.format("%s.png", firebaseUser.getUid()));
+        //  XLog.d(String.format("%s.png", firebaseUser.getUid()));
         storageRef.child(String.format("%s.png", firebaseUser.getUid())).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
@@ -104,7 +104,7 @@ public class MyAccountFragment extends Fragment {
             @Override
             public void onFailure(@NonNull Exception exception) {
                 //  Toast.makeText(getContext(),exception.getLocalizedMessage(),Toast.LENGTH_SHORT).show();
-                XLog.d(exception.getLocalizedMessage());
+              //  XLog.d(exception.getLocalizedMessage());
             }
         });
         databaseReference.child("users").child(firebaseUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {

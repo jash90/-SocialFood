@@ -1,5 +1,7 @@
 package com.zimny.socialfood.model;
 
+import com.google.firebase.database.Exclude;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,17 +10,29 @@ import java.util.List;
  */
 
 public class BaseOrder {
-    private List<FoodOrder> foodOrders;
+
+    private ArrayList<FoodOrder> foodOrders;
     private String uidGroup;
+    private String uid;
 
     public BaseOrder() {
         this.foodOrders = new ArrayList<>();
         this.uidGroup = "";
+        this.uid = "";
     }
 
-    public BaseOrder(List<FoodOrder> foodsOrders, String uidGroup, boolean paying) {
+    public BaseOrder(ArrayList<FoodOrder> foodsOrders, String uidGroup, boolean paying) {
         this.foodOrders = foodsOrders;
         this.uidGroup = uidGroup;
+        this.uid = "";
+    }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 
     public String getUidGroup() {
@@ -29,19 +43,20 @@ public class BaseOrder {
         this.uidGroup = uidGroup;
     }
 
-
-    public List<FoodOrder> getFoodOrders() {
+    @Exclude
+    public ArrayList<FoodOrder> getFoodOrders() {
         return foodOrders;
     }
 
-    public void setFoodOrders(List<FoodOrder> foodOrders) {
+    public void setFoodOrders(ArrayList<FoodOrder> foodOrders) {
         this.foodOrders = foodOrders;
     }
 
     @Override
     public String toString() {
         return "BaseOrder{" +
-                "foodOrders=" + foodOrders +
+                "uid="+uid+
+                ", foodOrders=" + foodOrders +
                 ", uidGroup='" + uidGroup + '\'' +
                 '}';
     }
