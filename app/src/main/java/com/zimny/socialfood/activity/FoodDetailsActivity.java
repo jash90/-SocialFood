@@ -11,7 +11,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.elvishew.xlog.XLog;
 import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -102,12 +101,12 @@ public class FoodDetailsActivity extends AppCompatActivity {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 String s = (String) dataSnapshot.getValue();
-                                XLog.d(s);
+                                //XLog.d(s);
                                 databaseReference.child("restaurants").child(s).addListenerForSingleValueEvent(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(DataSnapshot dataSnapshot) {
                                         Restaurant restaurant = dataSnapshot.getValue(Restaurant.class);
-                                        XLog.d(dataSnapshot);
+                                        //XLog.d(dataSnapshot);
                                         restaurant.setUid(dataSnapshot.getKey());
                                         nameRestaurant.setText(restaurant.getName());
                                     }

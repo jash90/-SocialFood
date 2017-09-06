@@ -25,7 +25,8 @@ public class FoodOrder extends Food {
         super(name, price, tags, description, uid, restaurant, type);
         this.count = count;
     }
-    public void setFood(Food food){
+
+    public void setFood(Food food) {
         super.setDescription(food.getDescription());
         super.setName(food.getName());
         super.setPrice(food.getPrice());
@@ -34,6 +35,7 @@ public class FoodOrder extends Food {
         super.setUid(food.getUid());
         super.setTags(food.getTags());
     }
+
     public int getCount() {
         return count;
     }

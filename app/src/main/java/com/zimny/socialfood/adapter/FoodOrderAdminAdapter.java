@@ -12,7 +12,6 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 
-import com.elvishew.xlog.XLog;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -61,7 +60,7 @@ public class FoodOrderAdminAdapter extends RecyclerView.Adapter<FoodOrderAdminAd
                     for (DataSnapshot dataSnapshot : dataSnapshots.getChildren()) {
                         for (DataSnapshot dataSnapshot2 : dataSnapshot.getChildren()) {
                             Food food = dataSnapshot2.getValue(Food.class);
-                            XLog.d(dataSnapshot2);
+                            // XLog.d(dataSnapshot2);
                             food.setUid(dataSnapshot2.getKey());
                             food.setType(dataSnapshot.getKey());
                             foods.add(food);
@@ -100,7 +99,7 @@ public class FoodOrderAdminAdapter extends RecyclerView.Adapter<FoodOrderAdminAd
                     for (DataSnapshot dataSnapshot : dataSnapshots.getChildren()) {
                         for (DataSnapshot dataSnapshot2 : dataSnapshot.getChildren()) {
                             Food food = dataSnapshot2.getValue(Food.class);
-                            XLog.d(dataSnapshot2);
+                            //XLog.d(dataSnapshot2);
                             food.setUid(dataSnapshot2.getKey());
                             food.setType(dataSnapshot.getKey());
                             foods.add(food);
@@ -129,7 +128,7 @@ public class FoodOrderAdminAdapter extends RecyclerView.Adapter<FoodOrderAdminAd
                     }
                     FoodOrder foodOrder = new FoodOrder(food, count);
                     foodOrders.set(position, foodOrder);
-                    XLog.d(foodOrder);
+                    // XLog.d(foodOrder);
                 }
             }
 
@@ -156,7 +155,7 @@ public class FoodOrderAdminAdapter extends RecyclerView.Adapter<FoodOrderAdminAd
                 Integer count = Integer.valueOf(editable.toString());
                 FoodOrder foodOrder = new FoodOrder(food, count);
                 foodOrders.set(position, foodOrder);
-                XLog.d("zmiana " + foodOrder);
+                //XLog.d("zmiana " + foodOrder);
             }
         });
 

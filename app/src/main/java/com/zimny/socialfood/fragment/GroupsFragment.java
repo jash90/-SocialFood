@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.elvishew.xlog.XLog;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -64,7 +63,7 @@ public class GroupsFragment extends Fragment {
                     for (DataSnapshot dataSnapshot : dataSnapshots.getChildren()) {
                         final Group group = dataSnapshot.getValue(Group.class);
                         group.setUid(dataSnapshot.getKey());
-                        XLog.d(group);
+                        //XLog.d(group);
 
                         group.setUsers(new ArrayList<User>());
                         groups.add(group);

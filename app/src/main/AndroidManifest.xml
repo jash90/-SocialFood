@@ -25,7 +25,10 @@
         <activity android:name=".activity.AdminActivity" />
         <activity android:name=".activity.FoodDetailsActivity" />
         <activity android:name=".activity.FlatMainActivity" />
-        <activity android:name=".activity.OrderDetails"></activity>
+        <activity android:name=".activity.OrderDetails" />
+        <activity android:name=".activity.UserDetailsActivity" />
+        <activity android:name=".activity.RestaurantDetailsActivity" />
+        <activity android:name=".activity.GroupDetailsActivity"></activity>
     </application>
 
 </manifest>

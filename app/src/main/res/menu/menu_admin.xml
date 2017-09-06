@@ -3,19 +3,24 @@
 
     <item
         android:id="@+id/orders"
+        android:enabled="true"
         android:icon="@drawable/order"
         android:title="Orders" />
     <item
         android:id="@+id/food"
+        android:checked="true"
+        android:enabled="true"
         android:icon="@drawable/restaurant_menu"
         android:title="Food" />
     <item
         android:id="@+id/social"
+        android:enabled="true"
         android:icon="@drawable/group"
         android:title="Social" />
 
     <item
         android:id="@+id/admin"
+        android:enabled="true"
         android:icon="@drawable/admin"
         android:title="Admin" />
 

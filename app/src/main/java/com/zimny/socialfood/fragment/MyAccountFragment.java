@@ -18,7 +18,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.elvishew.xlog.XLog;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -104,7 +103,7 @@ public class MyAccountFragment extends Fragment {
             @Override
             public void onFailure(@NonNull Exception exception) {
                 //  Toast.makeText(getContext(),exception.getLocalizedMessage(),Toast.LENGTH_SHORT).show();
-              //  XLog.d(exception.getLocalizedMessage());
+                //  XLog.d(exception.getLocalizedMessage());
             }
         });
         databaseReference.child("users").child(firebaseUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {

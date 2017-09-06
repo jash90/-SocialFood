@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.zimny.socialfood.fragment.AdminOrderAddFragment">
+    tools:context="com.zimny.socialfood.fragment.admin.AdminOrderAddFragment">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -80,8 +80,8 @@
                 android:layout_marginLeft="100dp"
                 android:layout_marginRight="100dp"
                 android:layout_marginTop="10dp"
-                android:textColor="@color/primary"
-                android:text="Paying" />
+                android:text="Paying"
+                android:textColor="@color/primary" />
 
             <Button
                 android:id="@+id/save"

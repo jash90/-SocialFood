@@ -4,7 +4,6 @@ import com.google.firebase.database.Exclude;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 /**
  * Created by ideo7 on 17.08.2017.
@@ -36,6 +35,7 @@ public class Order extends BaseOrder {
         this.paying = paying;
         this.uidUser = uidUser;
     }
+
     @Exclude
     public Date getDate() {
         return date;

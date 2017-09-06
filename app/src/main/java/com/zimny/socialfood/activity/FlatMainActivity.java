@@ -16,10 +16,10 @@ import android.view.MenuItem;
 import com.google.firebase.auth.FirebaseAuth;
 import com.mikepenz.iconics.context.IconicsLayoutInflater2;
 import com.zimny.socialfood.R;
-import com.zimny.socialfood.fragment.AdminFragment;
 import com.zimny.socialfood.fragment.MainFragment;
 import com.zimny.socialfood.fragment.OrderAndHistoryOrderFragment;
 import com.zimny.socialfood.fragment.SocialFragment;
+import com.zimny.socialfood.fragment.admin.AdminFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -51,7 +51,7 @@ public class FlatMainActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.food: {
-                        FragmentManager fm =getSupportFragmentManager();
+                        FragmentManager fm = getSupportFragmentManager();
                         FragmentTransaction ft = fm.beginTransaction();
                         MainFragment fragment = new MainFragment();
                         ft.replace(R.id.content, fragment);
@@ -59,7 +59,7 @@ public class FlatMainActivity extends AppCompatActivity {
                         break;
                     }
                     case R.id.orders: {
-                        FragmentManager fm =getSupportFragmentManager();
+                        FragmentManager fm = getSupportFragmentManager();
                         FragmentTransaction ft = fm.beginTransaction();
                         OrderAndHistoryOrderFragment fragment = new OrderAndHistoryOrderFragment();
                         ft.replace(R.id.content, fragment);
@@ -95,7 +95,7 @@ public class FlatMainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.logout:
                 firebaseAuth.signOut();
                 Intent intent = new Intent(FlatMainActivity.this, LoginActivity.class);
@@ -110,7 +110,7 @@ public class FlatMainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_toolbar,menu);
+        getMenuInflater().inflate(R.menu.menu_toolbar, menu);
         return super.onCreateOptionsMenu(menu);
     }
 }

@@ -24,7 +24,6 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.elvishew.xlog.XLog;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -101,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
                     accountHeader.updateProfile(profileDrawerItem);
                 }
             });
-            XLog.d("broadcast");
+            //XLog.d("broadcast");
 
         }
     };
@@ -149,7 +148,7 @@ public class MainActivity extends AppCompatActivity {
             public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
                 FragmentManager fm = getSupportFragmentManager();
                 FragmentTransaction ft = fm.beginTransaction();
-                XLog.d(position);
+                //XLog.d(position);
                 if (admin) {
                     switch (position) {
                         case 1:

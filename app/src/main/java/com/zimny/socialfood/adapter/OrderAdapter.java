@@ -4,17 +4,13 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.elvishew.xlog.XLog;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -60,7 +56,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
         final Order order = orders.get(position);
         holder.date.setText(new SimpleDateFormat("dd.MM.yyyy HH:mm").format(order.getDate()));
         if (order.isPaying()) {
-            holder.paying.setImageDrawable(new IconicsDrawable(holder.itemView.getContext()).icon(FontAwesome.Icon.faw_money).color(ContextCompat.getColor(holder.itemView.getContext(),R.color.colorAccent)).sizeDp(40));
+            holder.paying.setImageDrawable(new IconicsDrawable(holder.itemView.getContext()).icon(FontAwesome.Icon.faw_money).color(ContextCompat.getColor(holder.itemView.getContext(), R.color.colorAccent)).sizeDp(40));
 
         } else {
             holder.paying.setImageDrawable(new IconicsDrawable(holder.itemView.getContext()).icon(FontAwesome.Icon.faw_money).color(Color.parseColor("#BDBDBD")).sizeDp(40));
@@ -93,7 +89,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
                         databaseReference.child("foods").orderByKey().addChildEventListener(new ChildEventListener() {
                             @Override
                             public void onChildAdded(DataSnapshot dataSnapshots, String s) {
-                                for (DataSnapshot dataSnapshot :dataSnapshots.getChildren()) {
+                                for (DataSnapshot dataSnapshot : dataSnapshots.getChildren()) {
                                     if (dataSnapshot.getKey().equals(uidFood)) {
                                         Food food = dataSnapshot.getValue(Food.class);
                                         food.setUid(dataSnapshot.getKey());
@@ -102,10 +98,10 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
                                         foodOrders.add(foodOrder);
                                         order.setFoodOrders(foodOrders);
                                         Double sumPrice = 0.0;
-                                        for (FoodOrder foodOrder1 : foodOrders){
-                                            sumPrice=sumPrice+(foodOrder1.getPrice()*foodOrder1.getCount());
+                                        for (FoodOrder foodOrder1 : foodOrders) {
+                                            sumPrice = sumPrice + (foodOrder1.getPrice() * foodOrder1.getCount());
                                         }
-                                        holder.price.setText(String.format("%.2f zł",sumPrice));
+                                        holder.price.setText(String.format("%.2f zł", sumPrice));
                                     }
                                 }
                             }
@@ -143,9 +139,9 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
             @Override
             public void onClick(View view) {
                 //Toast.makeText(holder.itemView.getContext(), orders.get(position).toString(),Toast.LENGTH_SHORT).show();
-                String orderJson =new Gson().toJson(orders.get(position));
+                String orderJson = new Gson().toJson(orders.get(position));
                 Intent intent = new Intent(holder.itemView.getContext(), OrderDetails.class);
-                intent.putExtra("json",orderJson);
+                intent.putExtra("json", orderJson);
                 holder.itemView.getContext().startActivity(intent);
             }
         });
@@ -167,6 +163,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
         TextView price;
         @BindView(R.id.layout)
         LinearLayout linearLayout;
+
         public ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);

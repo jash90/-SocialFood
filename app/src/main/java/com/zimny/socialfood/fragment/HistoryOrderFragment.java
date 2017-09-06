@@ -9,22 +9,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.elvishew.xlog.XLog;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.zimny.socialfood.R;
-import com.zimny.socialfood.adapter.FoodOrderAdapter;
 import com.zimny.socialfood.adapter.OrderAdapter;
-import com.zimny.socialfood.model.Food;
-import com.zimny.socialfood.model.FoodOrder;
 import com.zimny.socialfood.model.Order;
 
-import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -39,6 +33,7 @@ public class HistoryOrderFragment extends Fragment {
     ArrayList<Order> orders;
     OrderAdapter orderAdapter;
     FirebaseAuth firebaseAuth;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -57,7 +52,7 @@ public class HistoryOrderFragment extends Fragment {
             databaseReference.child("orders").orderByChild("uidUser").addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshots) {
-                    for (DataSnapshot dataSnapshot : dataSnapshots.getChildren()){
+                    for (DataSnapshot dataSnapshot : dataSnapshots.getChildren()) {
                         Order order = dataSnapshot.getValue(Order.class);
                         order.setUid(dataSnapshot.getKey());
                         String s = dataSnapshot.child("date").getValue(String.class);
@@ -66,7 +61,7 @@ public class HistoryOrderFragment extends Fragment {
                         } catch (ParseException e) {
                             e.printStackTrace();
                         }
-                        if (order.getUidUser().equals(firebaseAuth.getCurrentUser().getUid())){
+                        if (order.getUidUser().equals(firebaseAuth.getCurrentUser().getUid())) {
                             orders.add(order);
                             orderAdapter.notifyDataSetChanged();
                         }
@@ -78,8 +73,6 @@ public class HistoryOrderFragment extends Fragment {
 
                 }
             });
-
-
 
 
         }

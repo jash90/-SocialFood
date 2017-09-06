@@ -14,14 +14,14 @@ import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
 import com.zimny.socialfood.R;
-import com.zimny.socialfood.fragment.AdminBasketAddFragment;
-import com.zimny.socialfood.fragment.AdminFoodAddFragment;
-import com.zimny.socialfood.fragment.AdminGroupAddFragment;
-import com.zimny.socialfood.fragment.AdminOrderAddFragment;
-import com.zimny.socialfood.fragment.AdminRelationshipAddFragment;
-import com.zimny.socialfood.fragment.AdminRestaurantAddFragment;
-import com.zimny.socialfood.fragment.AdminTagAddFragment;
-import com.zimny.socialfood.fragment.AdminUserAddFragment;
+import com.zimny.socialfood.fragment.admin.AdminBasketAddFragment;
+import com.zimny.socialfood.fragment.admin.AdminFoodAddFragment;
+import com.zimny.socialfood.fragment.admin.AdminGroupAddFragment;
+import com.zimny.socialfood.fragment.admin.AdminOrderAddFragment;
+import com.zimny.socialfood.fragment.admin.AdminRelationshipAddFragment;
+import com.zimny.socialfood.fragment.admin.AdminRestaurantAddFragment;
+import com.zimny.socialfood.fragment.admin.AdminTagAddFragment;
+import com.zimny.socialfood.fragment.admin.AdminUserAddFragment;
 
 import java.util.ArrayList;
 

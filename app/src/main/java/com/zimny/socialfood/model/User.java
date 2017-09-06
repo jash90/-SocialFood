@@ -1,6 +1,7 @@
 package com.zimny.socialfood.model;
 
 
+import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
 
 import java.util.ArrayList;
@@ -98,6 +99,7 @@ public class User {
         this.address = address;
     }
 
+    @Exclude
     public Date getBirthday() {
         return birthday;
     }

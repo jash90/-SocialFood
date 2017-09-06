@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.elvishew.xlog.XLog;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -74,8 +73,8 @@ public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.ViewHolder
                             tags.add(tag);
                             tagsString.add(tag.getName());
                             holder.tagGroup.setTags(tagsString);
-                            XLog.d("TAG  " + tag);
-                            XLog.d("TAGS " + tags);
+                            //   XLog.d("TAG  " + tag);
+                            //   XLog.d("TAGS " + tags);
                         }
 
                         @Override
@@ -154,15 +153,15 @@ public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.ViewHolder
         databaseReference.child("groups").child(group.getUid()).child("users").orderByKey().addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                XLog.d(position + " NO GROUP " + dataSnapshot);
+                //  XLog.d(position + " NO GROUP " + dataSnapshot);
                 User user = new User();
                 user.setUid(dataSnapshot.getKey());
                 users.add(user);
                 userArrayList.add(user);
                 group.setUsers(users);
-                XLog.d("TAGS " + group);
+                //    XLog.d("TAGS " + group);
                 mutualFriendsAdapter.notifyDataSetChanged();
-                XLog.d("TAGS " + users);
+                //  XLog.d("TAGS " + users);
 
             }
 
@@ -237,7 +236,7 @@ public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.ViewHolder
 //
 //            }
 //        });
-        XLog.d(group);
+        //     XLog.d(group);
         holder.recyclerView.setAdapter(mutualFriendsAdapter);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(holder.itemView.getContext(), LinearLayoutManager.HORIZONTAL, false);
         holder.recyclerView.setLayoutManager(layoutManager);

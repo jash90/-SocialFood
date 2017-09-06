@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.elvishew.xlog.XLog;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -56,11 +55,11 @@ public class FoodsFragment extends Fragment {
                     Food food = new Food();
                     food.setType(dataSnapshots.getKey());
                     for (final DataSnapshot dataSnapshot1 : dataSnapshots.getChildren()) {
-                        XLog.d(dataSnapshot1.getKey());
+                        //XLog.d(dataSnapshot1.getKey());
                         databaseReference.child("foods").child(dataSnapshot1.getKey()).addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshots) {
-                                XLog.d(dataSnapshots.getKey());
+                                //XLog.d(dataSnapshots.getKey());
                                 for (final DataSnapshot dataSnapshot2 : dataSnapshots.getChildren()) {
                                     final Food food = dataSnapshot2.getValue(Food.class);
                                     food.setType(dataSnapshot1.getKey());
@@ -68,13 +67,13 @@ public class FoodsFragment extends Fragment {
                                     databaseReference.child("foods").child(dataSnapshot1.getKey()).child(dataSnapshot2.getKey()).child("restaurant").addValueEventListener(new ValueEventListener() {
                                         @Override
                                         public void onDataChange(DataSnapshot dataSnapshot) {
-                                            XLog.d(dataSnapshot.getValue());
+                                            // XLog.d(dataSnapshot.getValue());
                                             databaseReference.child("restaurants").child((String) dataSnapshot.getValue()).addValueEventListener(new ValueEventListener() {
                                                 @Override
                                                 public void onDataChange(DataSnapshot dataSnapshot) {
                                                     Restaurant restaurant = dataSnapshot.getValue(Restaurant.class);
                                                     food.setRestaurant(restaurant);
-                                                    XLog.d(food);
+                                                    // XLog.d(food);
                                                     foods.add(food);
                                                     foodAdapter.notifyDataSetChanged();
                                                 }

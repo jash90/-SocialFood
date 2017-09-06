@@ -3,7 +3,6 @@ package com.zimny.socialfood.model;
 import com.google.firebase.database.Exclude;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by ideo7 on 04.09.2017.
@@ -55,7 +54,7 @@ public class BaseOrder {
     @Override
     public String toString() {
         return "BaseOrder{" +
-                "uid="+uid+
+                "uid=" + uid +
                 ", foodOrders=" + foodOrders +
                 ", uidGroup='" + uidGroup + '\'' +
                 '}';

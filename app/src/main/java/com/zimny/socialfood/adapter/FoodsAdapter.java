@@ -9,7 +9,6 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.elvishew.xlog.XLog;
 import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -73,7 +72,7 @@ public class FoodsAdapter extends RecyclerView.Adapter<FoodsAdapter.ViewHolder> 
         holder.foodImageCircle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                XLog.d("test");
+                //   XLog.d("test");
                 Intent intent = new Intent(view.getContext(), FoodDetailsActivity.class);
                 intent.putExtra("uid", food.getUid());
                 intent.putExtra("type", food.getType());

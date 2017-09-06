@@ -15,8 +15,8 @@
         android:gravity="center"
         android:text="History"
         android:textColor="@color/primary"
-        android:textStyle="bold"
-        android:textSize="22sp" />
+        android:textSize="22sp"
+        android:textStyle="bold" />
 
     <ScrollView
         android:layout_width="match_parent"

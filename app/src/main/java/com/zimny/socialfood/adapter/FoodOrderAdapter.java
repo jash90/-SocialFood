@@ -42,8 +42,8 @@ public class FoodOrderAdapter extends RecyclerView.Adapter<FoodOrderAdapter.View
     public void onBindViewHolder(final FoodOrderAdapter.ViewHolder holder, final int position) {
         final FoodOrder foodOrder = foodOrders.get(position);
         holder.name.setText(foodOrder.getName());
-        holder.countFood.setText(String.format("pcs %d",foodOrder.getCount()));
-        holder.price.setText(String.format("%.2f zł",Double.valueOf(String.valueOf(foodOrder.getCount() * foodOrder.getPrice()))));
+        holder.countFood.setText(String.format("pcs %d", foodOrder.getCount()));
+        holder.price.setText(String.format("%.2f zł", Double.valueOf(String.valueOf(foodOrder.getCount() * foodOrder.getPrice()))));
         FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
         StorageReference storageReference = firebaseStorage.getReference();
         StorageReference imageRef = storageReference.child(String.format("%s.png", foodOrder.getUid()));

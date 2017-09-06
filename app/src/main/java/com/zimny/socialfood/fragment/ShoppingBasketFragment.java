@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import com.elvishew.xlog.XLog;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -57,19 +56,19 @@ public class ShoppingBasketFragment extends Fragment {
                 public void onDataChange(DataSnapshot dataSnapshots) {
                     for (DataSnapshot dataSnapshot : dataSnapshots.getChildren()) {
                         final FoodOrder foodOrder = dataSnapshot.getValue(FoodOrder.class);
-                        XLog.d(dataSnapshot.getKey());
-                        XLog.d(dataSnapshots.getKey());
+                        //XLog.d(dataSnapshot.getKey());
+                        // XLog.d(dataSnapshots.getKey());
                         databaseReference.child("baskets").child(firebaseAuth.getCurrentUser().getUid()).child("foodOrders").child(dataSnapshot.getKey()).child("uidFood").addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(final DataSnapshot dataSnapshot) {
                                 final String uidFood = dataSnapshot.getValue(String.class);
-                                XLog.d("SEARCH "+uidFood);
+                                // XLog.d("SEARCH " + uidFood);
                                 databaseReference.child("foods").orderByKey().addChildEventListener(new ChildEventListener() {
                                     @Override
                                     public void onChildAdded(DataSnapshot dataSnapshots, String s) {
                                         for (DataSnapshot dataSnapshot : dataSnapshots.getChildren()) {
-                                            XLog.d("FOOD "+dataSnapshot.getKey());
-                                            if (dataSnapshot.getKey()!= null && uidFood!=null) {
+                                            //XLog.d("FOOD " + dataSnapshot.getKey());
+                                            if (dataSnapshot.getKey() != null && uidFood != null) {
                                                 if (uidFood.equals(dataSnapshot.getKey())) {
                                                     Food food = dataSnapshot.getValue(Food.class);
                                                     food.setType(dataSnapshots.getKey());
@@ -77,8 +76,8 @@ public class ShoppingBasketFragment extends Fragment {
                                                     FoodOrder foodOrder2 = new FoodOrder(food, foodOrder.getCount());
                                                     foodOrders.add(foodOrder2);
                                                     foodOrderAdapter.notifyDataSetChanged();
-                                                    XLog.d(dataSnapshot);
-                                                    XLog.d(foodOrder2);
+                                                    // XLog.d(dataSnapshot);
+                                                    //  XLog.d(foodOrder2);
                                                 }
 
                                             }

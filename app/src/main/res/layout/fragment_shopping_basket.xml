@@ -61,7 +61,7 @@
                     android:background="@drawable/round_button_blue"
                     android:gravity="center"
                     android:text="Confirm"
-                    android:textColor="@color/white"/>
+                    android:textColor="@color/white" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

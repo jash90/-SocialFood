@@ -11,7 +11,6 @@ import android.support.v7.widget.Toolbar;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.elvishew.xlog.XLog;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -65,12 +64,12 @@ public class OrderDetails extends AppCompatActivity {
             //XLog.d("XXX " + order);
             date.setText(new SimpleDateFormat("dd.MM.yyyy HH:mm").format(order.getDate()));
             Double sumPrice = 0.0;
-            XLog.d(order.getUid());
-            for (FoodOrder foodOrder : order.getFoodOrders()){
-                sumPrice=sumPrice+(foodOrder.getPrice()*foodOrder.getCount());
-                XLog.d(foodOrder.getPrice()+" * "+foodOrder.getCount()+ " "+foodOrder.getPrice()*foodOrder.getCount());
+            //XLog.d(order.getUid());
+            for (FoodOrder foodOrder : order.getFoodOrders()) {
+                sumPrice = sumPrice + (foodOrder.getPrice() * foodOrder.getCount());
+                // XLog.d(foodOrder.getPrice() + " * " + foodOrder.getCount() + " " + foodOrder.getPrice() * foodOrder.getCount());
             }
-            price.setText(String.format("%.2f zł",sumPrice));
+            price.setText(String.format("%.2f zł", sumPrice));
             if (order.isPaying()) {
                 paying.setImageDrawable(new IconicsDrawable(getApplicationContext()).icon(FontAwesome.Icon.faw_money).color(ContextCompat.getColor(getApplicationContext(), R.color.colorAccent)).sizeDp(40));
 

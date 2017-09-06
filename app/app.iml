@@ -104,6 +104,7 @@
     <orderEntry type="jdk" jdkName="Android API 26 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" exported="" name="palette-v7-23.4.0" level="project" />
+    <orderEntry type="library" exported="" name="cardview-v7-26.0.1" level="project" />
     <orderEntry type="library" exported="" name="support-core-ui-26.0.1" level="project" />
     <orderEntry type="library" exported="" name="stetho-okhttp3-1.5.0" level="project" />
     <orderEntry type="library" exported="" name="fontawesome-typeface-4.7.0.1" level="project" />
@@ -152,6 +153,7 @@
     <orderEntry type="library" exported="" name="autofittextview-0.2.1" level="project" />
     <orderEntry type="library" exported="" name="stetho-1.5.0" level="project" />
     <orderEntry type="library" exported="" name="firebase-auth-11.0.4" level="project" />
+    <orderEntry type="library" exported="" name="joda-time-2.9.9" level="project" />
     <orderEntry type="library" exported="" name="play-services-basement-11.0.4" level="project" />
     <orderEntry type="library" exported="" name="google-material-typeface-3.0.1.1.original" level="project" />
     <orderEntry type="library" exported="" name="glide-3.7.0" level="project" />

@@ -17,7 +17,7 @@
         android:layout_height="200dp"
         android:layout_gravity="center"
         android:layout_margin="20dp"
-        android:background="@drawable/restaurant_menu"/>
+        android:background="@drawable/restaurant_menu" />
 
     <LinearLayout
         android:layout_width="match_parent"
