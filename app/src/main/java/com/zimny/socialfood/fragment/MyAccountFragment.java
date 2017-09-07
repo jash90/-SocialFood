@@ -42,8 +42,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-import static com.zimny.socialfood.utils.ToolBox.MyToast;
-
 
 public class MyAccountFragment extends Fragment {
 
@@ -230,7 +228,7 @@ public class MyAccountFragment extends Fragment {
                         }
                     });
                 }
-                MyToast("Dane zmienione", getContext());
+                Toast.makeText(getContext(),"Dane zmienione",Toast.LENGTH_SHORT).show();
             }
         });
         return v;

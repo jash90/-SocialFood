@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -21,7 +22,6 @@ import com.zimny.socialfood.model.User;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.zimny.socialfood.utils.ToolBox.MyToast;
 
 public class RegisterActivity extends AppCompatActivity {
     @BindView(R.id.login)
@@ -52,7 +52,7 @@ public class RegisterActivity extends AppCompatActivity {
                             .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                                 @Override
                                 public void onSuccess(AuthResult authResult) {
-                                    MyToast(String.format("Create account %s .", authResult.getUser().getEmail()), getBaseContext());
+                                    Toast.makeText(getApplicationContext(),String.format("Create account %s .", authResult.getUser().getEmail()), Toast.LENGTH_SHORT).show();
                                     firebaseAuth.signInWithEmailAndPassword(login.getText().toString(), password.getText().toString()).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                                         @Override
                                         public void onSuccess(AuthResult authResult) {
@@ -64,7 +64,7 @@ public class RegisterActivity extends AppCompatActivity {
                                     }).addOnFailureListener(new OnFailureListener() {
                                         @Override
                                         public void onFailure(@NonNull Exception e) {
-                                            MyToast(e.getLocalizedMessage(), getBaseContext());
+                                            Toast.makeText(getApplicationContext(),e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
                                         }
                                     });
                                     progressDialog.dismiss();
@@ -78,13 +78,13 @@ public class RegisterActivity extends AppCompatActivity {
                             .addOnFailureListener(new OnFailureListener() {
                                 @Override
                                 public void onFailure(@NonNull Exception e) {
-                                    MyToast(e.getLocalizedMessage(), getBaseContext());
+                                    Toast.makeText(getApplicationContext(),e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
                                     progressDialog.dismiss();
                                 }
                             });
 
                 } else {
-                    MyToast("Password and Confirm Password isn't the same.", getBaseContext());
+                    Toast.makeText(getApplicationContext(),"Password and Confirm Password isn't the same.", Toast.LENGTH_SHORT).show();
                 }
 
             }

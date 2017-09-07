@@ -46,10 +46,10 @@ public class UserDetailsActivity extends AppCompatActivity {
     TextView age;
     @BindView(R.id.email)
     TextView email;
-    @BindView(R.id.materialTabsUserDetails)
-    MaterialTabHost materialTabHost;
-    @BindView(R.id.viewPagerUserDetails)
-    ViewPager viewPager;
+//    @BindView(R.id.materialTabsUserDetails)
+//    MaterialTabHost materialTabHost;
+//    @BindView(R.id.viewPagerUserDetails)
+//    ViewPager viewPager;
     @BindView(R.id.floatingActionButton)
     FloatingActionButton floatingActionButton;
     Boolean invite = true;
@@ -96,26 +96,26 @@ public class UserDetailsActivity extends AppCompatActivity {
                     }
                 }
             });
-            ArrayList<Fragment> fragments = new ArrayList<>();
-            UserFoodDetailsFragment userFoodDetailsFragment = new UserFoodDetailsFragment();
-            UserRestaurantDetailsFragment userRestaurantDetailsFragment = new UserRestaurantDetailsFragment();
-            fragments.add(userFoodDetailsFragment);
-            fragments.add(userRestaurantDetailsFragment);
-            SectionsPagerAdapter pagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), fragments);
-            //materialTabHost.setBackgroundResource(R.color.white);
-            for (int i = 0; i < pagerAdapter.getCount(); i++) {
-                materialTabHost.addTab(pagerAdapter.getPageTitle(i));
-            }
-
-
-            viewPager.setAdapter(pagerAdapter);
-            viewPager.addOnPageChangeListener(materialTabHost);
-            materialTabHost.setOnTabChangeListener(new MaterialTabHost.OnTabChangeListener() {
-                @Override
-                public void onTabSelected(int position) {
-                    viewPager.setCurrentItem(position);
-                }
-            });
+//            ArrayList<Fragment> fragments = new ArrayList<>();
+//            UserFoodDetailsFragment userFoodDetailsFragment = new UserFoodDetailsFragment();
+//            UserRestaurantDetailsFragment userRestaurantDetailsFragment = new UserRestaurantDetailsFragment();
+//            fragments.add(userFoodDetailsFragment);
+//            fragments.add(userRestaurantDetailsFragment);
+//            SectionsPagerAdapter pagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), fragments);
+//            //materialTabHost.setBackgroundResource(R.color.white);
+//            for (int i = 0; i < pagerAdapter.getCount(); i++) {
+//                materialTabHost.addTab(pagerAdapter.getPageTitle(i));
+//            }
+//
+//
+//            viewPager.setAdapter(pagerAdapter);
+//            viewPager.addOnPageChangeListener(materialTabHost);
+//            materialTabHost.setOnTabChangeListener(new MaterialTabHost.OnTabChangeListener() {
+//                @Override
+//                public void onTabSelected(int position) {
+//                    viewPager.setCurrentItem(position);
+//                }
+//            });
         }
 
     }

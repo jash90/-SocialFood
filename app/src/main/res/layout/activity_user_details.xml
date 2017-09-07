@@ -103,21 +103,66 @@
                 android:id="@+id/tagGroup">
             </me.gujun.android.taggroup.TagGroup>
 
-         <LinearLayout
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             android:orientation="vertical">
-             <net.yanzm.mth.MaterialTabHost
-                 android:layout_width="match_parent"
-                 android:layout_height="wrap_content"
-                 android:id="@+id/materialTabsUserDetails">
-             </net.yanzm.mth.MaterialTabHost>
-             <android.support.v4.view.ViewPager
-                 android:layout_width="match_parent"
-                 android:layout_height="match_parent"
-                 android:id="@+id/viewPagerUserDetails">
-             </android.support.v4.view.ViewPager>
-         </LinearLayout>
+         <!--<LinearLayout-->
+             <!--android:layout_width="match_parent"-->
+             <!--android:layout_height="match_parent"-->
+             <!--android:orientation="vertical">-->
+             <!--<net.yanzm.mth.MaterialTabHost-->
+                 <!--android:layout_width="match_parent"-->
+                 <!--android:layout_height="wrap_content"-->
+                 <!--android:id="@+id/materialTabsUserDetails">-->
+             <!--</net.yanzm.mth.MaterialTabHost>-->
+             <!--<android.support.v4.view.ViewPager-->
+                 <!--android:layout_width="match_parent"-->
+                 <!--android:layout_height="match_parent"-->
+                 <!--android:id="@+id/viewPagerUserDetails">-->
+             <!--</android.support.v4.view.ViewPager>-->
+         <!--</LinearLayout>-->
+            <!--<com.zimny.socialfood.view.MultiCircleView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:id="@+id/multiCircleView1"-->
+                <!--app:backgroundColorIcon="@android:color/white"-->
+                <!--app:textColor="@android:color/white"-->
+                <!--app:backgroundColorText="@color/primary"-->
+                <!--app:borderColorIcon="@color/primary"-->
+                <!--app:iconColor="@color/primary"-->
+                <!--app:items="1"-->
+                <!--app:defaultIcon="@drawable/restaurant_menu"/>-->
+            <!--<com.zimny.socialfood.view.MultiCircleView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:id="@+id/multiCircleView2"-->
+                <!--app:backgroundColorIcon="@android:color/white"-->
+                <!--app:textColor="@android:color/white"-->
+                <!--app:backgroundColorText="@color/primary"-->
+                <!--app:borderColorIcon="@color/primary"-->
+                <!--app:iconColor="@color/primary"-->
+                <!--app:items="2"-->
+                <!--app:defaultIcon="@drawable/restaurant_menu"/>-->
+            <!--<com.zimny.socialfood.view.MultiCircleView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:id="@+id/multiCircleView3"-->
+                <!--app:backgroundColorIcon="@android:color/white"-->
+                <!--app:textColor="@android:color/white"-->
+                <!--app:backgroundColorText="@color/primary"-->
+                <!--app:borderColorIcon="@color/primary"-->
+                <!--app:iconColor="@color/primary"-->
+                <!--app:items="3"-->
+                <!--app:defaultIcon="@drawable/restaurant_menu"/>-->
+            <com.zimny.socialfood.view.MultiCircleView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/multiCircleView4"
+                app:backgroundColorIcon="@color/white"
+                app:textColor="@android:color/white"
+                app:backgroundColorText="@color/primary"
+                app:borderColorIcon="@color/primary"
+                app:iconColor="@color/primary"
+                app:items="4"
+                app:defaultIcon="@drawable/restaurant_menu"/>
+
 
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
