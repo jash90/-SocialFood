@@ -6,7 +6,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.elvishew.xlog.XLog;
+import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -14,6 +16,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.zimny.socialfood.R;
 import com.zimny.socialfood.model.Restaurant;
 import com.zimny.socialfood.model.Tag;
@@ -54,6 +58,16 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
 
             }
         }
+        FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
+        StorageReference storageReference = firebaseStorage.getReference();
+        StorageReference imageRef = storageReference.child(String.format("%s.png", restaurant.getUid()));
+
+        Glide.with(holder.itemView.getContext())
+                .using(new FirebaseImageLoader())
+                .load(imageRef)
+                .error(R.drawable.restaurant_store)
+                .centerCrop()
+                .into(holder.restaurantImageCircle);
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
         final ArrayList<String> tagsString = new ArrayList<>();
         final ArrayList<Tag> tags = new ArrayList<>();

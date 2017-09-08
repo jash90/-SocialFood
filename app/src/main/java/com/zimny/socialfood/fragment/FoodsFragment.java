@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.elvishew.xlog.XLog;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -56,6 +57,7 @@ public class FoodsFragment extends Fragment {
                     food.setType(dataSnapshots.getKey());
                     for (final DataSnapshot dataSnapshot1 : dataSnapshots.getChildren()) {
                         //XLog.d(dataSnapshot1.getKey());
+                        foods.clear();
                         databaseReference.child("foods").child(dataSnapshot1.getKey()).addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshots) {
@@ -64,11 +66,11 @@ public class FoodsFragment extends Fragment {
                                     final Food food = dataSnapshot2.getValue(Food.class);
                                     food.setType(dataSnapshot1.getKey());
                                     food.setUid(dataSnapshot2.getKey());
-                                    databaseReference.child("foods").child(dataSnapshot1.getKey()).child(dataSnapshot2.getKey()).child("restaurant").addValueEventListener(new ValueEventListener() {
+                                    databaseReference.child("foods").child(dataSnapshot1.getKey()).child(dataSnapshot2.getKey()).child("restaurant").addListenerForSingleValueEvent(new ValueEventListener() {
                                         @Override
                                         public void onDataChange(DataSnapshot dataSnapshot) {
                                             // XLog.d(dataSnapshot.getValue());
-                                            databaseReference.child("restaurants").child((String) dataSnapshot.getValue()).addValueEventListener(new ValueEventListener() {
+                                            databaseReference.child("restaurants").child((String) dataSnapshot.getValue()).addListenerForSingleValueEvent(new ValueEventListener() {
                                                 @Override
                                                 public void onDataChange(DataSnapshot dataSnapshot) {
                                                     Restaurant restaurant = dataSnapshot.getValue(Restaurant.class);
@@ -117,6 +119,9 @@ public class FoodsFragment extends Fragment {
             recyclerView.setItemAnimator(new DefaultItemAnimator());
             recyclerView.setAdapter(foodAdapter);
 
+        }
+        else {
+            XLog.d("firebaseAuth not exits");
         }
         return v;
     }

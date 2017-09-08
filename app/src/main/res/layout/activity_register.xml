@@ -25,7 +25,9 @@
         android:layout_marginTop="200dp"
         android:hint="Email"
         android:text="bartekziimny90@gmail.com"
-        app:met_floatingLabel="highlight" />
+        app:met_floatingLabel="highlight"
+        android:maxLines="1"
+        android:inputType="text"/>
 
     <com.rengwuxian.materialedittext.MaterialEditText
         android:id="@+id/password"
@@ -37,7 +39,8 @@
         android:hint="Password"
         android:inputType="textPassword"
         android:text="123456"
-        app:met_floatingLabel="highlight" />
+        app:met_floatingLabel="highlight"
+        android:maxLines="1"/>
 
     <com.rengwuxian.materialedittext.MaterialEditText
         android:id="@+id/confirmpassword"
@@ -49,7 +52,9 @@
         android:hint="Confirm password"
         android:inputType="textPassword"
         android:text="123456"
-        app:met_floatingLabel="highlight" />
+        app:met_floatingLabel="highlight"
+        android:maxLines="1"
+        />
 
     <Button
         android:id="@+id/register"

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="MultiCircleView">
-        <attr name="items" format="integer" />
+        <attr name="itemsCount" format="integer" />
         <attr name="defaultIcon" format="integer" />
         <attr name="icon1" format="integer" />
         <attr name="icon2" format="integer" />

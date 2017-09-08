@@ -39,12 +39,9 @@ public class FlatMainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
         firebaseAuth = FirebaseAuth.getInstance();
-
-//        FragmentManager fm = getSupportFragmentManager();
-//        FragmentTransaction ft = fm.beginTransaction();
-//        AdminOrderAddFragment fragment = new AdminOrderAddFragment();
-//        ft.add(R.id.content, fragment);
-//        ft.commit();
+        if (!getIntent().getBooleanExtra("admin",false)){
+            bottomNavigationView.getMenu().removeItem(R.id.admin);
+        }
 
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override

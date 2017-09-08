@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.elvishew.xlog.XLog;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.AuthResult;
@@ -27,7 +28,6 @@ import com.zimny.socialfood.R;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
 
 
 public class LoginActivity extends AppCompatActivity {
@@ -69,7 +69,7 @@ public class LoginActivity extends AppCompatActivity {
             login(user, pass);
         }
         if (firebaseUser != null) {
-            Toast.makeText(getApplicationContext(),String.format("You sign as %s .", firebaseUser.getEmail()),Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), String.format("You sign as %s .", firebaseUser.getEmail()), Toast.LENGTH_SHORT).show();
             FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
             final DatabaseReference databaseReference = firebaseDatabase.getReference();
             databaseReference.child("users").child(firebaseUser.getUid()).child("admin").addListenerForSingleValueEvent(new ValueEventListener() {
@@ -114,7 +114,7 @@ public class LoginActivity extends AppCompatActivity {
                     .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                         @Override
                         public void onSuccess(AuthResult authResult) {
-                            Toast.makeText(getApplicationContext(),String.format("You sign as %s .", authResult.getUser().getEmail()), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), String.format("You sign as %s .", authResult.getUser().getEmail()), Toast.LENGTH_SHORT).show();
                             FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
                             final DatabaseReference databaseReference = firebaseDatabase.getReference();
                             databaseReference.child("users").child(authResult.getUser().getUid()).child("admin").addListenerForSingleValueEvent(new ValueEventListener() {
@@ -143,13 +143,13 @@ public class LoginActivity extends AppCompatActivity {
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(getApplicationContext(),"Firebase : " + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), "Firebase : " + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
                         }
                     });
 
 
         } catch (Exception ex) {
-            Toast.makeText(getApplicationContext(),"App : " + ex.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "App : " + ex.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 

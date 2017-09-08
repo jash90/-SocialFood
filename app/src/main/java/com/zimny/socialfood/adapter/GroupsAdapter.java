@@ -1,13 +1,14 @@
 package com.zimny.socialfood.adapter;
 
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -15,10 +16,15 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.mikepenz.fontawesome_typeface_library.FontAwesome;
+import com.mikepenz.iconics.IconicsDrawable;
 import com.zimny.socialfood.R;
 import com.zimny.socialfood.model.Group;
 import com.zimny.socialfood.model.Tag;
 import com.zimny.socialfood.model.User;
+import com.zimny.socialfood.view.MultiCircleView;
 
 import java.util.ArrayList;
 
@@ -34,7 +40,6 @@ public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.ViewHolder
 
     ArrayList<Group> groups = new ArrayList<>();
 
-
     public GroupsAdapter(ArrayList<Group> groups) {
         this.groups = groups;
     }
@@ -48,12 +53,12 @@ public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.ViewHolder
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         final Group group = groups.get(position);
-        final int[] mutualFriends = {0};
+        // final int[] mutualFriends = {0};
         holder.nameGroup.setText(group.getName());
         //holder.city.setText(group.getAddress().getCity());
         //holder.mutualFriends.setText(String.format("Mutual Friends : %d", mutualFriends[0]));
         final ArrayList<User> userArrayList = new ArrayList<>();
-        final MutualFriendsAdapter mutualFriendsAdapter = new MutualFriendsAdapter(userArrayList);
+        //   final MutualFriendsAdapter mutualFriendsAdapter = new MutualFriendsAdapter(userArrayList);
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         final DatabaseReference databaseReference = firebaseDatabase.getReference();
         final FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
@@ -160,7 +165,7 @@ public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.ViewHolder
                 userArrayList.add(user);
                 group.setUsers(users);
                 //    XLog.d("TAGS " + group);
-                mutualFriendsAdapter.notifyDataSetChanged();
+                setupMultiCircleView(holder.usersIcon, users);
                 //  XLog.d("TAGS " + users);
 
             }
@@ -237,12 +242,74 @@ public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.ViewHolder
 //            }
 //        });
         //     XLog.d(group);
-        holder.recyclerView.setAdapter(mutualFriendsAdapter);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(holder.itemView.getContext(), LinearLayoutManager.HORIZONTAL, false);
-        holder.recyclerView.setLayoutManager(layoutManager);
-        holder.recyclerView.setItemAnimator(new DefaultItemAnimator());
-        holder.recyclerView.setAdapter(mutualFriendsAdapter);
+//        holder.recyclerView.setAdapter(mutualFriendsAdapter);
+//        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(holder.itemView.getContext(), LinearLayoutManager.HORIZONTAL, false);
+//        holder.recyclerView.setLayoutManager(layoutManager);
+//        holder.recyclerView.setItemAnimator(new DefaultItemAnimator());
+//        holder.recyclerView.setAdapter(mutualFriendsAdapter);
 
+    }
+
+    public void setupMultiCircleView(MultiCircleView multiCircleView, ArrayList<User> users) {
+        multiCircleView.setItemsCount(users.size());
+        FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
+        StorageReference storageReference = firebaseStorage.getReference();
+        StorageReference imageReference = storageReference.child(String.format("%s.png", users.get(0).getUid()));
+        Glide.with(multiCircleView.getContext())
+                .using(new FirebaseImageLoader())
+                .load(imageReference)
+                .error(new IconicsDrawable(multiCircleView.getContext())
+                        .icon(FontAwesome.Icon.faw_user_circle).sizeDp(40))
+                .into(multiCircleView.getCircle1());
+        if (users.size() > 1) {
+            switch (users.size()) {
+                case 2: {
+                    setupCircle(multiCircleView, 2, users.get(1), multiCircleView.getContext());
+                }
+                break;
+                default: {
+                    setupCircle(multiCircleView, 2, users.get(1), multiCircleView.getContext());
+                    setupCircle(multiCircleView, 3, users.get(2), multiCircleView.getContext());
+                }
+                break;
+            }
+
+        }
+    }
+
+    public void setupCircle(MultiCircleView multiCircleView, int numberCircle, User user, Context context) {
+        FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
+        StorageReference storageReference = firebaseStorage.getReference();
+        StorageReference imageReference = storageReference.child(String.format("%s.png", user.getUid()));
+        switch (numberCircle) {
+            case 1: {
+                Glide.with(context)
+                        .using(new FirebaseImageLoader())
+                        .load(imageReference)
+                        .error(new IconicsDrawable(context)
+                                .icon(FontAwesome.Icon.faw_user_circle).sizeDp(40))
+                        .into(multiCircleView.getCircle1());
+            }
+            break;
+            case 2: {
+                Glide.with(context)
+                        .using(new FirebaseImageLoader())
+                        .load(imageReference)
+                        .error(new IconicsDrawable(context)
+                                .icon(FontAwesome.Icon.faw_user_circle).sizeDp(40))
+                        .into(multiCircleView.getCircle2());
+            }
+            break;
+            case 3: {
+                Glide.with(context)
+                        .using(new FirebaseImageLoader())
+                        .load(imageReference)
+                        .error(new IconicsDrawable(context)
+                                .icon(FontAwesome.Icon.faw_user_circle).sizeDp(40))
+                        .into(multiCircleView.getCircle3());
+            }
+            break;
+        }
     }
 
     @Override
@@ -258,8 +325,10 @@ public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.ViewHolder
         //TextView city;
         @BindView(R.id.tagGroup)
         TagGroup tagGroup;
-        @BindView(R.id.recyclerView)
-        RecyclerView recyclerView;
+        @BindView(R.id.usersIcon)
+        MultiCircleView usersIcon;
+//        @BindView(R.id.recyclerView)
+//        RecyclerView recyclerView;
 //        @BindView(R.id.mutualFriends)
 //        TextView mutualFriends;
 

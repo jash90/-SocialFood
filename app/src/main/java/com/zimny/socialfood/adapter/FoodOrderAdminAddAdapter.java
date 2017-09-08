@@ -31,21 +31,21 @@ import butterknife.ButterKnife;
  * Created by ideo7 on 01.09.2017.
  */
 
-public class FoodOrderAdminAdapter extends RecyclerView.Adapter<FoodOrderAdminAdapter.ViewHolder> {
+public class FoodOrderAdminAddAdapter extends RecyclerView.Adapter<FoodOrderAdminAddAdapter.ViewHolder> {
     ArrayList<FoodOrder> foodOrders = new ArrayList<>();
 
-    public FoodOrderAdminAdapter(ArrayList<FoodOrder> foodOrders) {
+    public FoodOrderAdminAddAdapter(ArrayList<FoodOrder> foodOrders) {
         this.foodOrders = foodOrders;
     }
 
     @Override
-    public FoodOrderAdminAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public FoodOrderAdminAddAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_admin_order, parent, false);
-        return new FoodOrderAdminAdapter.ViewHolder(v);
+        return new FoodOrderAdminAddAdapter.ViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(final FoodOrderAdminAdapter.ViewHolder holder, final int position) {
+    public void onBindViewHolder(final FoodOrderAdminAddAdapter.ViewHolder holder, final int position) {
         final ArrayList<String> foodString = new ArrayList<>();
         final ArrayList<Food> foods = new ArrayList<>();
         final ArrayAdapter<Food> arrayAdapter = new ArrayAdapter<Food>(holder.itemView.getContext(), android.R.layout.simple_spinner_item, foods);
@@ -79,7 +79,7 @@ public class FoodOrderAdminAdapter extends RecyclerView.Adapter<FoodOrderAdminAd
                 @Override
                 public void onClick(View view) {
                     foodOrders.add(new FoodOrder());
-                    FoodOrderAdminAdapter.super.notifyDataSetChanged();
+                    FoodOrderAdminAddAdapter.super.notifyDataSetChanged();
 
                 }
             });

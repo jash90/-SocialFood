@@ -143,7 +143,7 @@ public class AdminGroupAddFragment extends Fragment {
                             databaseReference.child("groups").child(uid).child("users").child(userArrayList.get(i).getUid()).setValue(true);
                         }
                     }
-
+                    Toast.makeText(getContext(), group.toString(), Toast.LENGTH_SHORT).show();
                     //  XLog.d(group);
                 } else {
                     Toast.makeText(getContext(), "Group must have name", Toast.LENGTH_SHORT).show();

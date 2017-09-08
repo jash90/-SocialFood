@@ -39,7 +39,9 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:hint="Login/Email"
-                app:met_floatingLabel="highlight" />
+                app:met_floatingLabel="highlight"
+                android:maxLines="1"
+                android:inputType="text"/>
 
             <com.rengwuxian.materialedittext.MaterialEditText
                 android:id="@+id/password"
@@ -52,7 +54,9 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:hint="Password"
-                app:met_floatingLabel="highlight" />
+                app:met_floatingLabel="highlight"
+                android:maxLines="1"
+                android:inputType="text"/>
 
             <com.rengwuxian.materialedittext.MaterialEditText
                 android:id="@+id/firstname"
@@ -65,7 +69,9 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:hint="Firstname"
-                app:met_floatingLabel="highlight" />
+                app:met_floatingLabel="highlight"
+                android:maxLines="1"
+                android:inputType="text"/>
 
             <com.rengwuxian.materialedittext.MaterialEditText
                 android:id="@+id/lastname"
@@ -78,7 +84,9 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:hint="Lastname"
-                app:met_floatingLabel="highlight" />
+                app:met_floatingLabel="highlight"
+                android:maxLines="1"
+                android:inputType="text"/>
 
             <com.rengwuxian.materialedittext.MaterialEditText
                 android:id="@+id/city"
@@ -91,7 +99,9 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:hint="City"
-                app:met_floatingLabel="highlight" />
+                app:met_floatingLabel="highlight"
+                android:maxLines="1"
+                android:inputType="text"/>
 
             <com.rengwuxian.materialedittext.MaterialEditText
                 android:id="@+id/street"
@@ -104,7 +114,9 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:hint="Street"
-                app:met_floatingLabel="highlight" />
+                app:met_floatingLabel="highlight"
+                android:maxLines="1"
+                android:inputType="text"/>
 
             <com.rengwuxian.materialedittext.MaterialEditText
                 android:id="@+id/numberBuilding"
@@ -117,7 +129,9 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:hint="Number Building"
-                app:met_floatingLabel="highlight" />
+                app:met_floatingLabel="highlight"
+                android:maxLines="1"
+                android:inputType="text"/>
 
             <com.rengwuxian.materialedittext.MaterialEditText
                 android:id="@+id/numberHouse"
@@ -130,7 +144,9 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:hint="Number House"
-                app:met_floatingLabel="highlight" />
+                app:met_floatingLabel="highlight"
+                android:maxLines="1"
+                android:inputType="text"/>
 
             <com.rengwuxian.materialedittext.MaterialEditText
                 android:id="@+id/postalCode"
@@ -143,7 +159,9 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:hint="Postal Code"
-                app:met_floatingLabel="highlight" />
+                app:met_floatingLabel="highlight"
+                android:maxLines="1"
+                android:inputType="text"/>
 
             <Button
                 android:id="@+id/save"

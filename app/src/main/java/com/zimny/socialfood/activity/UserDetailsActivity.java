@@ -1,9 +1,11 @@
 package com.zimny.socialfood.activity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -18,24 +20,27 @@ import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.gson.Gson;
+import com.mikepenz.google_material_typeface_library.GoogleMaterial;
+import com.mikepenz.iconics.IconicsDrawable;
 import com.zimny.socialfood.R;
-import com.zimny.socialfood.fragment.UserFoodDetailsFragment;
-import com.zimny.socialfood.fragment.UserRestaurantDetailsFragment;
+import com.zimny.socialfood.fragment.FoodsFragment;
+import com.zimny.socialfood.fragment.FriendsFragment;
+import com.zimny.socialfood.fragment.GroupsFragment;
+import com.zimny.socialfood.fragment.RestaurantFragment;
 import com.zimny.socialfood.model.User;
-
-import net.yanzm.mth.MaterialTabHost;
 
 import org.joda.time.LocalDate;
 import org.joda.time.Period;
 import org.joda.time.PeriodType;
 
 import java.util.ArrayList;
-import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import it.neokree.materialtabs.MaterialTab;
+import it.neokree.materialtabs.MaterialTabListener;
 
-public class UserDetailsActivity extends AppCompatActivity {
+public class UserDetailsActivity extends AppCompatActivity implements MaterialTabListener {
     @BindView(R.id.collapsingToolbarLayout)
     CollapsingToolbarLayout collapsingToolbarLayout;
     @BindView(R.id.userImageView)
@@ -46,14 +51,16 @@ public class UserDetailsActivity extends AppCompatActivity {
     TextView age;
     @BindView(R.id.email)
     TextView email;
-//    @BindView(R.id.materialTabsUserDetails)
-//    MaterialTabHost materialTabHost;
-//    @BindView(R.id.viewPagerUserDetails)
-//    ViewPager viewPager;
+    @BindView(R.id.materialTabsUserDetails)
+    TabLayout materialTabHost;
+    @BindView(R.id.viewPagerUserDetails)
+    ViewPager viewPager;
     @BindView(R.id.floatingActionButton)
     FloatingActionButton floatingActionButton;
     Boolean invite = true;
     User user;
+    ArrayList<Fragment> fragments;
+    FragmentAdapter fragmentAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,15 +75,14 @@ public class UserDetailsActivity extends AppCompatActivity {
             email.setText(user.getUsername());
             if (user.getBirthday() != null) {
                 LocalDate birthday2 = LocalDate.fromDateFields(user.getBirthday());
-                //XLog.d(birthday2);
                 Period period = new Period(birthday2, LocalDate.now(), PeriodType.years());
-                //XLog.d("BD " + period);
                 age.setVisibility(View.VISIBLE);
                 age.setText(String.format("%d y.o.", period.getYears()));
             } else {
                 age.setVisibility(View.GONE);
             }
-            collapsingToolbarLayout.setTitle(String.format("%s %s",user.getFirstname(),user.getLastname()));
+
+            collapsingToolbarLayout.setTitle(String.format("%s %s", user.getFirstname(), user.getLastname()));
             FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
             StorageReference storageReference = firebaseStorage.getReference();
             StorageReference imageRef = storageReference.child(String.format("%s.png", user.getUid()));
@@ -96,35 +102,44 @@ public class UserDetailsActivity extends AppCompatActivity {
                     }
                 }
             });
-//            ArrayList<Fragment> fragments = new ArrayList<>();
-//            UserFoodDetailsFragment userFoodDetailsFragment = new UserFoodDetailsFragment();
-//            UserRestaurantDetailsFragment userRestaurantDetailsFragment = new UserRestaurantDetailsFragment();
-//            fragments.add(userFoodDetailsFragment);
-//            fragments.add(userRestaurantDetailsFragment);
-//            SectionsPagerAdapter pagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), fragments);
-//            //materialTabHost.setBackgroundResource(R.color.white);
-//            for (int i = 0; i < pagerAdapter.getCount(); i++) {
-//                materialTabHost.addTab(pagerAdapter.getPageTitle(i));
-//            }
-//
-//
-//            viewPager.setAdapter(pagerAdapter);
-//            viewPager.addOnPageChangeListener(materialTabHost);
-//            materialTabHost.setOnTabChangeListener(new MaterialTabHost.OnTabChangeListener() {
-//                @Override
-//                public void onTabSelected(int position) {
-//                    viewPager.setCurrentItem(position);
-//                }
-//            });
+            materialTabHost.setBackgroundResource(R.color.colorPrimary);
+            fragments = new ArrayList<>();
+            fragments.add(new FoodsFragment());
+            fragments.add(new RestaurantFragment());
+            fragments.add(new GroupsFragment());
+            fragments.add(new FriendsFragment());
+            fragmentAdapter = new FragmentAdapter(getSupportFragmentManager(), fragments);
+            viewPager.setAdapter(fragmentAdapter);
+            viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(materialTabHost));
+            materialTabHost.setupWithViewPager(viewPager);
+            materialTabHost.getTabAt(0).setIcon((new IconicsDrawable(getBaseContext()).icon(GoogleMaterial.Icon.gmd_restaurant_menu).color(Color.WHITE)).sizeDp(20));
+            materialTabHost.getTabAt(1).setIcon((new IconicsDrawable(getBaseContext()).icon(GoogleMaterial.Icon.gmd_restaurant).color(Color.WHITE)).sizeDp(20));
+            materialTabHost.getTabAt(2).setIcon((new IconicsDrawable(getBaseContext()).icon(GoogleMaterial.Icon.gmd_group).color(Color.WHITE)).sizeDp(20));
+            materialTabHost.getTabAt(3).setIcon(new IconicsDrawable(getBaseContext()).icon(GoogleMaterial.Icon.gmd_person).color(Color.WHITE).sizeDp(20));
+
         }
+    }
+
+    @Override
+    public void onTabSelected(MaterialTab tab) {
+        viewPager.setCurrentItem(tab.getPosition());
+    }
+
+    @Override
+    public void onTabReselected(MaterialTab tab) {
+        viewPager.setCurrentItem(tab.getPosition());
+    }
+
+    @Override
+    public void onTabUnselected(MaterialTab tab) {
 
     }
 
-    public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
+    public class FragmentAdapter extends FragmentPagerAdapter {
         ArrayList<Fragment> fragments = new ArrayList<>();
 
-        public SectionsPagerAdapter(FragmentManager fm, ArrayList<Fragment> fragments) {
+        public FragmentAdapter(FragmentManager fm, ArrayList<Fragment> fragments) {
             super(fm);
             this.fragments = fragments;
         }
@@ -137,18 +152,6 @@ public class UserDetailsActivity extends AppCompatActivity {
         @Override
         public int getCount() {
             return fragments.size();
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            Locale l = Locale.getDefault();
-            switch (position) {
-                case 0:
-                    return "Food".toUpperCase(l);
-                case 1:
-                    return "Restaurant".toUpperCase(l);
-            }
-            return null;
         }
     }
 

@@ -22,7 +22,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.zimny.socialfood.R;
-import com.zimny.socialfood.adapter.FoodOrderAdminAdapter;
+import com.zimny.socialfood.adapter.FoodOrderAdminAddAdapter;
 import com.zimny.socialfood.model.BaseOrder;
 import com.zimny.socialfood.model.FoodOrder;
 import com.zimny.socialfood.model.Group;
@@ -50,7 +50,7 @@ public class AdminBasketAddFragment extends Fragment {
     ArrayList<FoodOrder> foodOrders;
     ArrayAdapter<User> usersAdapter;
     ArrayAdapter<Group> groupAdapter;
-    FoodOrderAdminAdapter foodOrderAdminAdapter;
+    FoodOrderAdminAddAdapter foodOrderAdminAddAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -65,8 +65,8 @@ public class AdminBasketAddFragment extends Fragment {
         groupAdapter = new ArrayAdapter<Group>(getContext(), android.R.layout.simple_spinner_item, groups);
         user.setAdapter(usersAdapter);
         group.setAdapter(groupAdapter);
-        foodOrderAdminAdapter = new FoodOrderAdminAdapter(foodOrders);
-        recyclerView.setAdapter(foodOrderAdminAdapter);
+        foodOrderAdminAddAdapter = new FoodOrderAdminAddAdapter(foodOrders);
+        recyclerView.setAdapter(foodOrderAdminAddAdapter);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());

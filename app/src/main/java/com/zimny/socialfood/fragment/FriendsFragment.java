@@ -15,6 +15,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.gson.Gson;
 import com.zimny.socialfood.R;
 import com.zimny.socialfood.adapter.FriendsAdapter;
 import com.zimny.socialfood.model.User;
@@ -32,7 +33,7 @@ public class FriendsFragment extends Fragment {
     ArrayList<User> users;
     FriendsAdapter friendsAdapter;
     FirebaseAuth firebaseAuth;
-
+    User user;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -45,74 +46,146 @@ public class FriendsFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(friendsAdapter);
-        if (firebaseAuth.getCurrentUser() != null) {
-            FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-            final DatabaseReference databaseReference = firebaseDatabase.getReference();
-            databaseReference.child("relationships").addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshots) {
-                    for (DataSnapshot dataSnapshot : dataSnapshots.getChildren()) {
+        if (getActivity().getIntent().getStringExtra("json")==null) {
+            if (firebaseAuth.getCurrentUser() != null) {
+                FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+                final DatabaseReference databaseReference = firebaseDatabase.getReference();
+                databaseReference.child("relationships").addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshots) {
+                        for (DataSnapshot dataSnapshot : dataSnapshots.getChildren()) {
 
-                        final String friend1 = dataSnapshot.child("uidFriend1").getValue(String.class);
-                        final String friend2 = dataSnapshot.child("uidFriend2").getValue(String.class);
-                        // XLog.d(friend1+" "+friend2);
-                        if (friend1.equals(firebaseAuth.getCurrentUser().getUid())) {
-                            databaseReference.child("users").child(friend2).addValueEventListener(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(DataSnapshot dataSnapshot) {
-                                    User user = dataSnapshot.getValue(User.class);
-                                    user.setUid(dataSnapshot.getKey());
-                                    if (dataSnapshot.child("birthday").exists()) {
-                                        String date = dataSnapshot.child("birthday").getValue(String.class);
-                                        try {
-                                            user.setBirthday(new SimpleDateFormat("dd.MM.yyyy").parse(date));
-                                        } catch (ParseException e) {
-                                            e.printStackTrace();
+                            final String friend1 = dataSnapshot.child("uidFriend1").getValue(String.class);
+                            final String friend2 = dataSnapshot.child("uidFriend2").getValue(String.class);
+                            if (friend1.equals(firebaseAuth.getCurrentUser().getUid())) {
+                                databaseReference.child("users").child(friend2).addValueEventListener(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        User user = dataSnapshot.getValue(User.class);
+                                        user.setUid(dataSnapshot.getKey());
+                                        if (dataSnapshot.child("birthday").exists()) {
+                                            String date = dataSnapshot.child("birthday").getValue(String.class);
+                                            try {
+                                                user.setBirthday(new SimpleDateFormat("dd.MM.yyyy").parse(date));
+                                            } catch (ParseException e) {
+                                                e.printStackTrace();
+                                            }
                                         }
+                                        users.add(user);
+                                        friendsAdapter.notifyDataSetChanged();
                                     }
-                                    users.add(user);
-                                    friendsAdapter.notifyDataSetChanged();
-                                }
 
-                                @Override
-                                public void onCancelled(DatabaseError databaseError) {
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
 
-                                }
-                            });
-                        }
-                        if (friend2.equals(firebaseAuth.getCurrentUser().getUid())) {
-                            databaseReference.child("users").child(friend1).addValueEventListener(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(DataSnapshot dataSnapshot) {
-                                    User user = dataSnapshot.getValue(User.class);
-                                    user.setUid(dataSnapshot.getKey());
-                                    if (dataSnapshot.child("birthday").exists()) {
-                                        String date = dataSnapshot.child("birthday").getValue(String.class);
-                                        try {
-                                            user.setBirthday(new SimpleDateFormat("dd.MM.yyyy").parse(date));
-                                        } catch (ParseException e) {
-                                            e.printStackTrace();
+                                    }
+                                });
+                            }
+                            if (friend2.equals(firebaseAuth.getCurrentUser().getUid())) {
+                                databaseReference.child("users").child(friend1).addValueEventListener(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        User user = dataSnapshot.getValue(User.class);
+                                        user.setUid(dataSnapshot.getKey());
+                                        if (dataSnapshot.child("birthday").exists()) {
+                                            String date = dataSnapshot.child("birthday").getValue(String.class);
+                                            try {
+                                                user.setBirthday(new SimpleDateFormat("dd.MM.yyyy").parse(date));
+                                            } catch (ParseException e) {
+                                                e.printStackTrace();
+                                            }
                                         }
+                                        users.add(user);
+                                        friendsAdapter.notifyDataSetChanged();
                                     }
-                                    users.add(user);
-                                    friendsAdapter.notifyDataSetChanged();
-                                }
 
-                                @Override
-                                public void onCancelled(DatabaseError databaseError) {
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
 
-                                }
-                            });
+                                    }
+                                });
+                            }
                         }
                     }
-                }
 
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
 
-                }
-            });
+                    }
+                });
+            }
         }
+        else{
+          final String json = getActivity().getIntent().getStringExtra("json");
+            if (json != null) {
+                user = new Gson().fromJson(json, User.class);
+                FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+                final DatabaseReference databaseReference = firebaseDatabase.getReference();
+                databaseReference.child("relationships").addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshots) {
+                        for (DataSnapshot dataSnapshot : dataSnapshots.getChildren()) {
+
+                            final String friend1 = dataSnapshot.child("uidFriend1").getValue(String.class);
+                            final String friend2 = dataSnapshot.child("uidFriend2").getValue(String.class);
+                            if (friend1.equals(user.getUid())) {
+                                databaseReference.child("users").child(friend2).addValueEventListener(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        User user = dataSnapshot.getValue(User.class);
+                                        user.setUid(dataSnapshot.getKey());
+                                        if (dataSnapshot.child("birthday").exists()) {
+                                            String date = dataSnapshot.child("birthday").getValue(String.class);
+                                            try {
+                                                user.setBirthday(new SimpleDateFormat("dd.MM.yyyy").parse(date));
+                                            } catch (ParseException e) {
+                                                e.printStackTrace();
+                                            }
+                                        }
+                                        users.add(user);
+                                        friendsAdapter.notifyDataSetChanged();
+                                    }
+
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+
+                                    }
+                                });
+                            }
+                            if (friend2.equals(user.getUid())) {
+                                databaseReference.child("users").child(friend1).addValueEventListener(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        User user = dataSnapshot.getValue(User.class);
+                                        user.setUid(dataSnapshot.getKey());
+                                        if (dataSnapshot.child("birthday").exists()) {
+                                            String date = dataSnapshot.child("birthday").getValue(String.class);
+                                            try {
+                                                user.setBirthday(new SimpleDateFormat("dd.MM.yyyy").parse(date));
+                                            } catch (ParseException e) {
+                                                e.printStackTrace();
+                                            }
+                                        }
+                                        users.add(user);
+                                        friendsAdapter.notifyDataSetChanged();
+                                    }
+
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+
+                                    }
+                                });
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
+        }}
         return v;
     }
 

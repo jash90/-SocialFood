@@ -228,7 +228,7 @@ public class MyAccountFragment extends Fragment {
                         }
                     });
                 }
-                Toast.makeText(getContext(),"Dane zmienione",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Dane zmienione", Toast.LENGTH_SHORT).show();
             }
         });
         return v;

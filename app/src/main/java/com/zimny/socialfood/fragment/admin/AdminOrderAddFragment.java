@@ -28,7 +28,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.zimny.socialfood.R;
-import com.zimny.socialfood.adapter.FoodOrderAdminAdapter;
+import com.zimny.socialfood.adapter.FoodOrderAdminAddAdapter;
 import com.zimny.socialfood.model.FoodOrder;
 import com.zimny.socialfood.model.Group;
 import com.zimny.socialfood.model.Order;
@@ -57,7 +57,7 @@ public class AdminOrderAddFragment extends Fragment implements DatePickerDialog.
     Switch paying;
     @BindView(R.id.save)
     Button save;
-    FoodOrderAdminAdapter foodOrderAdminAdapter;
+    FoodOrderAdminAddAdapter foodOrderAdminAddAdapter;
     ArrayList<FoodOrder> foodOrders;
     ArrayList<User> users;
     ArrayAdapter<User> usersAdapter;
@@ -81,8 +81,8 @@ public class AdminOrderAddFragment extends Fragment implements DatePickerDialog.
         groupAdapter = new ArrayAdapter<Group>(getContext(), android.R.layout.simple_spinner_item, groups);
         user.setAdapter(usersAdapter);
         group.setAdapter(groupAdapter);
-        foodOrderAdminAdapter = new FoodOrderAdminAdapter(foodOrders);
-        recyclerView.setAdapter(foodOrderAdminAdapter);
+        foodOrderAdminAddAdapter = new FoodOrderAdminAddAdapter(foodOrders);
+        recyclerView.setAdapter(foodOrderAdminAddAdapter);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());

@@ -52,7 +52,7 @@ public class RegisterActivity extends AppCompatActivity {
                             .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                                 @Override
                                 public void onSuccess(AuthResult authResult) {
-                                    Toast.makeText(getApplicationContext(),String.format("Create account %s .", authResult.getUser().getEmail()), Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getApplicationContext(), String.format("Create account %s .", authResult.getUser().getEmail()), Toast.LENGTH_SHORT).show();
                                     firebaseAuth.signInWithEmailAndPassword(login.getText().toString(), password.getText().toString()).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                                         @Override
                                         public void onSuccess(AuthResult authResult) {
@@ -64,7 +64,7 @@ public class RegisterActivity extends AppCompatActivity {
                                     }).addOnFailureListener(new OnFailureListener() {
                                         @Override
                                         public void onFailure(@NonNull Exception e) {
-                                            Toast.makeText(getApplicationContext(),e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(getApplicationContext(), e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
                                         }
                                     });
                                     progressDialog.dismiss();
@@ -78,13 +78,13 @@ public class RegisterActivity extends AppCompatActivity {
                             .addOnFailureListener(new OnFailureListener() {
                                 @Override
                                 public void onFailure(@NonNull Exception e) {
-                                    Toast.makeText(getApplicationContext(),e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getApplicationContext(), e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
                                     progressDialog.dismiss();
                                 }
                             });
 
                 } else {
-                    Toast.makeText(getApplicationContext(),"Password and Confirm Password isn't the same.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Password and Confirm Password isn't the same.", Toast.LENGTH_SHORT).show();
                 }
 
             }
