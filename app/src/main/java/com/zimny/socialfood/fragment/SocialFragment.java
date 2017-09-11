@@ -31,9 +31,9 @@ public class SocialFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_social, container, false);
         ButterKnife.bind(this, v);
         ArrayList<Fragment> fragments = new ArrayList<>();
-        FriendsFragment friendsFragment = new FriendsFragment();
+        UsersFragment usersFragment = new UsersFragment();
         GroupsFragment groupsFragment = new GroupsFragment();
-        fragments.add(friendsFragment);
+        fragments.add(usersFragment);
         fragments.add(groupsFragment);
         SectionsPagerAdapter pagerAdapter = new SectionsPagerAdapter(getChildFragmentManager(), fragments);
         for (int i = 0; i < pagerAdapter.getCount(); i++) {

@@ -1,5 +1,6 @@
 package com.zimny.socialfood.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -13,23 +14,26 @@ public class Restaurant {
     private String uid;
     private List<Tag> tags;
     private String name;
+    private String imageUpload;
 
     public Restaurant() {
         this.setAddress(new Address());
     }
 
-    public Restaurant(List<Food> foods, Address address, int phone, String uid, List<Tag> tags, String name) {
+    public Restaurant(ArrayList<Food> foods, Address address, int phone, String uid, List<Tag> tags, String name, String imageUpload) {
         this.foods = foods;
         this.address = address;
         this.phone = phone;
         this.uid = uid;
         this.tags = tags;
         this.name = name;
+        this.imageUpload = imageUpload;
     }
 
-    public Restaurant(String name, int phone) {
+    public Restaurant(String name, int phone, String imageUpload) {
         this.phone = phone;
         this.name = name;
+        this.imageUpload = imageUpload;
     }
 
     public List<Food> getFoods() {
@@ -80,8 +84,48 @@ public class Restaurant {
         this.name = name;
     }
 
+    public String getImageUpload() {
+        return imageUpload;
+    }
+
+    public void setImageUpload(String imageUpload) {
+        this.imageUpload = imageUpload;
+    }
+
+
+
+    public ArrayList<String> getTagss(){
+        ArrayList<String> tags = new ArrayList<>();
+        for (Tag tag : this.tags){
+            tags.add(tag.getName());
+        }
+        return tags;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Restaurant)) return false;
+        Restaurant that = (Restaurant) o;
+        return uid != null && uid.equals(that.uid);
+    }
+
+
+    @Override
+    public int hashCode() {
+        int result = foods != null ? foods.hashCode() : 0;
+        result = 31 * result + (address != null ? address.hashCode() : 0);
+        result = 31 * result + phone;
+        result = 31 * result + (uid != null ? uid.hashCode() : 0);
+        result = 31 * result + (tags != null ? tags.hashCode() : 0);
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (imageUpload != null ? imageUpload.hashCode() : 0);
+        return result;
+    }
+
     @Override
     public String toString() {
         return String.format("%s %s", name, address);
     }
+
 }

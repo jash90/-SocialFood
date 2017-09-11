@@ -152,7 +152,10 @@ public class FoodOrderAdminAddAdapter extends RecyclerView.Adapter<FoodOrderAdmi
             @Override
             public void afterTextChanged(Editable editable) {
                 Food food = (Food) holder.foodOrder.getSelectedItem();
-                Integer count = Integer.valueOf(editable.toString());
+                Integer count =0;
+                if (!editable.toString().isEmpty()) {
+                    count = Integer.valueOf(editable.toString());
+                }
                 FoodOrder foodOrder = new FoodOrder(food, count);
                 foodOrders.set(position, foodOrder);
                 //XLog.d("zmiana " + foodOrder);

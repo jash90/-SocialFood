@@ -1,5 +1,6 @@
 package com.zimny.socialfood.adapter;
 
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.elvishew.xlog.XLog;
+import com.bumptech.glide.signature.StringSignature;
 import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
@@ -18,7 +19,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.gson.Gson;
 import com.zimny.socialfood.R;
+import com.zimny.socialfood.activity.details.RestaurantDetailsActivity;
 import com.zimny.socialfood.model.Restaurant;
 import com.zimny.socialfood.model.Tag;
 
@@ -61,13 +64,24 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
         FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
         StorageReference storageReference = firebaseStorage.getReference();
         StorageReference imageRef = storageReference.child(String.format("%s.png", restaurant.getUid()));
-
+        //XLog.d(restaurant.getImageUpload());
         Glide.with(holder.itemView.getContext())
                 .using(new FirebaseImageLoader())
                 .load(imageRef)
                 .error(R.drawable.restaurant_store)
+                .signature(new StringSignature(restaurant.getImageUpload()))
                 .centerCrop()
                 .into(holder.restaurantImageCircle);
+
+        holder.restaurantImageCircle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), RestaurantDetailsActivity.class);
+                String restaurantJson = new Gson().toJson(restaurant);
+                intent.putExtra("restaurant",restaurantJson);
+                view.getContext().startActivity(intent);
+            }
+        });
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
         final ArrayList<String> tagsString = new ArrayList<>();
         final ArrayList<Tag> tags = new ArrayList<>();
@@ -86,12 +100,13 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
                                         databaseReference.child("tags").child(dataSnapshot.getKey()).addValueEventListener(new ValueEventListener() {
                                             @Override
                                             public void onDataChange(DataSnapshot dataSnapshot) {
-                                                XLog.d(dataSnapshot);
+                                             //   XLog.d(dataSnapshot);
                                                 Tag tag = dataSnapshot.getValue(Tag.class);
                                                 tag.setUid(dataSnapshot.getKey());
                                                 if (!tagsString.contains(tag.getName())) {
                                                     tags.add(tag);
                                                     tagsString.add(tag.getName());
+                                                    restaurant.setTags(tags);
                                                     holder.tagGroup.setTags(tagsString);
                                                 }
                                             }

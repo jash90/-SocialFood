@@ -57,7 +57,7 @@ public class GroupsFragment extends Fragment {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        if (getActivity().getIntent().getStringExtra("json") == null) {
+        if (getActivity().getIntent().getStringExtra("user") == null) {
             if (firebaseAuth != null) {
                 firebaseDatabase = FirebaseDatabase.getInstance();
                 final DatabaseReference databaseReference = firebaseDatabase.getReference();
@@ -84,7 +84,7 @@ public class GroupsFragment extends Fragment {
 
             }
         } else {
-            final String json = getActivity().getIntent().getStringExtra("json");
+            final String json = getActivity().getIntent().getStringExtra("user");
             if (json != null) {
                 user = new Gson().fromJson(json, User.class);
                 firebaseDatabase = FirebaseDatabase.getInstance();

@@ -22,7 +22,7 @@ import com.google.gson.Gson;
 import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.mikepenz.iconics.IconicsDrawable;
 import com.zimny.socialfood.R;
-import com.zimny.socialfood.activity.OrderDetails;
+import com.zimny.socialfood.activity.details.OrderDetailsActivity;
 import com.zimny.socialfood.model.Food;
 import com.zimny.socialfood.model.FoodOrder;
 import com.zimny.socialfood.model.Order;
@@ -139,9 +139,9 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
             @Override
             public void onClick(View view) {
                 //Toast.makeText(holder.itemView.getContext(), orders.get(position).toString(),Toast.LENGTH_SHORT).show();
-                String orderJson = new Gson().toJson(orders.get(position));
-                Intent intent = new Intent(holder.itemView.getContext(), OrderDetails.class);
-                intent.putExtra("json", orderJson);
+                String orderJson = new Gson().toJson(order);
+                Intent intent = new Intent(holder.itemView.getContext(), OrderDetailsActivity.class);
+                intent.putExtra("order", orderJson);
                 holder.itemView.getContext().startActivity(intent);
             }
         });

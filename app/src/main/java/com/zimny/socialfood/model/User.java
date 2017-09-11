@@ -24,6 +24,7 @@ public class User {
     private List<Order> orders;
     private Order shoppingBasket;
     private List<Relationship> relationships;
+    private String imageUpload;
 
     public User() {
         uid = "";
@@ -38,13 +39,14 @@ public class User {
         orders = new ArrayList<>();
         shoppingBasket = new Order();
         relationships = new ArrayList<>();
+        imageUpload ="";
     }
 
     public User(String username) {
         this.username = username;
     }
 
-    public User(String uid, String username, String firstname, String lastname, Address address, Date birthday, List<Restaurant> restaurants, List<Food> foods, List<Group> groups, List<Order> orders, Order shoppingBasket, List<Relationship> relationships) {
+    public User(String uid, String username, String firstname, String lastname, Address address, Date birthday, List<Restaurant> restaurants, List<Food> foods, List<Group> groups, List<Order> orders, Order shoppingBasket, List<Relationship> relationships, String imageUpload) {
         this.uid = uid;
         this.username = username;
         this.firstname = firstname;
@@ -57,6 +59,7 @@ public class User {
         this.orders = orders;
         this.shoppingBasket = shoppingBasket;
         this.relationships = relationships;
+        this.imageUpload = imageUpload;
     }
 
     public String getUid() {
@@ -154,6 +157,14 @@ public class User {
 
     public void setRelationships(List<Relationship> relationships) {
         this.relationships = relationships;
+    }
+
+    public String getImageUpload() {
+        return imageUpload;
+    }
+
+    public void setImageUpload(String imageUpload) {
+        this.imageUpload = imageUpload;
     }
 
     @Override

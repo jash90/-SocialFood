@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -33,7 +34,7 @@ public class RegisterActivity extends AppCompatActivity {
     @BindView(R.id.register)
     Button register;
     FirebaseAuth firebaseAuth;
-    ProgressDialog progressDialog;
+    ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,13 +42,12 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register);
         ButterKnife.bind(this);
         firebaseAuth = FirebaseAuth.getInstance();
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("Registering ...");
+        progressBar = new ProgressBar(this, null, android.R.attr.progressBarStyleHorizontal);
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (password.getText().toString().equals(confirmPassword.getText().toString())) {
-                    progressDialog.show();
+                    progressBar.setVisibility(View.VISIBLE);
                     firebaseAuth.createUserWithEmailAndPassword(login.getText().toString(), password.getText().toString())
                             .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                                 @Override
@@ -67,7 +67,7 @@ public class RegisterActivity extends AppCompatActivity {
                                             Toast.makeText(getApplicationContext(), e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
                                         }
                                     });
-                                    progressDialog.dismiss();
+                                    progressBar.setVisibility(View.GONE);
                                     Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
                                     intent.putExtra("logout", false);
                                     intent.putExtra("user", login.getText().toString());
@@ -79,7 +79,7 @@ public class RegisterActivity extends AppCompatActivity {
                                 @Override
                                 public void onFailure(@NonNull Exception e) {
                                     Toast.makeText(getApplicationContext(), e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-                                    progressDialog.dismiss();
+                                    progressBar.setVisibility(View.GONE);
                                 }
                             });
 

@@ -1,14 +1,17 @@
 package com.zimny.socialfood.adapter;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.signature.StringSignature;
 import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -17,10 +20,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.gson.Gson;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
 import com.zimny.socialfood.R;
-import com.zimny.socialfood.activity.FoodDetailsActivity;
+import com.zimny.socialfood.activity.details.FoodDetailsActivity;
 import com.zimny.socialfood.model.Food;
 import com.zimny.socialfood.model.Tag;
 
@@ -59,6 +63,13 @@ public class FoodsAdapter extends RecyclerView.Adapter<FoodsAdapter.ViewHolder> 
         //holder.type.setText(food.getType());
         // holder.nameRestaurant.setText(food.getRestaurant().getName());
         //holder.nameRestaurant.setText(food.getRestaurant().getName());
+
+
+        if (((Activity) holder.itemView.getContext()).getIntent().getStringExtra("json") != null) {
+            holder.countFoodLinearLayout.setVisibility(View.GONE);
+        } else {
+            holder.countFoodLinearLayout.setVisibility(View.VISIBLE);
+        }
         FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
         StorageReference storageReference = firebaseStorage.getReference();
         StorageReference imageRef = storageReference.child(String.format("%s.png", food.getUid()));
@@ -67,6 +78,7 @@ public class FoodsAdapter extends RecyclerView.Adapter<FoodsAdapter.ViewHolder> 
                 .using(new FirebaseImageLoader())
                 .load(imageRef)
                 .error(R.drawable.restaurant_menu)
+                .signature(new StringSignature(food.getImageUpload()))
                 .into(holder.foodImageCircle);
 
         holder.foodImageCircle.setOnClickListener(new View.OnClickListener() {
@@ -74,8 +86,7 @@ public class FoodsAdapter extends RecyclerView.Adapter<FoodsAdapter.ViewHolder> 
             public void onClick(View view) {
                 //   XLog.d("test");
                 Intent intent = new Intent(view.getContext(), FoodDetailsActivity.class);
-                intent.putExtra("uid", food.getUid());
-                intent.putExtra("type", food.getType());
+                intent.putExtra("food",new Gson().toJson(food));
                 view.getContext().startActivity(intent);
 
 
@@ -166,6 +177,8 @@ public class FoodsAdapter extends RecyclerView.Adapter<FoodsAdapter.ViewHolder> 
         Button minusFood;
         @BindView(R.id.countFood)
         TextView countFood;
+        @BindView(R.id.countFoodLayout)
+        LinearLayout countFoodLinearLayout;
 
         public ViewHolder(View itemView) {
             super(itemView);

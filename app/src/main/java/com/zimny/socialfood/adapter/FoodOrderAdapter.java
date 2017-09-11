@@ -8,11 +8,14 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.signature.StringSignature;
 import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.gson.Gson;
+import com.mikepenz.iconics.IconicsDrawable;
 import com.zimny.socialfood.R;
-import com.zimny.socialfood.activity.FoodDetailsActivity;
+import com.zimny.socialfood.activity.details.FoodDetailsActivity;
 import com.zimny.socialfood.model.FoodOrder;
 
 import java.util.ArrayList;
@@ -50,13 +53,14 @@ public class FoodOrderAdapter extends RecyclerView.Adapter<FoodOrderAdapter.View
         Glide.with(holder.itemView.getContext())
                 .using(new FirebaseImageLoader())
                 .load(imageRef)
+                .error(R.drawable.restaurant_menu)
+                .signature(new StringSignature(foodOrder.getImageUpload()))
                 .into(holder.foodImageCircle);
         holder.foodImageCircle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), FoodDetailsActivity.class);
-                intent.putExtra("uid", foodOrder.getUid());
-                intent.putExtra("type", foodOrder.getType());
+                intent.putExtra("food",new Gson().toJson(foodOrder.getFood()));
                 view.getContext().startActivity(intent);
             }
         });

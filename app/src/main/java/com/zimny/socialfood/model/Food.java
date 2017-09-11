@@ -16,11 +16,12 @@ public class Food {
     private String uid;
     private Restaurant restaurant;
     private String type;
+    private String imageUpload;
 
     public Food() {
     }
 
-    public Food(String name, double price, List<Tag> tags, String description, String uid, Restaurant restaurant, String type) {
+    public Food(String name, double price, List<Tag> tags, String description, String uid, Restaurant restaurant, String type, String imageUpload) {
         this.name = name;
         this.price = price;
         this.tags = tags;
@@ -28,6 +29,7 @@ public class Food {
         this.uid = uid;
         this.restaurant = restaurant;
         this.type = type;
+        this.imageUpload = imageUpload;
     }
 
     public String getName() {
@@ -88,8 +90,40 @@ public class Food {
         this.type = type;
     }
 
+    public String getImageUpload() {
+        return imageUpload;
+    }
+
+    public void setImageUpload(String imageUpload) {
+        this.imageUpload = imageUpload;
+    }
+
     @Override
     public String toString() {
         return String.format("%s, %.2f %s", name, price, restaurant);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Food)) return false;
+        Food food = (Food) o;
+        return uid != null && uid.equals(food.uid);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result;
+        long temp;
+        result = name != null ? name.hashCode() : 0;
+        temp = Double.doubleToLongBits(price);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        result = 31 * result + (tags != null ? tags.hashCode() : 0);
+        result = 31 * result + (description != null ? description.hashCode() : 0);
+        result = 31 * result + (uid != null ? uid.hashCode() : 0);
+        result = 31 * result + (restaurant != null ? restaurant.hashCode() : 0);
+        result = 31 * result + (type != null ? type.hashCode() : 0);
+        return result;
     }
 }

@@ -13,17 +13,19 @@ public class Group {
     private String uidAdmin;
     private List<Tag> tags;
     private String name;
+    private String imageUpload;
 
     public Group() {
     }
 
-    public Group(String uid, ArrayList<User> users, Address address, String uidAdmin, List<Tag> tags, String name) {
+    public Group(String uid, ArrayList<User> users, Address address, String uidAdmin, List<Tag> tags, String name, String imageUpload) {
         this.uid = uid;
         this.users = users;
         this.address = address;
         this.uidAdmin = uidAdmin;
         this.tags = tags;
         this.name = name;
+        this.imageUpload = imageUpload;
     }
 
     public String getName() {
@@ -65,6 +67,14 @@ public class Group {
 
     public void setUidAdmin(String uidAdmin) {
         this.uidAdmin = uidAdmin;
+    }
+
+    public String getImageUpload() {
+        return imageUpload;
+    }
+
+    public void setImageUpload(String imageUpload) {
+        this.imageUpload = imageUpload;
     }
 
     @Exclude

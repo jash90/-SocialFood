@@ -17,12 +17,12 @@ public class FoodOrder extends Food {
     }
 
     public FoodOrder(Food food, int count) {
-        super(food.getName(), food.getPrice(), food.getTags(), food.getDescription(), food.getUid(), food.getRestaurant(), food.getType());
+        super(food.getName(), food.getPrice(), food.getTags(), food.getDescription(), food.getUid(), food.getRestaurant(), food.getType(),food.getImageUpload());
         this.count = count;
     }
 
-    public FoodOrder(String name, double price, List<Tag> tags, String description, String uid, Restaurant restaurant, String type, int count) {
-        super(name, price, tags, description, uid, restaurant, type);
+    public FoodOrder(String name, double price, List<Tag> tags, String description, String uid, Restaurant restaurant, String type, int count, String imageUpload) {
+        super(name, price, tags, description, uid, restaurant, type,imageUpload);
         this.count = count;
     }
 
@@ -35,7 +35,9 @@ public class FoodOrder extends Food {
         super.setUid(food.getUid());
         super.setTags(food.getTags());
     }
-
+    public Food getFood(){
+        return new Food(super.getName(),super.getPrice(),super.getTags(),super.getDescription(),super.getUid(),super.getRestaurant(),super.getType(),super.getImageUpload());
+    }
     public int getCount() {
         return count;
     }

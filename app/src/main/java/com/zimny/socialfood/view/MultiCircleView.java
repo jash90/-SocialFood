@@ -15,8 +15,17 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.elvishew.xlog.XLog;
+import com.firebase.ui.storage.images.FirebaseImageLoader;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.mikepenz.fontawesome_typeface_library.FontAwesome;
+import com.mikepenz.iconics.IconicsDrawable;
 import com.zimny.socialfood.R;
+import com.zimny.socialfood.model.User;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -381,6 +390,67 @@ public class MultiCircleView extends LinearLayout {
             }
         }
 
+    }
+    public static void setupMultiCircleView(MultiCircleView multiCircleView, ArrayList<User> users) {
+        multiCircleView.setItemsCount(users.size());
+        FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
+        StorageReference storageReference = firebaseStorage.getReference();
+        StorageReference imageReference = storageReference.child(String.format("%s.png", users.get(0).getUid()));
+        Glide.with(multiCircleView.getContext())
+                .using(new FirebaseImageLoader())
+                .load(imageReference)
+                .error(new IconicsDrawable(multiCircleView.getContext())
+                        .icon(FontAwesome.Icon.faw_user_circle).sizeDp(40))
+                .into(multiCircleView.getCircle1());
+        if (users.size() > 1) {
+            switch (users.size()) {
+                case 2: {
+                    setupCircle(multiCircleView, 2, users.get(1), multiCircleView.getContext());
+                }
+                break;
+                default: {
+                    setupCircle(multiCircleView, 2, users.get(1), multiCircleView.getContext());
+                    setupCircle(multiCircleView, 3, users.get(2), multiCircleView.getContext());
+                }
+                break;
+            }
+
+        }
+    }
+
+    public static void setupCircle(MultiCircleView multiCircleView, int numberCircle, User user, Context context) {
+        FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
+        StorageReference storageReference = firebaseStorage.getReference();
+        StorageReference imageReference = storageReference.child(String.format("%s.png", user.getUid()));
+        switch (numberCircle) {
+            case 1: {
+                Glide.with(context)
+                        .using(new FirebaseImageLoader())
+                        .load(imageReference)
+                        .error(new IconicsDrawable(context)
+                                .icon(FontAwesome.Icon.faw_user_circle).sizeDp(40))
+                        .into(multiCircleView.getCircle1());
+            }
+            break;
+            case 2: {
+                Glide.with(context)
+                        .using(new FirebaseImageLoader())
+                        .load(imageReference)
+                        .error(new IconicsDrawable(context)
+                                .icon(FontAwesome.Icon.faw_user_circle).sizeDp(40))
+                        .into(multiCircleView.getCircle2());
+            }
+            break;
+            case 3: {
+                Glide.with(context)
+                        .using(new FirebaseImageLoader())
+                        .load(imageReference)
+                        .error(new IconicsDrawable(context)
+                                .icon(FontAwesome.Icon.faw_user_circle).sizeDp(40))
+                        .into(multiCircleView.getCircle3());
+            }
+            break;
+        }
     }
 
 

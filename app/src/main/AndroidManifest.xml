@@ -23,12 +23,12 @@
         <activity android:name=".activity.MainActivity" />
         <activity android:name=".activity.RegisterActivity" />
         <activity android:name=".activity.AdminActivity" />
-        <activity android:name=".activity.FoodDetailsActivity" />
+        <activity android:name=".activity.details.FoodDetailsActivity" />
         <activity android:name=".activity.FlatMainActivity" />
-        <activity android:name=".activity.OrderDetails" />
-        <activity android:name=".activity.UserDetailsActivity" />
-        <activity android:name=".activity.RestaurantDetailsActivity" />
-        <activity android:name=".activity.GroupDetailsActivity"></activity>
+        <activity android:name=".activity.details.OrderDetailsActivity" />
+        <activity android:name=".activity.details.UserDetailsActivity" />
+        <activity android:name=".activity.details.RestaurantDetailsActivity" />
+        <activity android:name=".activity.details.GroupDetailsActivity"></activity>
     </application>
 
 </manifest>

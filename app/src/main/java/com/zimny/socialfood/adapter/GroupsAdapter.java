@@ -1,6 +1,7 @@
 package com.zimny.socialfood.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,7 +9,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.elvishew.xlog.XLog;
 import com.firebase.ui.storage.images.FirebaseImageLoader;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -18,9 +21,12 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.gson.Gson;
 import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.mikepenz.iconics.IconicsDrawable;
 import com.zimny.socialfood.R;
+import com.zimny.socialfood.activity.details.FoodDetailsActivity;
+import com.zimny.socialfood.activity.details.GroupDetailsActivity;
 import com.zimny.socialfood.model.Group;
 import com.zimny.socialfood.model.Tag;
 import com.zimny.socialfood.model.User;
@@ -66,6 +72,14 @@ public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.ViewHolder
         final ArrayList<Tag> tags = new ArrayList<>();
         tags.add(new Tag(group.getAddress().getCity()));
         tagsString.add(group.getAddress().getCity());
+        holder.usersIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), GroupDetailsActivity.class);
+                intent.putExtra("group",new Gson().toJson(group));
+                view.getContext().startActivity(intent);
+            }
+        });
         databaseReference.child("groups").child(group.getUid()).child("tags").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshots) {
@@ -77,6 +91,7 @@ public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.ViewHolder
                             Tag tag = dataSnapshot.getValue(Tag.class);
                             tags.add(tag);
                             tagsString.add(tag.getName());
+                            group.setTags(tags);
                             holder.tagGroup.setTags(tagsString);
                             //   XLog.d("TAG  " + tag);
                             //   XLog.d("TAGS " + tags);
@@ -164,8 +179,9 @@ public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.ViewHolder
                 users.add(user);
                 userArrayList.add(user);
                 group.setUsers(users);
+                XLog.d(group);
                 //    XLog.d("TAGS " + group);
-                setupMultiCircleView(holder.usersIcon, users);
+                MultiCircleView.setupMultiCircleView(holder.usersIcon, users);
                 //  XLog.d("TAGS " + users);
 
             }
@@ -250,67 +266,7 @@ public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.ViewHolder
 
     }
 
-    public void setupMultiCircleView(MultiCircleView multiCircleView, ArrayList<User> users) {
-        multiCircleView.setItemsCount(users.size());
-        FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
-        StorageReference storageReference = firebaseStorage.getReference();
-        StorageReference imageReference = storageReference.child(String.format("%s.png", users.get(0).getUid()));
-        Glide.with(multiCircleView.getContext())
-                .using(new FirebaseImageLoader())
-                .load(imageReference)
-                .error(new IconicsDrawable(multiCircleView.getContext())
-                        .icon(FontAwesome.Icon.faw_user_circle).sizeDp(40))
-                .into(multiCircleView.getCircle1());
-        if (users.size() > 1) {
-            switch (users.size()) {
-                case 2: {
-                    setupCircle(multiCircleView, 2, users.get(1), multiCircleView.getContext());
-                }
-                break;
-                default: {
-                    setupCircle(multiCircleView, 2, users.get(1), multiCircleView.getContext());
-                    setupCircle(multiCircleView, 3, users.get(2), multiCircleView.getContext());
-                }
-                break;
-            }
 
-        }
-    }
-
-    public void setupCircle(MultiCircleView multiCircleView, int numberCircle, User user, Context context) {
-        FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
-        StorageReference storageReference = firebaseStorage.getReference();
-        StorageReference imageReference = storageReference.child(String.format("%s.png", user.getUid()));
-        switch (numberCircle) {
-            case 1: {
-                Glide.with(context)
-                        .using(new FirebaseImageLoader())
-                        .load(imageReference)
-                        .error(new IconicsDrawable(context)
-                                .icon(FontAwesome.Icon.faw_user_circle).sizeDp(40))
-                        .into(multiCircleView.getCircle1());
-            }
-            break;
-            case 2: {
-                Glide.with(context)
-                        .using(new FirebaseImageLoader())
-                        .load(imageReference)
-                        .error(new IconicsDrawable(context)
-                                .icon(FontAwesome.Icon.faw_user_circle).sizeDp(40))
-                        .into(multiCircleView.getCircle2());
-            }
-            break;
-            case 3: {
-                Glide.with(context)
-                        .using(new FirebaseImageLoader())
-                        .load(imageReference)
-                        .error(new IconicsDrawable(context)
-                                .icon(FontAwesome.Icon.faw_user_circle).sizeDp(40))
-                        .into(multiCircleView.getCircle3());
-            }
-            break;
-        }
-    }
 
     @Override
     public int getItemCount() {

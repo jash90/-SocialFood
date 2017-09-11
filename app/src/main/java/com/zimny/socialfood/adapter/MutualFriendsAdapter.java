@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.signature.StringSignature;
 import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -44,7 +45,12 @@ public class MutualFriendsAdapter extends RecyclerView.Adapter<MutualFriendsAdap
         FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
         StorageReference storageReference = firebaseStorage.getReference();
         StorageReference imageReference = storageReference.child(String.format("%s.png", mutualfriend.getUid()));
-        Glide.with(holder.itemView.getContext()).using(new FirebaseImageLoader()).load(imageReference).error(new IconicsDrawable(holder.itemView.getContext()).icon(FontAwesome.Icon.faw_user_circle).sizeDp(40)).into(holder.userIcon);
+        Glide.with(holder.itemView.getContext())
+                .using(new FirebaseImageLoader())
+                .load(imageReference)
+                .error(new IconicsDrawable(holder.itemView.getContext()).icon(FontAwesome.Icon.faw_user_circle).sizeDp(40))
+                .signature(new StringSignature(mutualfriend.getImageUpload()))
+                .into(holder.userIcon);
         //XLog.d("MUTUAL "+mutualfriends);
     }
 

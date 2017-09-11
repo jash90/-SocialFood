@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.elvishew.xlog.XLog;
@@ -45,6 +46,7 @@ public class LoginActivity extends AppCompatActivity {
     FirebaseAuth firebaseAuth;
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor sharedPreferencesEditor;
+    ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +55,7 @@ public class LoginActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         sharedPreferences = getSharedPreferences("Name", Context.MODE_PRIVATE);
         sharedPreferencesEditor = sharedPreferences.edit();
+        progressBar = new ProgressBar(this, null, android.R.attr.progressBarStyleHorizontal);
         firebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
         signIn.setOnClickListener(new View.OnClickListener() {
@@ -69,6 +72,7 @@ public class LoginActivity extends AppCompatActivity {
             login(user, pass);
         }
         if (firebaseUser != null) {
+            progressBar.setVisibility(View.VISIBLE);
             Toast.makeText(getApplicationContext(), String.format("You sign as %s .", firebaseUser.getEmail()), Toast.LENGTH_SHORT).show();
             FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
             final DatabaseReference databaseReference = firebaseDatabase.getReference();
@@ -80,16 +84,18 @@ public class LoginActivity extends AppCompatActivity {
                         loginActivity.putExtra("admin", true);
                         startActivity(loginActivity);
                         finish();
+                        progressBar.setVisibility(View.GONE);
                     } else {
                         Intent loginActivity = new Intent(LoginActivity.this, FlatMainActivity.class);
                         startActivity(loginActivity);
                         finish();
+                        progressBar.setVisibility(View.GONE);
                     }
                 }
 
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
-
+                    progressBar.setVisibility(View.GONE);
                 }
             });
 
@@ -108,7 +114,7 @@ public class LoginActivity extends AppCompatActivity {
 
     public void login(final String username, String password) {
         try {
-
+            progressBar.setVisibility(View.VISIBLE);
             firebaseAuth = FirebaseAuth.getInstance();
             firebaseAuth.signInWithEmailAndPassword(username, password)
                     .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
@@ -125,16 +131,18 @@ public class LoginActivity extends AppCompatActivity {
                                         loginActivity.putExtra("admin", true);
                                         startActivity(loginActivity);
                                         finish();
+                                        progressBar.setVisibility(View.GONE);
                                     } else {
                                         Intent loginActivity = new Intent(LoginActivity.this, FlatMainActivity.class);
                                         startActivity(loginActivity);
                                         finish();
+                                        progressBar.setVisibility(View.GONE);
                                     }
                                 }
 
                                 @Override
                                 public void onCancelled(DatabaseError databaseError) {
-
+                                    progressBar.setVisibility(View.GONE);
                                 }
                             });
 
@@ -144,12 +152,14 @@ public class LoginActivity extends AppCompatActivity {
                         @Override
                         public void onFailure(@NonNull Exception e) {
                             Toast.makeText(getApplicationContext(), "Firebase : " + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                            progressBar.setVisibility(View.GONE);
                         }
                     });
 
 
         } catch (Exception ex) {
             Toast.makeText(getApplicationContext(), "App : " + ex.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+            progressBar.setVisibility(View.GONE);
         }
     }
 
