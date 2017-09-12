@@ -53,7 +53,8 @@ public class FoodOrderAdapter extends RecyclerView.Adapter<FoodOrderAdapter.View
         Glide.with(holder.itemView.getContext())
                 .using(new FirebaseImageLoader())
                 .load(imageRef)
-                .error(R.drawable.restaurant_menu)
+                .asBitmap()
+                .placeholder(R.drawable.restaurant_menu)
                 .signature(new StringSignature(foodOrder.getImageUpload()))
                 .into(holder.foodImageCircle);
         holder.foodImageCircle.setOnClickListener(new View.OnClickListener() {

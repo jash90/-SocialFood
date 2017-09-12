@@ -14,6 +14,9 @@ import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.gson.Gson;
+import com.mikepenz.fontawesome_typeface_library.FontAwesome;
+import com.mikepenz.google_material_typeface_library.GoogleMaterial;
+import com.mikepenz.iconics.IconicsDrawable;
 import com.zimny.socialfood.R;
 import com.zimny.socialfood.activity.details.UserDetailsActivity;
 import com.zimny.socialfood.model.User;
@@ -52,12 +55,15 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
         holder.firstname.setText(user.getFirstname());
         holder.lastname.setText(user.getLastname());
         holder.city.setText(user.getAddress().getCity());
+        holder.userImageCircle.setImageDrawable(new IconicsDrawable(holder.itemView.getContext()).icon(FontAwesome.Icon.faw_user_circle).sizeDp(40));
         FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
         StorageReference storageReference = firebaseStorage.getReference();
         StorageReference imageRef = storageReference.child(String.format("%s.png", user.getUid()));
         Glide.with(holder.itemView.getContext())
                 .using(new FirebaseImageLoader())
                 .load(imageRef)
+                .asBitmap()
+                .placeholder(new IconicsDrawable(holder.itemView.getContext()).icon(FontAwesome.Icon.faw_user_circle).sizeDp(40))
                 .signature(new StringSignature(user.getImageUpload()))
                 .into(holder.userImageCircle);
         if (user.getBirthday() != null) {

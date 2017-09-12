@@ -18,6 +18,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.franmontiel.fullscreendialog.FullScreenDialogContent;
+import com.franmontiel.fullscreendialog.FullScreenDialogController;
+import com.franmontiel.fullscreendialog.FullScreenDialogFragment;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -33,6 +36,8 @@ import com.google.firebase.storage.UploadTask;
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.squareup.picasso.Picasso;
 import com.zimny.socialfood.R;
+import com.zimny.socialfood.activity.FlatMainActivity;
+import com.zimny.socialfood.activity.LoginActivity;
 import com.zimny.socialfood.model.Address;
 import com.zimny.socialfood.model.User;
 
@@ -43,7 +48,7 @@ import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 
-public class MyAccountFragment extends Fragment {
+public class MyAccountFragment extends Fragment implements FullScreenDialogContent{
 
 
     private static final int REQUEST_CODE_PICKER = 2000;
@@ -61,8 +66,8 @@ public class MyAccountFragment extends Fragment {
     MaterialEditText city;
     @BindView(R.id.postalCode)
     MaterialEditText postalCode;
-    @BindView(R.id.save)
-    Button save;
+    @BindView(R.id.logout)
+    Button logout;
     @BindView(R.id.image)
     CircleImageView image;
     // @BindView(R.id.logout)
@@ -180,55 +185,13 @@ public class MyAccountFragment extends Fragment {
 //            }
 //        });
 
-        save.setOnClickListener(new View.OnClickListener() {
+        logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!firstname.getText().toString().isEmpty()) {
-                    user.setFirstname(firstname.getText().toString());
-                }
-                if (!lastname.getText().toString().isEmpty()) {
-                    user.setLastname(lastname.getText().toString());
-                }
-                if (!street.getText().toString().isEmpty()) {
-                    user.getAddress().setNameStreet(street.getText().toString());
-                }
-                if (!city.getText().toString().isEmpty()) {
-                    user.getAddress().setCity(city.getText().toString());
-                }
-                if (!postalCode.getText().toString().isEmpty()) {
-                    user.getAddress().setPostalCode(postalCode.getText().toString());
-                }
-                if (!numberBuilding.getText().toString().isEmpty()) {
-                    user.getAddress().setNumberBuilding(numberBuilding.getText().toString());
-                }
-                if (!numberHome.getText().toString().isEmpty()) {
-                    user.getAddress().setNumberHouse(numberHome.getText().toString());
-                }
-                databaseReference.child("users").child(firebaseUser.getUid()).setValue(user);
-                if (userProfile != null) {
-                    FirebaseStorage storage = FirebaseStorage.getInstance();
-                    StorageReference storageRef = storage.getReference();
-                    StorageReference mountainsRef = storageRef.child(String.format("%s.png", firebaseUser.getUid()));
-                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                    userProfile.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-                    byte[] data = baos.toByteArray();
-                    UploadTask uploadTask = mountainsRef.putBytes(data);
-                    uploadTask.addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception exception) {
-                            Toast.makeText(getContext(), exception.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent();
-                            intent.setAction("changeImageProfile");
-                            getActivity().sendBroadcast(intent);
-                        }
-                    }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-
-                        }
-                    });
-                }
-                Toast.makeText(getContext(), "Dane zmienione", Toast.LENGTH_SHORT).show();
+                firebaseAuth.signOut();
+                Intent intent = new Intent(getContext(), LoginActivity.class);
+                intent.putExtra("logout", false);
+                startActivity(intent);
             }
         });
         return v;
@@ -270,4 +233,63 @@ public class MyAccountFragment extends Fragment {
         }
     }
 
+    @Override
+    public void onDialogCreated(FullScreenDialogController dialogController) {
+    }
+
+    @Override
+    public boolean onConfirmClick(FullScreenDialogController dialogController) {
+        if (!firstname.getText().toString().isEmpty()) {
+            user.setFirstname(firstname.getText().toString());
+        }
+        if (!lastname.getText().toString().isEmpty()) {
+            user.setLastname(lastname.getText().toString());
+        }
+        if (!street.getText().toString().isEmpty()) {
+            user.getAddress().setNameStreet(street.getText().toString());
+        }
+        if (!city.getText().toString().isEmpty()) {
+            user.getAddress().setCity(city.getText().toString());
+        }
+        if (!postalCode.getText().toString().isEmpty()) {
+            user.getAddress().setPostalCode(postalCode.getText().toString());
+        }
+        if (!numberBuilding.getText().toString().isEmpty()) {
+            user.getAddress().setNumberBuilding(numberBuilding.getText().toString());
+        }
+        if (!numberHome.getText().toString().isEmpty()) {
+            user.getAddress().setNumberHouse(numberHome.getText().toString());
+        }
+        databaseReference.child("users").child(firebaseUser.getUid()).setValue(user);
+        if (userProfile != null) {
+            FirebaseStorage storage = FirebaseStorage.getInstance();
+            StorageReference storageRef = storage.getReference();
+            StorageReference mountainsRef = storageRef.child(String.format("%s.png", firebaseUser.getUid()));
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            userProfile.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+            byte[] data = baos.toByteArray();
+            UploadTask uploadTask = mountainsRef.putBytes(data);
+            uploadTask.addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    Toast.makeText(getContext(), exception.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent();
+                    intent.setAction("changeImageProfile");
+                    getActivity().sendBroadcast(intent);
+                }
+            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                }
+            });
+        }
+        Toast.makeText(getContext(), "Dane zmienione", Toast.LENGTH_SHORT).show();
+        return true;
+    }
+
+    @Override
+    public boolean onDiscardClick(FullScreenDialogController dialogController) {
+        return false;
+    }
 }

@@ -1,5 +1,6 @@
 package com.zimny.socialfood.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,7 +22,7 @@ public class FoodOrder extends Food {
         this.count = count;
     }
 
-    public FoodOrder(String name, double price, List<Tag> tags, String description, String uid, Restaurant restaurant, String type, int count, String imageUpload) {
+    public FoodOrder(String name, double price, ArrayList<Tag> tags, String description, String uid, Restaurant restaurant, String type, int count, String imageUpload) {
         super(name, price, tags, description, uid, restaurant, type,imageUpload);
         this.count = count;
     }
@@ -34,12 +35,17 @@ public class FoodOrder extends Food {
         super.setType(food.getType());
         super.setUid(food.getUid());
         super.setTags(food.getTags());
+        super.setImageUpload(food.getImageUpload());
     }
     public Food getFood(){
         return new Food(super.getName(),super.getPrice(),super.getTags(),super.getDescription(),super.getUid(),super.getRestaurant(),super.getType(),super.getImageUpload());
     }
     public int getCount() {
         return count;
+    }
+    @Override
+    public String getImageUpload(){
+        return super.getImageUpload();
     }
 
     public void setCount(int count) {

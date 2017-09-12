@@ -4,26 +4,26 @@ package com.zimny.socialfood.model;
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 
 @IgnoreExtraProperties
-public class User {
+public class User extends Info{
 
     private String uid;
     private String username;
     private String firstname;
     private String lastname;
-    private Address address;
     private Date birthday;
-    private List<Restaurant> restaurants;
-    private List<Food> foods;
-    private List<Group> groups;
-    private List<Order> orders;
+    private ArrayList<Restaurant> restaurants;
+    private ArrayList<Food> foods;
+    private ArrayList<Group> groups;
+    private ArrayList<Order> orders;
     private Order shoppingBasket;
-    private List<Relationship> relationships;
+    private ArrayList<Relationship> relationships;
     private String imageUpload;
 
     public User() {
@@ -31,7 +31,7 @@ public class User {
         username = "";
         firstname = "";
         lastname = "";
-        address = new Address();
+        super.setAddress(new Address());
         birthday = null;
         restaurants = new ArrayList<>();
         foods = new ArrayList<>();
@@ -46,12 +46,13 @@ public class User {
         this.username = username;
     }
 
-    public User(String uid, String username, String firstname, String lastname, Address address, Date birthday, List<Restaurant> restaurants, List<Food> foods, List<Group> groups, List<Order> orders, Order shoppingBasket, List<Relationship> relationships, String imageUpload) {
+    public User(String uid, String username, String firstname, String lastname, Address address, Date birthday, ArrayList<Restaurant> restaurants, ArrayList<Food> foods, ArrayList<Group> groups, ArrayList<Order> orders, Order shoppingBasket, ArrayList<Relationship> relationships, String imageUpload,int phone) {
         this.uid = uid;
         this.username = username;
         this.firstname = firstname;
         this.lastname = lastname;
-        this.address = address;
+        super.setAddress(address);
+        super.setPhone(phone);
         this.birthday = birthday;
         this.restaurants = restaurants;
         this.foods = foods;
@@ -94,14 +95,6 @@ public class User {
         this.lastname = lastname;
     }
 
-    public Address getAddress() {
-        return address;
-    }
-
-    public void setAddress(Address address) {
-        this.address = address;
-    }
-
     @Exclude
     public Date getBirthday() {
         return birthday;
@@ -111,35 +104,35 @@ public class User {
         this.birthday = birthday;
     }
 
-    public List<Restaurant> getRestaurants() {
+    public ArrayList<Restaurant> getRestaurants() {
         return restaurants;
     }
 
-    public void setRestaurants(List<Restaurant> restaurants) {
+    public void setRestaurants(ArrayList<Restaurant> restaurants) {
         this.restaurants = restaurants;
     }
 
-    public List<Food> getFoods() {
+    public ArrayList<Food> getFoods() {
         return foods;
     }
 
-    public void setFoods(List<Food> foods) {
+    public void setFoods(ArrayList<Food> foods) {
         this.foods = foods;
     }
 
-    public List<Group> getGroups() {
+    public ArrayList<Group> getGroups() {
         return groups;
     }
 
-    public void setGroups(List<Group> groups) {
+    public void setGroups(ArrayList<Group> groups) {
         this.groups = groups;
     }
 
-    public List<Order> getOrders() {
+    public ArrayList<Order> getOrders() {
         return orders;
     }
 
-    public void setOrders(List<Order> orders) {
+    public void setOrders(ArrayList<Order> orders) {
         this.orders = orders;
     }
 
@@ -151,11 +144,11 @@ public class User {
         this.shoppingBasket = shoppingBasket;
     }
 
-    public List<Relationship> getRelationships() {
+    public ArrayList<Relationship> getRelationships() {
         return relationships;
     }
 
-    public void setRelationships(List<Relationship> relationships) {
+    public void setRelationships(ArrayList<Relationship> relationships) {
         this.relationships = relationships;
     }
 
@@ -169,6 +162,6 @@ public class User {
 
     @Override
     public String toString() {
-        return String.format("%s %s, %s", firstname, lastname, address.getCity());
+        return String.format("%s %s, %s", firstname, lastname, getAddress().getCity());
     }
 }

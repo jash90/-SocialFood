@@ -5,10 +5,12 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -16,7 +18,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.elvishew.xlog.XLog;
 import com.firebase.ui.storage.images.FirebaseImageLoader;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.gson.Gson;
@@ -24,6 +28,7 @@ import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
 import com.zimny.socialfood.R;
 import com.zimny.socialfood.fragment.FoodsFragment;
+import com.zimny.socialfood.fragment.InfoFragment;
 import com.zimny.socialfood.fragment.UsersFragment;
 import com.zimny.socialfood.fragment.GroupsFragment;
 import com.zimny.socialfood.fragment.RestaurantFragment;
@@ -57,16 +62,18 @@ public class UserDetailsActivity extends AppCompatActivity implements MaterialTa
     ViewPager viewPager;
     @BindView(R.id.floatingActionButton)
     FloatingActionButton floatingActionButton;
-    Boolean invite = true;
+    Boolean invite = false;
     User user;
     ArrayList<Fragment> fragments;
     FragmentAdapter fragmentAdapter;
+    FirebaseAuth firebaseAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_details);
         ButterKnife.bind(this);
+        firebaseAuth = FirebaseAuth.getInstance();
         Intent intent = getIntent();
         String json = intent.getStringExtra("user");
         if (json != null) {
@@ -81,7 +88,16 @@ public class UserDetailsActivity extends AppCompatActivity implements MaterialTa
             } else {
                 age.setVisibility(View.GONE);
             }
-
+            if (invite) {
+                floatingActionButton.setImageDrawable(new IconicsDrawable(getApplicationContext()).icon(GoogleMaterial.Icon.gmd_person).color(Color.WHITE).sizeDp(20));
+                invite = !invite;
+            } else {
+                floatingActionButton.setImageDrawable(new IconicsDrawable(getApplicationContext()).icon(GoogleMaterial.Icon.gmd_person_add).color(Color.WHITE).sizeDp(20));
+                invite = !invite;
+            }
+            if (user.getUid().equals(firebaseAuth.getCurrentUser().getUid())){
+                floatingActionButton.setVisibility(View.GONE);
+            }
             collapsingToolbarLayout.setTitle(String.format("%s %s", user.getFirstname(), user.getLastname()));
             FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
             StorageReference storageReference = firebaseStorage.getReference();
@@ -94,10 +110,16 @@ public class UserDetailsActivity extends AppCompatActivity implements MaterialTa
                 @Override
                 public void onClick(View view) {
                     if (invite) {
-                        floatingActionButton.setImageResource(R.drawable.minus);
+                        floatingActionButton.setImageDrawable(new IconicsDrawable(getApplicationContext()).icon(GoogleMaterial.Icon.gmd_person).color(Color.WHITE).sizeDp(20));
+                        Snackbar snackbar =Snackbar.make(view,"Add user from relationship",Snackbar.LENGTH_SHORT);
+                        snackbar.getView().setBackgroundResource(R.color.white);
+                        snackbar.show();
                         invite = !invite;
                     } else {
-                        floatingActionButton.setImageResource(R.drawable.plus);
+                        floatingActionButton.setImageDrawable(new IconicsDrawable(getApplicationContext()).icon(GoogleMaterial.Icon.gmd_person_add).color(Color.WHITE).sizeDp(20));
+                        Snackbar snackbar =  Snackbar.make(view,"Remove user from relationship",Snackbar.LENGTH_SHORT);
+                        snackbar.getView().setBackgroundResource(R.color.white);
+                        snackbar.show();
                         invite = !invite;
                     }
                 }
@@ -108,6 +130,7 @@ public class UserDetailsActivity extends AppCompatActivity implements MaterialTa
             fragments.add(new RestaurantFragment());
             fragments.add(new GroupsFragment());
             fragments.add(new UsersFragment());
+            fragments.add(new InfoFragment());
             fragmentAdapter = new FragmentAdapter(getSupportFragmentManager(), fragments);
             viewPager.setAdapter(fragmentAdapter);
             viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(materialTabHost));
@@ -116,6 +139,7 @@ public class UserDetailsActivity extends AppCompatActivity implements MaterialTa
             materialTabHost.getTabAt(1).setIcon((new IconicsDrawable(getBaseContext()).icon(GoogleMaterial.Icon.gmd_restaurant).color(Color.WHITE)).sizeDp(20));
             materialTabHost.getTabAt(2).setIcon((new IconicsDrawable(getBaseContext()).icon(GoogleMaterial.Icon.gmd_group).color(Color.WHITE)).sizeDp(20));
             materialTabHost.getTabAt(3).setIcon(new IconicsDrawable(getBaseContext()).icon(GoogleMaterial.Icon.gmd_person).color(Color.WHITE).sizeDp(20));
+            materialTabHost.getTabAt(4).setIcon(new IconicsDrawable(getBaseContext()).icon(GoogleMaterial.Icon.gmd_info).color(Color.WHITE).sizeDp(20));
 
         }
     }

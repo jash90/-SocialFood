@@ -50,10 +50,7 @@ public class UsersFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(usersAdapter);
-        Intent intent = getActivity().getIntent();
-        XLog.d(intent.getStringExtra("user"));
-        XLog.d(intent.getStringExtra("group"));
-        if (getActivity().getIntent().getStringExtra("users") != null) {
+        if (getActivity().getIntent().getStringExtra("user") != null) {
             final String json = getActivity().getIntent().getStringExtra("user");
             if (json != null) {
                 user = new Gson().fromJson(json, User.class);

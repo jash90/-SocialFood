@@ -89,7 +89,8 @@ public class FoodDetailsActivity extends AppCompatActivity {
                         Glide.with(getApplicationContext())
                                 .using(new FirebaseImageLoader())
                                 .load(imageRef)
-                                .error(R.drawable.restaurant_menu)
+                                .asBitmap()
+                                .placeholder(R.drawable.restaurant_menu)
                                 .into(foodImage);
                         if (food.getDescription() != null && !food.getDescription().isEmpty()) {
                             linearLayout.setVisibility(View.VISIBLE);

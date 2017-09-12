@@ -37,7 +37,7 @@
                 android:layout_marginTop="10dp"
                 android:spinnerMode="dialog"
                 android:textAlignment="center"
-                android:backgroundTint="@color/colorPrimary"></Spinner>
+                android:backgroundTint="@color/colorPrimary"/>
 
             <ScrollView
                 android:layout_width="match_parent"
@@ -67,6 +67,7 @@
                         android:layout_marginTop="10dp"
                         android:spinnerMode="dialog"
                         android:textAlignment="center"
+                        android:textColor="@color/colorPrimary"
                         android:backgroundTint="@color/colorPrimary">
                     </Spinner>
 

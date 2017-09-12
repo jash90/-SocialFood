@@ -24,6 +24,7 @@ import com.google.gson.Gson;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
 import com.zimny.socialfood.R;
+import com.zimny.socialfood.fragment.InfoFragment;
 import com.zimny.socialfood.fragment.UsersFragment;
 import com.zimny.socialfood.model.Group;
 import com.zimny.socialfood.model.Tag;
@@ -92,12 +93,13 @@ public class GroupDetailsActivity extends AppCompatActivity implements MaterialT
         materialTabHost.setBackgroundResource(R.color.colorPrimary);
         fragments = new ArrayList<>();
         fragments.add(new UsersFragment());
+        fragments.add(new InfoFragment());
         fragmentAdapter = new FragmentAdapter(getSupportFragmentManager(), fragments);
         viewPager.setAdapter(fragmentAdapter);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(materialTabHost));
         materialTabHost.setupWithViewPager(viewPager);
         materialTabHost.getTabAt(0).setIcon((new IconicsDrawable(getBaseContext()).icon(GoogleMaterial.Icon.gmd_person).color(Color.WHITE)).sizeDp(20));
-
+        materialTabHost.getTabAt(1).setIcon(new IconicsDrawable(getApplicationContext()).icon(GoogleMaterial.Icon.gmd_info).color(Color.WHITE).sizeDp(20));
 
 //        toolbar.setBackgroundColor(ContextCompat.getColor(this, R.color.primary));
 //        toolbar.setSubtitleTextColor(ContextCompat.getColor(this, android.R.color.white));

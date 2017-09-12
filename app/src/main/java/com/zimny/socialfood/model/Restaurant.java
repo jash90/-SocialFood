@@ -7,12 +7,10 @@ import java.util.List;
  * Created by ideo7 on 17.08.2017.
  */
 
-public class Restaurant {
-    private List<Food> foods;
-    private Address address;
-    private int phone;
+public class Restaurant extends Info{
+    private ArrayList<Food> foods;
     private String uid;
-    private List<Tag> tags;
+    private ArrayList<Tag> tags;
     private String name;
     private String imageUpload;
 
@@ -20,10 +18,10 @@ public class Restaurant {
         this.setAddress(new Address());
     }
 
-    public Restaurant(ArrayList<Food> foods, Address address, int phone, String uid, List<Tag> tags, String name, String imageUpload) {
+    public Restaurant(ArrayList<Food> foods, Address address, int phone, String uid, ArrayList<Tag> tags, String name, String imageUpload) {
         this.foods = foods;
-        this.address = address;
-        this.phone = phone;
+        super.setAddress(address);
+        super.setPhone(phone);
         this.uid = uid;
         this.tags = tags;
         this.name = name;
@@ -31,33 +29,17 @@ public class Restaurant {
     }
 
     public Restaurant(String name, int phone, String imageUpload) {
-        this.phone = phone;
+        super.setPhone(phone);
         this.name = name;
         this.imageUpload = imageUpload;
     }
 
-    public List<Food> getFoods() {
+    public ArrayList<Food> getFoods() {
         return foods;
     }
 
-    public void setFoods(List<Food> foods) {
+    public void setFoods(ArrayList<Food> foods) {
         this.foods = foods;
-    }
-
-    public Address getAddress() {
-        return address;
-    }
-
-    public void setAddress(Address address) {
-        this.address = address;
-    }
-
-    public int getPhone() {
-        return phone;
-    }
-
-    public void setPhone(int phone) {
-        this.phone = phone;
     }
 
     public String getUid() {
@@ -68,11 +50,11 @@ public class Restaurant {
         this.uid = uid;
     }
 
-    public List<Tag> getTags() {
+    public ArrayList<Tag> getTags() {
         return tags;
     }
 
-    public void setTags(List<Tag> tags) {
+    public void setTags(ArrayList<Tag> tags) {
         this.tags = tags;
     }
 
@@ -92,16 +74,6 @@ public class Restaurant {
         this.imageUpload = imageUpload;
     }
 
-
-
-    public ArrayList<String> getTagss(){
-        ArrayList<String> tags = new ArrayList<>();
-        for (Tag tag : this.tags){
-            tags.add(tag.getName());
-        }
-        return tags;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -114,8 +86,8 @@ public class Restaurant {
     @Override
     public int hashCode() {
         int result = foods != null ? foods.hashCode() : 0;
-        result = 31 * result + (address != null ? address.hashCode() : 0);
-        result = 31 * result + phone;
+        result = 31 * result + (super.getAddress() != null ? super.getAddress().hashCode() : 0);
+        result = 31 * result + super.getPhone();
         result = 31 * result + (uid != null ? uid.hashCode() : 0);
         result = 31 * result + (tags != null ? tags.hashCode() : 0);
         result = 31 * result + (name != null ? name.hashCode() : 0);
@@ -125,7 +97,7 @@ public class Restaurant {
 
     @Override
     public String toString() {
-        return String.format("%s %s", name, address);
+        return String.format("%s %s", name, getAddress());
     }
 
 }

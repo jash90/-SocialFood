@@ -2,6 +2,7 @@ package com.zimny.socialfood.model;
 
 import com.google.firebase.database.Exclude;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -11,7 +12,7 @@ import java.util.List;
 public class Food {
     private String name;
     private double price;
-    private List<Tag> tags;
+    private ArrayList<Tag> tags;
     private String description;
     private String uid;
     private Restaurant restaurant;
@@ -21,7 +22,7 @@ public class Food {
     public Food() {
     }
 
-    public Food(String name, double price, List<Tag> tags, String description, String uid, Restaurant restaurant, String type, String imageUpload) {
+    public Food(String name, double price, ArrayList<Tag> tags, String description, String uid, Restaurant restaurant, String type, String imageUpload) {
         this.name = name;
         this.price = price;
         this.tags = tags;
@@ -49,11 +50,11 @@ public class Food {
     }
 
     @Exclude
-    public List<Tag> getTags() {
+    public ArrayList<Tag> getTags() {
         return tags;
     }
 
-    public void setTags(List<Tag> tags) {
+    public void setTags(ArrayList<Tag> tags) {
         this.tags = tags;
     }
 
@@ -98,9 +99,24 @@ public class Food {
         this.imageUpload = imageUpload;
     }
 
+//    @Override
+//    public String toString() {
+//        return String.format("%s, %.2f %s", name, price, restaurant);
+//    }
+
+
     @Override
     public String toString() {
-        return String.format("%s, %.2f %s", name, price, restaurant);
+        return "Food{" +
+                "name='" + name + '\'' +
+                ", price=" + price +
+                ", tags=" + tags +
+                ", description='" + description + '\'' +
+                ", uid='" + uid + '\'' +
+                ", restaurant=" + restaurant +
+                ", type='" + type + '\'' +
+                ", imageUpload='" + imageUpload + '\'' +
+                '}';
     }
 
     @Override

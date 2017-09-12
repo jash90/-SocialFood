@@ -399,7 +399,8 @@ public class MultiCircleView extends LinearLayout {
         Glide.with(multiCircleView.getContext())
                 .using(new FirebaseImageLoader())
                 .load(imageReference)
-                .error(new IconicsDrawable(multiCircleView.getContext())
+                .asBitmap()
+                .placeholder(new IconicsDrawable(multiCircleView.getContext())
                         .icon(FontAwesome.Icon.faw_user_circle).sizeDp(40))
                 .into(multiCircleView.getCircle1());
         if (users.size() > 1) {
@@ -427,7 +428,8 @@ public class MultiCircleView extends LinearLayout {
                 Glide.with(context)
                         .using(new FirebaseImageLoader())
                         .load(imageReference)
-                        .error(new IconicsDrawable(context)
+                        .asBitmap()
+                        .placeholder(new IconicsDrawable(context)
                                 .icon(FontAwesome.Icon.faw_user_circle).sizeDp(40))
                         .into(multiCircleView.getCircle1());
             }
@@ -436,7 +438,8 @@ public class MultiCircleView extends LinearLayout {
                 Glide.with(context)
                         .using(new FirebaseImageLoader())
                         .load(imageReference)
-                        .error(new IconicsDrawable(context)
+                        .asBitmap()
+                        .placeholder(new IconicsDrawable(context)
                                 .icon(FontAwesome.Icon.faw_user_circle).sizeDp(40))
                         .into(multiCircleView.getCircle2());
             }
@@ -445,7 +448,8 @@ public class MultiCircleView extends LinearLayout {
                 Glide.with(context)
                         .using(new FirebaseImageLoader())
                         .load(imageReference)
-                        .error(new IconicsDrawable(context)
+                        .asBitmap()
+                        .placeholder(new IconicsDrawable(context)
                                 .icon(FontAwesome.Icon.faw_user_circle).sizeDp(40))
                         .into(multiCircleView.getCircle3());
             }

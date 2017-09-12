@@ -76,10 +76,10 @@ public class Address {
 
     @Override
     public String toString() {
-        if (numberBuilding != null && !numberBuilding.isEmpty()) {
-            return String.format("%s %s %s %s %s", nameStreet, numberHouse, numberBuilding, postalCode, city);
+        if (numberBuilding != null && !numberBuilding.isEmpty() ) {
+            return String.format("%s, %s %s/%s", city, nameStreet, numberHouse, numberBuilding);
         } else {
-            return String.format("%s %s %s %s", nameStreet, numberHouse, postalCode, city);
+            return String.format("%s %s %s", city, nameStreet, numberHouse);
         }
 
     }

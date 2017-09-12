@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.elvishew.xlog.XLog;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -94,6 +95,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
                                         Food food = dataSnapshot.getValue(Food.class);
                                         food.setUid(dataSnapshot.getKey());
                                         food.setType(dataSnapshots.getKey());
+                                        XLog.d(food);
                                         foodOrder.setFood(food);
                                         foodOrders.add(foodOrder);
                                         order.setFoodOrders(foodOrders);
@@ -102,6 +104,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
                                             sumPrice = sumPrice + (foodOrder1.getPrice() * foodOrder1.getCount());
                                         }
                                         holder.price.setText(String.format("%.2f zł", sumPrice));
+                                        XLog.d(food);
                                     }
                                 }
                             }

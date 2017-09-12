@@ -48,7 +48,8 @@ public class MutualFriendsAdapter extends RecyclerView.Adapter<MutualFriendsAdap
         Glide.with(holder.itemView.getContext())
                 .using(new FirebaseImageLoader())
                 .load(imageReference)
-                .error(new IconicsDrawable(holder.itemView.getContext()).icon(FontAwesome.Icon.faw_user_circle).sizeDp(40))
+                .asBitmap()
+                .placeholder(new IconicsDrawable(holder.itemView.getContext()).icon(FontAwesome.Icon.faw_user_circle).sizeDp(40))
                 .signature(new StringSignature(mutualfriend.getImageUpload()))
                 .into(holder.userIcon);
         //XLog.d("MUTUAL "+mutualfriends);

@@ -7,15 +7,30 @@
     android:orientation="vertical"
     tools:context="com.zimny.socialfood.activity.FlatMainActivity">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
+    <FrameLayout
+        android:id="@+id/toolbar_container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
-        app:title="SocialFood"
-        app:titleTextColor="@android:color/white">
+        android:layout_height="wrap_content">
 
-    </android.support.v7.widget.Toolbar>
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/primary"
+            app:title="SocialFood"
+            app:titleTextColor="@android:color/white" />
+
+        <com.miguelcatalan.materialsearchview.MaterialSearchView
+            android:id="@+id/search_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
+            app:searchBackground="@color/primary"
+            app:searchSuggestionBackground="@color/primary"
+            />
+    </FrameLayout>
+
 
     <LinearLayout
         android:id="@+id/content"

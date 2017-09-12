@@ -6,22 +6,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class Group {
+public class Group extends Info{
     private String uid;
     private ArrayList<User> users;
-    private Address address;
     private String uidAdmin;
-    private List<Tag> tags;
+    private ArrayList<Tag> tags;
     private String name;
     private String imageUpload;
 
     public Group() {
     }
 
-    public Group(String uid, ArrayList<User> users, Address address, String uidAdmin, List<Tag> tags, String name, String imageUpload) {
+    public Group(String uid, ArrayList<User> users, Address address, String uidAdmin, ArrayList<Tag> tags, String name, String imageUpload,int phone) {
         this.uid = uid;
         this.users = users;
-        this.address = address;
+        super.setAddress(address);
+        super.setPhone(phone);
         this.uidAdmin = uidAdmin;
         this.tags = tags;
         this.name = name;
@@ -53,14 +53,6 @@ public class Group {
         this.users = users;
     }
 
-    public Address getAddress() {
-        return address;
-    }
-
-    public void setAddress(Address address) {
-        this.address = address;
-    }
-
     public String getUidAdmin() {
         return uidAdmin;
     }
@@ -78,16 +70,16 @@ public class Group {
     }
 
     @Exclude
-    public List<Tag> getTags() {
+    public ArrayList<Tag> getTags() {
         return tags;
     }
 
-    public void setTags(List<Tag> tags) {
+    public void setTags(ArrayList<Tag> tags) {
         this.tags = tags;
     }
 
     @Override
     public String toString() {
-        return String.format("%s %s %s %s", name, address, users, tags);
+        return String.format("%s %s %s %s", name, getAddress(), users, tags);
     }
 }

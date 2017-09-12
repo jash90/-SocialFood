@@ -68,7 +68,8 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
         Glide.with(holder.itemView.getContext())
                 .using(new FirebaseImageLoader())
                 .load(imageRef)
-                .error(R.drawable.restaurant_store)
+                .asBitmap()
+                .placeholder(R.drawable.restaurant_store)
                 .signature(new StringSignature(restaurant.getImageUpload()))
                 .centerCrop()
                 .into(holder.restaurantImageCircle);

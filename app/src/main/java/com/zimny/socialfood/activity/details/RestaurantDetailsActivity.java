@@ -23,7 +23,9 @@ import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
 import com.zimny.socialfood.R;
 import com.zimny.socialfood.fragment.FoodsFragment;
+import com.zimny.socialfood.fragment.InfoFragment;
 import com.zimny.socialfood.model.Restaurant;
+import com.zimny.socialfood.model.Tag;
 
 import java.util.ArrayList;
 
@@ -77,15 +79,17 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Mate
             materialTabHost.setBackgroundResource(R.color.colorPrimary);
             fragments = new ArrayList<>();
             fragments.add(new FoodsFragment());
+            fragments.add(new InfoFragment());
             fragmentAdapter = new FragmentAdapter(getSupportFragmentManager(), fragments);
             viewPager.setAdapter(fragmentAdapter);
             viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(materialTabHost));
             materialTabHost.setupWithViewPager(viewPager);
             materialTabHost.getTabAt(0).setIcon((new IconicsDrawable(getBaseContext()).icon(GoogleMaterial.Icon.gmd_restaurant_menu).color(Color.WHITE)).sizeDp(20));
-          //  XLog.d(restaurant);
+            materialTabHost.getTabAt(1).setIcon((new IconicsDrawable(getBaseContext()).icon(GoogleMaterial.Icon.gmd_info).color(Color.WHITE)).sizeDp(20));
+            //  XLog.d(restaurant);
             if (restaurant.getTags()!=null){
             //    XLog.d(restaurant.getTags());
-                tagGroup.setTags(restaurant.getTagss());
+                tagGroup.setTags(Tag.getStringTags(restaurant.getTags()));
             }
         }
 

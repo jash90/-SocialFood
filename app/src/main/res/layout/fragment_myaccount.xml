@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.zimny.socialfood.activity.LoginActivity">
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -151,12 +150,12 @@
         <!--android:textColor="@android:color/white" />-->
 
         <Button
-            android:id="@+id/save"
+            android:id="@+id/logout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
             android:background="@color/colorPrimary"
-            android:text="Save"
+            android:text="Logout"
             android:textColor="@android:color/white" />
         <!--</LinearLayout>-->
     </LinearLayout>

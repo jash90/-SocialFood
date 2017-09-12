@@ -1,5 +1,7 @@
 package com.zimny.socialfood.model;
 
+import java.util.ArrayList;
+
 /**
  * Created by ideo7 on 17.08.2017.
  */
@@ -39,5 +41,12 @@ public class Tag {
     @Override
     public String toString() {
         return String.format("%s", name);
+    }
+    public static ArrayList<String> getStringTags(ArrayList<Tag> tags){
+        ArrayList <String> tagString = new ArrayList<>();
+        for (Tag tag : tags){
+            tagString.add(tag.getName());
+        }
+        return tagString;
     }
 }

@@ -53,7 +53,7 @@ public class FoodsAdapter extends RecyclerView.Adapter<FoodsAdapter.ViewHolder> 
         final Food food = foods.get(position);
         holder.name.setText(food.getName());
         holder.price.setText(String.valueOf(food.getPrice()) + " zł");
-        holder.foodImageCircle.setImageDrawable(new IconicsDrawable(holder.itemView.getContext()).icon(GoogleMaterial.Icon.gmd_restaurant_menu).sizeDp(10));
+     //   holder.foodImageCircle.setImageDrawable(new IconicsDrawable(holder.itemView.getContext()).icon(GoogleMaterial.Icon.gmd_restaurant_menu).sizeDp(10));
 //        if (!(food.getDescription() == null)) {
 //            holder.description.setVisibility(View.VISIBLE);
 //            holder.description.setText(food.getDescription());
@@ -77,7 +77,8 @@ public class FoodsAdapter extends RecyclerView.Adapter<FoodsAdapter.ViewHolder> 
         Glide.with(holder.itemView.getContext())
                 .using(new FirebaseImageLoader())
                 .load(imageRef)
-                .error(R.drawable.restaurant_menu)
+                .asBitmap()
+                .placeholder(R.drawable.restaurant_menu)
                 .signature(new StringSignature(food.getImageUpload()))
                 .into(holder.foodImageCircle);
 
