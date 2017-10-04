@@ -38,9 +38,9 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:hint="Name Group"
-                app:met_floatingLabel="highlight"
+                android:inputType="text"
                 android:maxLines="1"
-                android:inputType="text"/>
+                app:met_floatingLabel="highlight" />
 
             <com.rengwuxian.materialedittext.MaterialEditText
                 android:id="@+id/city"
@@ -53,9 +53,9 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:hint="City"
-                app:met_floatingLabel="highlight"
+                android:inputType="text"
                 android:maxLines="1"
-                android:inputType="text"/>
+                app:met_floatingLabel="highlight" />
 
             <com.rengwuxian.materialedittext.MaterialEditText
                 android:id="@+id/street"
@@ -68,9 +68,9 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:hint="Street"
-                app:met_floatingLabel="highlight"
+                android:inputType="text"
                 android:maxLines="1"
-                android:inputType="text"/>
+                app:met_floatingLabel="highlight" />
 
             <com.rengwuxian.materialedittext.MaterialEditText
                 android:id="@+id/numberBuilding"
@@ -83,9 +83,9 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:hint="Number Building"
-                app:met_floatingLabel="highlight"
+                android:inputType="text"
                 android:maxLines="1"
-                android:inputType="text"/>
+                app:met_floatingLabel="highlight" />
 
             <com.rengwuxian.materialedittext.MaterialEditText
                 android:id="@+id/numberHouse"
@@ -98,9 +98,9 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:hint="Number House"
-                app:met_floatingLabel="highlight"
+                android:inputType="text"
                 android:maxLines="1"
-                android:inputType="text"/>
+                app:met_floatingLabel="highlight" />
 
             <com.rengwuxian.materialedittext.MaterialEditText
                 android:id="@+id/postalCode"
@@ -113,9 +113,9 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:hint="Postal Code"
-                app:met_floatingLabel="highlight"
+                android:inputType="text"
                 android:maxLines="1"
-                android:inputType="text"/>
+                app:met_floatingLabel="highlight" />
 
             <io.apptik.widget.multiselectspinner.MultiSelectSpinner
                 android:id="@+id/users"

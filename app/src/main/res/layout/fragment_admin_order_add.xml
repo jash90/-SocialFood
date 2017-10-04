@@ -34,9 +34,9 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginTop="10dp"
+                android:backgroundTint="@color/colorPrimary"
                 android:spinnerMode="dialog"
-                android:textAlignment="center"
-                android:backgroundTint="@color/colorPrimary"></Spinner>
+                android:textAlignment="center"></Spinner>
 
             <TextView
                 android:id="@+id/date"
@@ -70,9 +70,9 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginTop="10dp"
+                android:backgroundTint="@color/colorPrimary"
                 android:spinnerMode="dialog"
-                android:textAlignment="center"
-                android:backgroundTint="@color/colorPrimary"></Spinner>
+                android:textAlignment="center"></Spinner>
 
             <Switch
                 android:id="@+id/paying"

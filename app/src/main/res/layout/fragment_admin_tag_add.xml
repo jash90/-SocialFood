@@ -38,9 +38,9 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:hint="Name Tag"
-                app:met_floatingLabel="highlight"
+                android:inputType="text"
                 android:maxLines="1"
-                android:inputType="text"/>
+                app:met_floatingLabel="highlight" />
 
             <Button
                 android:id="@+id/save"

@@ -1,6 +1,8 @@
 package com.zimny.socialfood.fragment;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,6 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -30,6 +34,8 @@ import butterknife.ButterKnife;
 public class ShoppingBasketFragment extends Fragment {
     @BindView(R.id.clear)
     Button clear;
+    @BindView(R.id.confirm)
+    Button confirm;
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
     ArrayList<FoodOrder> foodOrders;
@@ -67,7 +73,6 @@ public class ShoppingBasketFragment extends Fragment {
                                     @Override
                                     public void onChildAdded(DataSnapshot dataSnapshots, String s) {
                                         for (DataSnapshot dataSnapshot : dataSnapshots.getChildren()) {
-                                            //XLog.d("FOOD " + dataSnapshot.getKey());
                                             if (dataSnapshot.getKey() != null && uidFood != null) {
                                                 if (uidFood.equals(dataSnapshot.getKey())) {
                                                     Food food = dataSnapshot.getValue(Food.class);
@@ -76,8 +81,6 @@ public class ShoppingBasketFragment extends Fragment {
                                                     FoodOrder foodOrder2 = new FoodOrder(food, foodOrder.getCount());
                                                     foodOrders.add(foodOrder2);
                                                     foodOrderAdapter.notifyDataSetChanged();
-                                                    // XLog.d(dataSnapshot);
-                                                    //  XLog.d(foodOrder2);
                                                 }
 
                                             }
@@ -86,12 +89,23 @@ public class ShoppingBasketFragment extends Fragment {
 
                                     @Override
                                     public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
                                     }
 
                                     @Override
-                                    public void onChildRemoved(DataSnapshot dataSnapshot) {
+                                    public void onChildRemoved(DataSnapshot dataSnapshots) {
+                                        for (DataSnapshot dataSnapshot : dataSnapshots.getChildren()) {
+                                            if (dataSnapshot.getKey() != null && uidFood != null) {
+                                                if (uidFood.equals(dataSnapshot.getKey())) {
+                                                    Food food = dataSnapshot.getValue(Food.class);
+                                                    food.setType(dataSnapshots.getKey());
+                                                    food.setUid(dataSnapshot.getKey());
+                                                    FoodOrder foodOrder2 = new FoodOrder(food, foodOrder.getCount());
+                                                    foodOrders.add(foodOrder2);
+                                                    foodOrderAdapter.notifyDataSetChanged();
+                                                }
 
+                                            }
+                                        }
                                     }
 
                                     @Override
@@ -108,13 +122,8 @@ public class ShoppingBasketFragment extends Fragment {
 
                             @Override
                             public void onCancelled(DatabaseError databaseError) {
-
                             }
                         });
-//                     foodOrders.add(foodOrder);
-//                     foodOrderAdapter.notifyDataSetChanged();
-//                     XLog.d(dataSnapshot);
-//                     XLog.d(foodOrder);
                     }
                 }
 
@@ -124,6 +133,25 @@ public class ShoppingBasketFragment extends Fragment {
                 }
             });
         }
+        clear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View view) {
+                databaseReference.child("baskets").child(firebaseAuth.getCurrentUser().getUid()).child("foodOrders").setValue(null).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Snackbar snackbar =  Snackbar.make(view,"Clear ok",Snackbar.LENGTH_SHORT);
+                        snackbar.show();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Snackbar snackbar =  Snackbar.make(view,"Clear not ok",Snackbar.LENGTH_SHORT);
+                        snackbar.show();
+                    }
+                });
+            }
+        });
+
         return v;
     }
 

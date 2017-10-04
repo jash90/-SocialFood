@@ -2,7 +2,9 @@ package com.zimny.socialfood.adapter;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.text.method.SingleLineTransformationMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +14,11 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.signature.StringSignature;
+import com.elvishew.xlog.XLog;
 import com.firebase.ui.storage.images.FirebaseImageLoader;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -53,23 +59,7 @@ public class FoodsAdapter extends RecyclerView.Adapter<FoodsAdapter.ViewHolder> 
         final Food food = foods.get(position);
         holder.name.setText(food.getName());
         holder.price.setText(String.valueOf(food.getPrice()) + " zł");
-     //   holder.foodImageCircle.setImageDrawable(new IconicsDrawable(holder.itemView.getContext()).icon(GoogleMaterial.Icon.gmd_restaurant_menu).sizeDp(10));
-//        if (!(food.getDescription() == null)) {
-//            holder.description.setVisibility(View.VISIBLE);
-//            holder.description.setText(food.getDescription());
-//        } else {
-//            holder.description.setVisibility(View.GONE);
-//        }
-        //holder.type.setText(food.getType());
-        // holder.nameRestaurant.setText(food.getRestaurant().getName());
-        //holder.nameRestaurant.setText(food.getRestaurant().getName());
 
-
-        if (((Activity) holder.itemView.getContext()).getIntent().getStringExtra("json") != null) {
-            holder.countFoodLinearLayout.setVisibility(View.GONE);
-        } else {
-            holder.countFoodLinearLayout.setVisibility(View.VISIBLE);
-        }
         FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
         StorageReference storageReference = firebaseStorage.getReference();
         StorageReference imageRef = storageReference.child(String.format("%s.png", food.getUid()));
@@ -85,7 +75,6 @@ public class FoodsAdapter extends RecyclerView.Adapter<FoodsAdapter.ViewHolder> 
         holder.foodImageCircle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //   XLog.d("test");
                 Intent intent = new Intent(view.getContext(), FoodDetailsActivity.class);
                 intent.putExtra("food",new Gson().toJson(food));
                 view.getContext().startActivity(intent);
@@ -96,6 +85,7 @@ public class FoodsAdapter extends RecyclerView.Adapter<FoodsAdapter.ViewHolder> 
 
         final ArrayList<Tag> tags = new ArrayList<>();
         final ArrayList<String> tagsString = new ArrayList<>();
+        final FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         final DatabaseReference databaseReference = firebaseDatabase.getReference();
         tagsString.add(food.getRestaurant().getName());
@@ -131,22 +121,28 @@ public class FoodsAdapter extends RecyclerView.Adapter<FoodsAdapter.ViewHolder> 
 
             }
         });
-        holder.plusFood.setOnClickListener(new View.OnClickListener() {
+        holder.add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                holder.countFood.setText(String.valueOf(Integer.valueOf(holder.countFood.getText().toString()) + 1));
+                final String key = databaseReference.child("baskets").child(firebaseAuth.getCurrentUser().getUid()).child("foodOrders").getKey();
+                databaseReference.child("baskets").child(firebaseAuth.getCurrentUser().getUid()).child("foodOrders").orderByChild("uidFood").equalTo(food.getUid()).addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshots) {
+                       if (dataSnapshots.getValue()!=null){
+                                XLog.d(dataSnapshots.getValue());
+                       }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
+                    }});
             }
-        });
-        holder.minusFood.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (Integer.valueOf(holder.countFood.getText().toString()) > 0)
-                    holder.countFood.setText(String.valueOf(Integer.valueOf(holder.countFood.getText().toString()) - 1));
-            }
-        });
 
 
-    }
 
 
     @Override
@@ -155,31 +151,16 @@ public class FoodsAdapter extends RecyclerView.Adapter<FoodsAdapter.ViewHolder> 
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-
-        //        @BindView(R.id.foodImage)
-//        ImageView foodImage;
         @BindView(R.id.foodImageCircle)
         CircleImageView foodImageCircle;
         @BindView(R.id.name)
         TextView name;
         @BindView(R.id.price)
         TextView price;
-        //@BindView(R.id.description)
-//      TextView description;
-        // @BindView(R.id.nameRestaurant)
-        //TextView nameRestaurant;
         @BindView(R.id.tagGroup)
         TagGroup tagGroup;
-        //@BindView(R.id.type)
-        //TextView type;
-        @BindView(R.id.plusFood)
-        Button plusFood;
-        @BindView(R.id.minusFood)
-        Button minusFood;
-        @BindView(R.id.countFood)
-        TextView countFood;
-        @BindView(R.id.countFoodLayout)
-        LinearLayout countFoodLinearLayout;
+        @BindView(R.id.addButton)
+        Button add;
 
         public ViewHolder(View itemView) {
             super(itemView);

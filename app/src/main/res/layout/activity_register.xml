@@ -24,10 +24,10 @@
         android:layout_marginRight="20dp"
         android:layout_marginTop="200dp"
         android:hint="Email"
-        android:text="bartekziimny90@gmail.com"
-        app:met_floatingLabel="highlight"
+        android:inputType="text"
         android:maxLines="1"
-        android:inputType="text"/>
+        android:text="bartekziimny90@gmail.com"
+        app:met_floatingLabel="highlight" />
 
     <com.rengwuxian.materialedittext.MaterialEditText
         android:id="@+id/password"
@@ -38,9 +38,9 @@
         android:layout_marginRight="20dp"
         android:hint="Password"
         android:inputType="textPassword"
+        android:maxLines="1"
         android:text="123456"
-        app:met_floatingLabel="highlight"
-        android:maxLines="1"/>
+        app:met_floatingLabel="highlight" />
 
     <com.rengwuxian.materialedittext.MaterialEditText
         android:id="@+id/confirmpassword"
@@ -51,10 +51,9 @@
         android:layout_marginRight="20dp"
         android:hint="Confirm password"
         android:inputType="textPassword"
-        android:text="123456"
-        app:met_floatingLabel="highlight"
         android:maxLines="1"
-        />
+        android:text="123456"
+        app:met_floatingLabel="highlight" />
 
     <Button
         android:id="@+id/register"

@@ -34,9 +34,9 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginTop="10dp"
+                android:backgroundTint="@color/colorPrimary"
                 android:spinnerMode="dialog"
-                android:textAlignment="center"
-                android:backgroundTint="@color/colorPrimary"></Spinner>
+                android:textAlignment="center"></Spinner>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -60,7 +60,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="25dp"
-                            android:checked="true"/>
+                            android:checked="true" />
 
                         <RadioButton
                             android:id="@+id/typeSpinnerRadio"
@@ -88,9 +88,9 @@
                         android:layout_marginTop="10dp"
                         android:gravity="center"
                         android:hint="Type Food"
-                        app:met_floatingLabel="highlight"
+                        android:inputType="text"
                         android:maxLines="1"
-                        android:inputType="text"/>
+                        app:met_floatingLabel="highlight" />
 
 
                     <Spinner
@@ -101,9 +101,9 @@
                         android:layout_marginLeft="16dp"
                         android:layout_marginRight="16dp"
                         android:layout_marginTop="10dp"
+                        android:backgroundTint="@color/colorPrimary"
                         android:spinnerMode="dialog"
-                        android:textAlignment="center"
-                        android:backgroundTint="@color/colorPrimary"></Spinner>
+                        android:textAlignment="center"></Spinner>
                 </LinearLayout>
             </LinearLayout>
 
@@ -118,9 +118,9 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:hint="Name Food"
-                app:met_floatingLabel="highlight"
+                android:inputType="text"
                 android:maxLines="1"
-                android:inputType="text"/>
+                app:met_floatingLabel="highlight" />
 
             <com.rengwuxian.materialedittext.MaterialEditText
                 android:id="@+id/price"
@@ -134,8 +134,8 @@
                 android:gravity="center"
                 android:hint="Price"
                 android:inputType="numberDecimal"
-                app:met_floatingLabel="highlight"
-                android:maxLines="1" />
+                android:maxLines="1"
+                app:met_floatingLabel="highlight" />
 
             <com.rengwuxian.materialedittext.MaterialEditText
                 android:id="@+id/description"
@@ -148,9 +148,9 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:hint="Description"
-                app:met_floatingLabel="highlight"
+                android:inputType="text"
                 android:maxLines="1"
-                android:inputType="text"/>
+                app:met_floatingLabel="highlight" />
 
             <Button
                 android:id="@+id/save"

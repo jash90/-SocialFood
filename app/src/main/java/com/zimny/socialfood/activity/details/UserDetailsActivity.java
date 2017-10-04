@@ -20,6 +20,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.elvishew.xlog.XLog;
 import com.firebase.ui.storage.images.FirebaseImageLoader;
+import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -60,7 +61,7 @@ public class UserDetailsActivity extends AppCompatActivity implements MaterialTa
     TabLayout materialTabHost;
     @BindView(R.id.viewPagerUserDetails)
     ViewPager viewPager;
-    @BindView(R.id.floatingActionButton)
+    @BindView(R.id.multiple_actions)
     FloatingActionButton floatingActionButton;
     Boolean invite = false;
     User user;
@@ -88,16 +89,6 @@ public class UserDetailsActivity extends AppCompatActivity implements MaterialTa
             } else {
                 age.setVisibility(View.GONE);
             }
-            if (invite) {
-                floatingActionButton.setImageDrawable(new IconicsDrawable(getApplicationContext()).icon(GoogleMaterial.Icon.gmd_person).color(Color.WHITE).sizeDp(20));
-                invite = !invite;
-            } else {
-                floatingActionButton.setImageDrawable(new IconicsDrawable(getApplicationContext()).icon(GoogleMaterial.Icon.gmd_person_add).color(Color.WHITE).sizeDp(20));
-                invite = !invite;
-            }
-            if (user.getUid().equals(firebaseAuth.getCurrentUser().getUid())){
-                floatingActionButton.setVisibility(View.GONE);
-            }
             collapsingToolbarLayout.setTitle(String.format("%s %s", user.getFirstname(), user.getLastname()));
             FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
             StorageReference storageReference = firebaseStorage.getReference();
@@ -106,19 +97,26 @@ public class UserDetailsActivity extends AppCompatActivity implements MaterialTa
                     .using(new FirebaseImageLoader())
                     .load(imageRef)
                     .into(userImageView);
+
+            if (invite) {
+                floatingActionButton.setImageDrawable(new IconicsDrawable(getApplicationContext()).icon(GoogleMaterial.Icon.gmd_person).color(Color.WHITE).sizeDp(20));
+            } else {
+                floatingActionButton.setImageDrawable(new IconicsDrawable(getApplicationContext()).icon(GoogleMaterial.Icon.gmd_person_add).color(Color.WHITE).sizeDp(20));
+            }
+
             floatingActionButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (invite) {
+                    if (!invite) {
                         floatingActionButton.setImageDrawable(new IconicsDrawable(getApplicationContext()).icon(GoogleMaterial.Icon.gmd_person).color(Color.WHITE).sizeDp(20));
                         Snackbar snackbar =Snackbar.make(view,"Add user from relationship",Snackbar.LENGTH_SHORT);
-                        snackbar.getView().setBackgroundResource(R.color.white);
+                      //  snackbar.getView().setBackgroundResource(R.color.white);
                         snackbar.show();
                         invite = !invite;
                     } else {
                         floatingActionButton.setImageDrawable(new IconicsDrawable(getApplicationContext()).icon(GoogleMaterial.Icon.gmd_person_add).color(Color.WHITE).sizeDp(20));
                         Snackbar snackbar =  Snackbar.make(view,"Remove user from relationship",Snackbar.LENGTH_SHORT);
-                        snackbar.getView().setBackgroundResource(R.color.white);
+                       // snackbar.getView().setBackgroundResource(R.color.white);
                         snackbar.show();
                         invite = !invite;
                     }

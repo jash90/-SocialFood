@@ -35,9 +35,9 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginTop="10dp"
+                android:backgroundTint="@color/colorPrimary"
                 android:spinnerMode="dialog"
-                android:textAlignment="center"
-                android:backgroundTint="@color/colorPrimary"/>
+                android:textAlignment="center" />
 
             <ScrollView
                 android:layout_width="match_parent"
@@ -65,11 +65,10 @@
                         android:layout_marginLeft="16dp"
                         android:layout_marginRight="16dp"
                         android:layout_marginTop="10dp"
+                        android:backgroundTint="@color/colorPrimary"
                         android:spinnerMode="dialog"
                         android:textAlignment="center"
-                        android:textColor="@color/colorPrimary"
-                        android:backgroundTint="@color/colorPrimary">
-                    </Spinner>
+                        android:textColor="@color/colorPrimary"></Spinner>
 
                     <Button
                         android:id="@+id/save"

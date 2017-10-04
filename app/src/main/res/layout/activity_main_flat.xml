@@ -27,8 +27,7 @@
             android:textColor="@color/white"
             android:textColorHint="@color/white"
             app:searchBackground="@color/primary"
-            app:searchSuggestionBackground="@color/primary"
-            />
+            app:searchSuggestionBackground="@color/primary" />
     </FrameLayout>
 
 
