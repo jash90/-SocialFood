@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.elvishew.xlog.XLog;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -57,74 +58,25 @@ public class ShoppingBasketFragment extends Fragment {
         final DatabaseReference databaseReference = firebaseDatabase.getReference();
         firebaseAuth = FirebaseAuth.getInstance();
         if (firebaseAuth.getCurrentUser() != null) {
-            databaseReference.child("baskets").child(firebaseAuth.getCurrentUser().getUid()).child("foodOrders").addValueEventListener(new ValueEventListener() {
+            databaseReference.child("baskets").child(firebaseAuth.getCurrentUser().getUid()).child("foodOrders").addChildEventListener(new ChildEventListener() {
                 @Override
-                public void onDataChange(DataSnapshot dataSnapshots) {
-                    for (DataSnapshot dataSnapshot : dataSnapshots.getChildren()) {
-                        final FoodOrder foodOrder = dataSnapshot.getValue(FoodOrder.class);
-                        //XLog.d(dataSnapshot.getKey());
-                        // XLog.d(dataSnapshots.getKey());
-                        databaseReference.child("baskets").child(firebaseAuth.getCurrentUser().getUid()).child("foodOrders").child(dataSnapshot.getKey()).child("uidFood").addValueEventListener(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(final DataSnapshot dataSnapshot) {
-                                final String uidFood = dataSnapshot.getValue(String.class);
-                                // XLog.d("SEARCH " + uidFood);
-                                databaseReference.child("foods").orderByKey().addChildEventListener(new ChildEventListener() {
-                                    @Override
-                                    public void onChildAdded(DataSnapshot dataSnapshots, String s) {
-                                        for (DataSnapshot dataSnapshot : dataSnapshots.getChildren()) {
-                                            if (dataSnapshot.getKey() != null && uidFood != null) {
-                                                if (uidFood.equals(dataSnapshot.getKey())) {
-                                                    Food food = dataSnapshot.getValue(Food.class);
-                                                    food.setType(dataSnapshots.getKey());
-                                                    food.setUid(dataSnapshot.getKey());
-                                                    FoodOrder foodOrder2 = new FoodOrder(food, foodOrder.getCount());
-                                                    foodOrders.add(foodOrder2);
-                                                    foodOrderAdapter.notifyDataSetChanged();
-                                                }
+                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                    XLog.d("DT"+dataSnapshot);
+                }
 
-                                            }
-                                        }
-                                    }
+                @Override
+                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
 
-                                    @Override
-                                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                                    }
+                }
 
-                                    @Override
-                                    public void onChildRemoved(DataSnapshot dataSnapshots) {
-                                        for (DataSnapshot dataSnapshot : dataSnapshots.getChildren()) {
-                                            if (dataSnapshot.getKey() != null && uidFood != null) {
-                                                if (uidFood.equals(dataSnapshot.getKey())) {
-                                                    Food food = dataSnapshot.getValue(Food.class);
-                                                    food.setType(dataSnapshots.getKey());
-                                                    food.setUid(dataSnapshot.getKey());
-                                                    FoodOrder foodOrder2 = new FoodOrder(food, foodOrder.getCount());
-                                                    foodOrders.add(foodOrder2);
-                                                    foodOrderAdapter.notifyDataSetChanged();
-                                                }
+                @Override
+                public void onChildRemoved(DataSnapshot dataSnapshot) {
 
-                                            }
-                                        }
-                                    }
+                }
 
-                                    @Override
-                                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+                @Override
+                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
 
-                                    }
-
-                                    @Override
-                                    public void onCancelled(DatabaseError databaseError) {
-
-                                    }
-                                });
-                            }
-
-                            @Override
-                            public void onCancelled(DatabaseError databaseError) {
-                            }
-                        });
-                    }
                 }
 
                 @Override
@@ -136,19 +88,20 @@ public class ShoppingBasketFragment extends Fragment {
         clear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View view) {
-                databaseReference.child("baskets").child(firebaseAuth.getCurrentUser().getUid()).child("foodOrders").setValue(null).addOnSuccessListener(new OnSuccessListener<Void>() {
+                databaseReference.child("baskets").child(firebaseAuth.getCurrentUser().getUid()).child("foodOrders").removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        Snackbar snackbar =  Snackbar.make(view,"Clear ok",Snackbar.LENGTH_SHORT);
+                        Snackbar snackbar =  Snackbar.make(view,"Shopping Basket is clear.",Snackbar.LENGTH_SHORT);
                         snackbar.show();
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Snackbar snackbar =  Snackbar.make(view,"Clear not ok",Snackbar.LENGTH_SHORT);
+                        Snackbar snackbar =  Snackbar.make(view,"Error Shopping basket"+e.getLocalizedMessage(),Snackbar.LENGTH_SHORT);
                         snackbar.show();
                     }
                 });
+                foodOrderAdapter.notifyDataSetChanged();
             }
         });
 

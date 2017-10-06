@@ -3,6 +3,7 @@ package com.zimny.socialfood.adapter;
 import android.app.Activity;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
 import android.text.method.SingleLineTransformationMethod;
 import android.view.LayoutInflater;
@@ -32,6 +33,7 @@ import com.mikepenz.iconics.IconicsDrawable;
 import com.zimny.socialfood.R;
 import com.zimny.socialfood.activity.details.FoodDetailsActivity;
 import com.zimny.socialfood.model.Food;
+import com.zimny.socialfood.model.FoodOrder;
 import com.zimny.socialfood.model.Tag;
 
 import java.util.ArrayList;
@@ -76,7 +78,7 @@ public class FoodsAdapter extends RecyclerView.Adapter<FoodsAdapter.ViewHolder> 
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), FoodDetailsActivity.class);
-                intent.putExtra("food",new Gson().toJson(food));
+                intent.putExtra("food", new Gson().toJson(food));
                 view.getContext().startActivity(intent);
 
 
@@ -123,14 +125,27 @@ public class FoodsAdapter extends RecyclerView.Adapter<FoodsAdapter.ViewHolder> 
         });
         holder.add.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(final View view) {
                 final String key = databaseReference.child("baskets").child(firebaseAuth.getCurrentUser().getUid()).child("foodOrders").getKey();
-                databaseReference.child("baskets").child(firebaseAuth.getCurrentUser().getUid()).child("foodOrders").orderByChild("uidFood").equalTo(food.getUid()).addValueEventListener(new ValueEventListener() {
+                databaseReference.child("baskets").child(firebaseAuth.getCurrentUser().getUid()).child("foodOrders").orderByChild("uid").equalTo(food.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshots) {
-                       if (dataSnapshots.getValue()!=null){
-                                XLog.d(dataSnapshots.getValue());
-                       }
+                        if (dataSnapshots.getValue() != null) {
+                            if (dataSnapshots.getChildren().iterator().hasNext()) {
+                                DataSnapshot dataSnapshot = dataSnapshots.getChildren().iterator().next();
+                                int count = ((Long) dataSnapshot.child("count").getValue()).intValue() + 1;
+                                databaseReference.child("baskets").child(firebaseAuth.getCurrentUser().getUid()).child("foodOrders").child(dataSnapshot.getKey()).child("count").setValue(count);
+                            }
+                        }
+                        else{
+                            String uidFoodOrder = databaseReference.child("baskets").child(firebaseAuth.getCurrentUser().getUid()).child("foodOrders").push().getKey();
+                            FoodOrder foodOrder = new FoodOrder(food,1);
+                            databaseReference.child("baskets").child(firebaseAuth.getCurrentUser().getUid()).child("foodOrders").child(uidFoodOrder).setValue(foodOrder);
+
+
+                        }
+                        Snackbar snackbar =  Snackbar.make(view,String.format("Adding 1 %s %.2f zł",food.getName(),food.getPrice()),Snackbar.LENGTH_SHORT);
+                        snackbar.show();
                     }
 
                     @Override
@@ -139,8 +154,9 @@ public class FoodsAdapter extends RecyclerView.Adapter<FoodsAdapter.ViewHolder> 
                     }
                 });
 
-                    }});
             }
+        });
+    }
 
 
 
