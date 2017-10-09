@@ -1,5 +1,7 @@
 package com.zimny.socialfood.model;
 
+import com.elvishew.xlog.XLog;
+
 /**
  * Created by ideo7 on 17.08.2017.
  */
@@ -40,6 +42,26 @@ public class Relationship {
 
     public void setInvite(Boolean invite) {
         this.invite = invite;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Relationship)) return false;
+
+        Relationship that = (Relationship) o;
+
+        if (((!uidFriend1.equals(that.uidFriend1) && !uidFriend2.equals(that.uidFriend2))) || ((!uidFriend2.equals(that.uidFriend1) && !uidFriend1.equals(that.uidFriend2)))) return false;
+        return invite.equals(that.invite);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = uidFriend1.hashCode();
+        result = 31 * result + uidFriend2.hashCode();
+        result = 31 * result + invite.hashCode();
+        return result;
     }
 
     @Override

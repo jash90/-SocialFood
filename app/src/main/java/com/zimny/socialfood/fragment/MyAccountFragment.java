@@ -20,7 +20,6 @@ import android.widget.Toast;
 
 import com.franmontiel.fullscreendialog.FullScreenDialogContent;
 import com.franmontiel.fullscreendialog.FullScreenDialogController;
-import com.franmontiel.fullscreendialog.FullScreenDialogFragment;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -36,7 +35,6 @@ import com.google.firebase.storage.UploadTask;
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.squareup.picasso.Picasso;
 import com.zimny.socialfood.R;
-import com.zimny.socialfood.activity.FlatMainActivity;
 import com.zimny.socialfood.activity.LoginActivity;
 import com.zimny.socialfood.model.Address;
 import com.zimny.socialfood.model.User;
@@ -48,7 +46,7 @@ import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 
-public class MyAccountFragment extends Fragment implements FullScreenDialogContent{
+public class MyAccountFragment extends Fragment implements FullScreenDialogContent {
 
 
     private static final int REQUEST_CODE_PICKER = 2000;

@@ -3,7 +3,6 @@ package com.zimny.socialfood.model;
 import com.google.firebase.database.Exclude;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by ideo7 on 17.08.2017.

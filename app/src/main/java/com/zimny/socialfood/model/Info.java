@@ -8,6 +8,14 @@ public class Info {
     private Address address;
     private int phone;
 
+    public Info() {
+    }
+
+    public Info(Address address, int phone) {
+        this.address = address;
+        this.phone = phone;
+    }
+
     public Address getAddress() {
         return address;
     }
@@ -21,14 +29,6 @@ public class Info {
     }
 
     public void setPhone(int phone) {
-        this.phone = phone;
-    }
-
-    public Info() {
-    }
-
-    public Info(Address address, int phone) {
-        this.address = address;
         this.phone = phone;
     }
 

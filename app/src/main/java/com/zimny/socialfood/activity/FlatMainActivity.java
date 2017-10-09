@@ -2,9 +2,7 @@ package com.zimny.socialfood.activity;
 
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -17,16 +15,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.franmontiel.fullscreendialog.FullScreenDialogFragment;
-import com.github.ivbaranov.mli.MaterialLetterIcon;
 import com.google.firebase.auth.FirebaseAuth;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
-import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
 import com.mikepenz.iconics.context.IconicsContextWrapper;
 import com.mikepenz.iconics.context.IconicsLayoutInflater2;
-import com.mikepenz.materialdrawer.model.ContainerDrawerItem;
-import com.mikepenz.materialize.MaterializeBuilder;
 import com.zimny.socialfood.R;
 import com.zimny.socialfood.fragment.MainFragment;
 import com.zimny.socialfood.fragment.MyAccountFragment;
@@ -46,6 +40,7 @@ public class FlatMainActivity extends AppCompatActivity {
     @BindView(R.id.search_view)
     MaterialSearchView searchView;
     FullScreenDialogFragment fullScreenDialogFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         LayoutInflaterCompat.setFactory2(getLayoutInflater(), new IconicsLayoutInflater2(getDelegate()));
@@ -54,14 +49,14 @@ public class FlatMainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
         firebaseAuth = FirebaseAuth.getInstance();
-        if (!getIntent().getBooleanExtra("admin",false)){
+        if (!getIntent().getBooleanExtra("admin", false)) {
             bottomNavigationView.getMenu().removeItem(R.id.admin);
         }
 
         fullScreenDialogFragment = new FullScreenDialogFragment.Builder(FlatMainActivity.this)
                 .setTitle("SocialFood")
                 .setConfirmButton("Save")
-                .setContent(MyAccountFragment.class,savedInstanceState)
+                .setContent(MyAccountFragment.class, savedInstanceState)
                 .build();
 
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -115,13 +110,14 @@ public class FlatMainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.account:
-                fullScreenDialogFragment.show(getSupportFragmentManager(),null);
+                fullScreenDialogFragment.show(getSupportFragmentManager(), null);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
 
         }
     }
+
     @Override
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(IconicsContextWrapper.wrap(newBase));

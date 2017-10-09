@@ -55,8 +55,9 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Mate
     Restaurant restaurant;
     ArrayList<Fragment> fragments;
     FragmentAdapter fragmentAdapter;
+
     @Override
-    protected void onCreate(Bundle savedInstanceState){
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_restaurant_details);
         ButterKnife.bind(this);
@@ -87,8 +88,8 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Mate
             materialTabHost.getTabAt(0).setIcon((new IconicsDrawable(getBaseContext()).icon(GoogleMaterial.Icon.gmd_restaurant_menu).color(Color.WHITE)).sizeDp(20));
             materialTabHost.getTabAt(1).setIcon((new IconicsDrawable(getBaseContext()).icon(GoogleMaterial.Icon.gmd_info).color(Color.WHITE)).sizeDp(20));
             //  XLog.d(restaurant);
-            if (restaurant.getTags()!=null){
-            //    XLog.d(restaurant.getTags());
+            if (restaurant.getTags() != null) {
+                //    XLog.d(restaurant.getTags());
                 tagGroup.setTags(Tag.getStringTags(restaurant.getTags()));
             }
         }

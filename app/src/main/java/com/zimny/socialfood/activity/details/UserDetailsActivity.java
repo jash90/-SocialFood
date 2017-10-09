@@ -10,7 +10,6 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -18,9 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.elvishew.xlog.XLog;
 import com.firebase.ui.storage.images.FirebaseImageLoader;
-import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -29,10 +26,10 @@ import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
 import com.zimny.socialfood.R;
 import com.zimny.socialfood.fragment.FoodsFragment;
-import com.zimny.socialfood.fragment.InfoFragment;
-import com.zimny.socialfood.fragment.UsersFragment;
 import com.zimny.socialfood.fragment.GroupsFragment;
+import com.zimny.socialfood.fragment.InfoFragment;
 import com.zimny.socialfood.fragment.RestaurantFragment;
+import com.zimny.socialfood.fragment.UsersFragment;
 import com.zimny.socialfood.model.User;
 
 import org.joda.time.LocalDate;
@@ -109,14 +106,14 @@ public class UserDetailsActivity extends AppCompatActivity implements MaterialTa
                 public void onClick(View view) {
                     if (!invite) {
                         floatingActionButton.setImageDrawable(new IconicsDrawable(getApplicationContext()).icon(GoogleMaterial.Icon.gmd_person).color(Color.WHITE).sizeDp(20));
-                        Snackbar snackbar =Snackbar.make(view,"Add user from relationship",Snackbar.LENGTH_SHORT);
-                      //  snackbar.getView().setBackgroundResource(R.color.white);
+                        Snackbar snackbar = Snackbar.make(view, "Add user from relationship", Snackbar.LENGTH_SHORT);
+                        //  snackbar.getView().setBackgroundResource(R.color.white);
                         snackbar.show();
                         invite = !invite;
                     } else {
                         floatingActionButton.setImageDrawable(new IconicsDrawable(getApplicationContext()).icon(GoogleMaterial.Icon.gmd_person_add).color(Color.WHITE).sizeDp(20));
-                        Snackbar snackbar =  Snackbar.make(view,"Remove user from relationship",Snackbar.LENGTH_SHORT);
-                       // snackbar.getView().setBackgroundResource(R.color.white);
+                        Snackbar snackbar = Snackbar.make(view, "Remove user from relationship", Snackbar.LENGTH_SHORT);
+                        // snackbar.getView().setBackgroundResource(R.color.white);
                         snackbar.show();
                         invite = !invite;
                     }

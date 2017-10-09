@@ -11,7 +11,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.elvishew.xlog.XLog;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -28,8 +27,10 @@ import com.zimny.socialfood.model.Food;
 import com.zimny.socialfood.model.FoodOrder;
 import com.zimny.socialfood.model.Order;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -55,7 +56,15 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         final Order order = orders.get(position);
-        holder.date.setText(new SimpleDateFormat("dd.MM.yyyy HH:mm").format(order.getDate()));
+        if (order.getDate() != null) {
+            try {
+                Date date = new SimpleDateFormat("dd.MM.yyyy HH:mm z").parse(order.getDate());
+                holder.date.setText(new SimpleDateFormat("dd.MM.yyyy HH:mm").format(date));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+        }
         if (order.isPaying()) {
             holder.paying.setImageDrawable(new IconicsDrawable(holder.itemView.getContext()).icon(FontAwesome.Icon.faw_money).color(ContextCompat.getColor(holder.itemView.getContext(), R.color.colorAccent)).sizeDp(40));
 
@@ -86,7 +95,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
                     for (DataSnapshot dataSnapshot : dataSnapshots.getChildren()) {
                         final FoodOrder foodOrder = new FoodOrder();
                         foodOrder.setCount(((Long) dataSnapshot.child("count").getValue()).intValue());
-                        final String uidFood = dataSnapshot.child("uidFood").getValue(String.class);
+                        final String uidFood = dataSnapshot.child("uid").getValue(String.class);
                         databaseReference.child("foods").orderByKey().addChildEventListener(new ChildEventListener() {
                             @Override
                             public void onChildAdded(DataSnapshot dataSnapshots, String s) {
@@ -95,7 +104,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
                                         Food food = dataSnapshot.getValue(Food.class);
                                         food.setUid(dataSnapshot.getKey());
                                         food.setType(dataSnapshots.getKey());
-                                        XLog.d(food);
+                                        // XLog.d(food);
                                         foodOrder.setFood(food);
                                         foodOrders.add(foodOrder);
                                         order.setFoodOrders(foodOrders);
@@ -104,7 +113,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
                                             sumPrice = sumPrice + (foodOrder1.getPrice() * foodOrder1.getCount());
                                         }
                                         holder.price.setText(String.format("%.2f zł", sumPrice));
-                                        XLog.d(food);
+                                        // XLog.d(food);
                                     }
                                 }
                             }

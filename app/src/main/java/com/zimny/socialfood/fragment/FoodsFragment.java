@@ -148,7 +148,7 @@ public class FoodsFragment extends Fragment {
         } else if (getActivity().getIntent().getStringExtra("restaurant") != null) {
             String json = getActivity().getIntent().getStringExtra("restaurant");
             restaurant = new Gson().fromJson(json, Restaurant.class);
-           // XLog.d(user);
+            // XLog.d(user);
             FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
             final DatabaseReference databaseReference = firebaseDatabase.getReference();
             databaseReference.child("foods").orderByKey().addValueEventListener(new ValueEventListener() {

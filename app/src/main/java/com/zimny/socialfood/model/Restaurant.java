@@ -1,13 +1,12 @@
 package com.zimny.socialfood.model;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by ideo7 on 17.08.2017.
  */
 
-public class Restaurant extends Info{
+public class Restaurant extends Info {
     private ArrayList<Food> foods;
     private String uid;
     private ArrayList<Tag> tags;

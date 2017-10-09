@@ -1,6 +1,5 @@
 package com.zimny.socialfood.fragment;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -38,6 +37,7 @@ public class UsersFragment extends Fragment {
     FirebaseAuth firebaseAuth;
     User user;
     Group group;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -121,36 +121,35 @@ public class UsersFragment extends Fragment {
                 });
 
             }
-        }
-        else if(getActivity().getIntent().getStringExtra("group")!=null) {
+        } else if (getActivity().getIntent().getStringExtra("group") != null) {
             final String json = getActivity().getIntent().getStringExtra("group");
-            XLog.d("GROUP "+json);
+            XLog.d("GROUP " + json);
             if (json != null) {
                 group = new Gson().fromJson(json, Group.class);
                 FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-                XLog.d("INGROUP "+group);
+                XLog.d("INGROUP " + group);
                 final DatabaseReference databaseReference = firebaseDatabase.getReference();
-                for (User user : group.getUsers()){
-                   databaseReference.child("users").child(user.getUid()).addValueEventListener(new ValueEventListener() {
-                       @Override
-                       public void onDataChange(DataSnapshot dataSnapshot) {
-                        User user = dataSnapshot.getValue(User.class);
-                        user.setUid(dataSnapshot.getKey());
-                        users.add(user);
-                        group.setUsers(users);
-                        XLog.d(user);
-                        usersAdapter.notifyDataSetChanged();
-                           XLog.d(dataSnapshot);
-                       }
+                for (User user : group.getUsers()) {
+                    databaseReference.child("users").child(user.getUid()).addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            User user = dataSnapshot.getValue(User.class);
+                            user.setUid(dataSnapshot.getKey());
+                            users.add(user);
+                            group.setUsers(users);
+                            //   XLog.d(user);
+                            usersAdapter.notifyDataSetChanged();
+                            //   XLog.d(dataSnapshot);
+                        }
 
-                       @Override
-                       public void onCancelled(DatabaseError databaseError) {
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
 
-                       }
-                   });
+                        }
+                    });
                 }
-            //    users=group.getUsers();
-             //   usersAdapter.notifyDataSetChanged();
+                //    users=group.getUsers();
+                //   usersAdapter.notifyDataSetChanged();
             }
         } else {
             if (firebaseAuth.getCurrentUser() != null) {
@@ -203,7 +202,7 @@ public class UsersFragment extends Fragment {
                                         }
                                         users.add(user);
                                         usersAdapter.notifyDataSetChanged();
-                                        XLog.d(users);
+                                        //                   XLog.d(users);
                                     }
 
                                     @Override

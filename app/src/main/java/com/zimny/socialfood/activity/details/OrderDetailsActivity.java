@@ -25,7 +25,9 @@ import com.zimny.socialfood.adapter.FoodOrderAdapter;
 import com.zimny.socialfood.model.FoodOrder;
 import com.zimny.socialfood.model.Order;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -62,12 +64,19 @@ public class OrderDetailsActivity extends AppCompatActivity {
         if (json != null) {
             order = new Gson().fromJson(json, Order.class);
             //XLog.d("XXX " + order);
-            date.setText(new SimpleDateFormat("dd.MM.yyyy HH:mm").format(order.getDate()));
+            if (order.getDate() != null) {
+                try {
+                    Date data = new SimpleDateFormat("dd.MM.yyyy HH:mm z").parse(order.getDate());
+                    date.setText(new SimpleDateFormat("dd.MM.yyyy HH:mm").format(data));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+            }
             Double sumPrice = 0.0;
             //XLog.d(order.getUid());
             for (FoodOrder foodOrder : order.getFoodOrders()) {
                 sumPrice = sumPrice + (foodOrder.getPrice() * foodOrder.getCount());
-                // XLog.d(foodOrder.getPrice() + " * " + foodOrder.getCount() + " " + foodOrder.getPrice() * foodOrder.getCount());
             }
             price.setText(String.format("%.2f zł", sumPrice));
             if (order.isPaying()) {

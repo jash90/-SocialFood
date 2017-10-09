@@ -3,10 +3,9 @@ package com.zimny.socialfood.model;
 import com.google.firebase.database.Exclude;
 
 import java.util.ArrayList;
-import java.util.List;
 
 
-public class Group extends Info{
+public class Group extends Info {
     private String uid;
     private ArrayList<User> users;
     private String uidAdmin;
@@ -17,7 +16,7 @@ public class Group extends Info{
     public Group() {
     }
 
-    public Group(String uid, ArrayList<User> users, Address address, String uidAdmin, ArrayList<Tag> tags, String name, String imageUpload,int phone) {
+    public Group(String uid, ArrayList<User> users, Address address, String uidAdmin, ArrayList<Tag> tags, String name, String imageUpload, int phone) {
         this.uid = uid;
         this.users = users;
         super.setAddress(address);
@@ -80,6 +79,6 @@ public class Group extends Info{
 
     @Override
     public String toString() {
-        return String.format("%s %s %s %s", name, getAddress(), users, tags);
+        return String.format("%s", name);
     }
 }

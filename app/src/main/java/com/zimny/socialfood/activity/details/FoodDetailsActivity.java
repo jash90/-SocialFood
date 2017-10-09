@@ -59,9 +59,10 @@ public class FoodDetailsActivity extends AppCompatActivity {
     FirebaseStorage firebaseStorage;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+    Food foodd;
     private FirebaseAuth firebaseAuth;
     private FirebaseUser firebaseUser;
-    Food foodd;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,9 +70,9 @@ public class FoodDetailsActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
         Intent intent = getIntent();
-        if (getIntent().getStringExtra("food")!=null) {
+        if (getIntent().getStringExtra("food") != null) {
             String json = getIntent().getStringExtra("food");
-            foodd = new Gson().fromJson(json,Food.class);
+            foodd = new Gson().fromJson(json, Food.class);
             firebaseAuth = FirebaseAuth.getInstance();
             firebaseUser = firebaseAuth.getCurrentUser();
             firebaseStorage = FirebaseStorage.getInstance();
@@ -98,7 +99,7 @@ public class FoodDetailsActivity extends AppCompatActivity {
                         } else {
                             linearLayout.setVisibility(View.GONE);
                         }
-                        price.setText(String.format("%.2f zł",foodd.getPrice()));
+                        price.setText(String.format("%.2f zł", foodd.getPrice()));
                         nameFood.setText(food.getName());
                         databaseReference.child("foods").child(foodd.getType()).child(foodd.getUid()).child("restaurant").addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override

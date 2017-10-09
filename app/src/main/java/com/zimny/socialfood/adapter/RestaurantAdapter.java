@@ -79,7 +79,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), RestaurantDetailsActivity.class);
                 String restaurantJson = new Gson().toJson(restaurant);
-                intent.putExtra("restaurant",restaurantJson);
+                intent.putExtra("restaurant", restaurantJson);
                 view.getContext().startActivity(intent);
             }
         });
@@ -101,7 +101,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
                                         databaseReference.child("tags").child(dataSnapshot.getKey()).addValueEventListener(new ValueEventListener() {
                                             @Override
                                             public void onDataChange(DataSnapshot dataSnapshot) {
-                                             //   XLog.d(dataSnapshot);
+                                                //   XLog.d(dataSnapshot);
                                                 Tag tag = dataSnapshot.getValue(Tag.class);
                                                 tag.setUid(dataSnapshot.getKey());
                                                 if (!tagsString.contains(tag.getName())) {

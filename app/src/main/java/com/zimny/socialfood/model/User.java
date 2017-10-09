@@ -4,14 +4,12 @@ package com.zimny.socialfood.model;
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 
 @IgnoreExtraProperties
-public class User extends Info{
+public class User extends Info {
 
     private String uid;
     private String username;
@@ -39,14 +37,14 @@ public class User extends Info{
         orders = new ArrayList<>();
         shoppingBasket = new Order();
         relationships = new ArrayList<>();
-        imageUpload ="";
+        imageUpload = "";
     }
 
     public User(String username) {
         this.username = username;
     }
 
-    public User(String uid, String username, String firstname, String lastname, Address address, Date birthday, ArrayList<Restaurant> restaurants, ArrayList<Food> foods, ArrayList<Group> groups, ArrayList<Order> orders, Order shoppingBasket, ArrayList<Relationship> relationships, String imageUpload,int phone) {
+    public User(String uid, String username, String firstname, String lastname, Address address, Date birthday, ArrayList<Restaurant> restaurants, ArrayList<Food> foods, ArrayList<Group> groups, ArrayList<Order> orders, Order shoppingBasket, ArrayList<Relationship> relationships, String imageUpload, int phone) {
         this.uid = uid;
         this.username = username;
         this.firstname = firstname;

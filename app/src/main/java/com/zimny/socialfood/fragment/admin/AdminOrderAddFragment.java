@@ -153,7 +153,7 @@ public class AdminOrderAddFragment extends Fragment implements DatePickerDialog.
 //                } catch (ParseException e) {
 //                    e.printStackTrace();
 //                }
-                order.setDate(null);
+                order.setDate("");
                 String uid = databaseReference.child("orders").push().getKey();
                 databaseReference.child("orders").child(uid).setValue(order).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override

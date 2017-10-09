@@ -60,24 +60,25 @@ public class GroupDetailsActivity extends AppCompatActivity implements MaterialT
     FragmentAdapter fragmentAdapter;
     private FirebaseAuth firebaseAuth;
     private FirebaseUser firebaseUser;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_details);
         ButterKnife.bind(this);
-        if (getIntent().getStringExtra("group")!=null) {
+        if (getIntent().getStringExtra("group") != null) {
             firebaseAuth = FirebaseAuth.getInstance();
             firebaseUser = firebaseAuth.getCurrentUser();
             firebaseStorage = FirebaseStorage.getInstance();
             final StorageReference storageReference = firebaseStorage.getReference();
             String json = getIntent().getStringExtra("group");
-            if (json!=null) {
-                group = new Gson().fromJson(json,Group.class);
+            if (json != null) {
+                group = new Gson().fromJson(json, Group.class);
                 XLog.d(group);
                 collapsingToolbarLayout.setTitle(group.getName());
-                if (tagGroup.getTags()!=null){
+                if (tagGroup.getTags() != null) {
                     ArrayList<String> tagss = new ArrayList<>();
-                    for (Tag tag : group.getTags()){
+                    for (Tag tag : group.getTags()) {
                         tagss.add(tag.getName());
                     }
                     tagGroup.setTags(tagss);
@@ -111,6 +112,7 @@ public class GroupDetailsActivity extends AppCompatActivity implements MaterialT
 //                color(Color.WHITE).
 //                sizeDp(16));
     }
+
     @Override
     public void onTabSelected(MaterialTab tab) {
         viewPager.setCurrentItem(tab.getPosition());

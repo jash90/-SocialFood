@@ -13,7 +13,6 @@ import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.gson.Gson;
-import com.mikepenz.iconics.IconicsDrawable;
 import com.zimny.socialfood.R;
 import com.zimny.socialfood.activity.details.FoodDetailsActivity;
 import com.zimny.socialfood.model.FoodOrder;
@@ -61,7 +60,7 @@ public class FoodOrderAdapter extends RecyclerView.Adapter<FoodOrderAdapter.View
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), FoodDetailsActivity.class);
-                intent.putExtra("food",new Gson().toJson(foodOrder.getFood()));
+                intent.putExtra("food", new Gson().toJson(foodOrder.getFood()));
                 view.getContext().startActivity(intent);
             }
         });

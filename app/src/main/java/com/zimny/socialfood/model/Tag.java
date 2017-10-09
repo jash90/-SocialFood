@@ -22,6 +22,14 @@ public class Tag {
         this.name = name;
     }
 
+    public static ArrayList<String> getStringTags(ArrayList<Tag> tags) {
+        ArrayList<String> tagString = new ArrayList<>();
+        for (Tag tag : tags) {
+            tagString.add(tag.getName());
+        }
+        return tagString;
+    }
+
     public String getName() {
         return name;
     }
@@ -41,12 +49,5 @@ public class Tag {
     @Override
     public String toString() {
         return String.format("%s", name);
-    }
-    public static ArrayList<String> getStringTags(ArrayList<Tag> tags){
-        ArrayList <String> tagString = new ArrayList<>();
-        for (Tag tag : tags){
-            tagString.add(tag.getName());
-        }
-        return tagString;
     }
 }

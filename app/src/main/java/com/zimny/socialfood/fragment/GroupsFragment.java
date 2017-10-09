@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.elvishew.xlog.XLog;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -99,12 +98,12 @@ public class GroupsFragment extends Fragment {
                             databaseReference.child("groups").child(dataSnapshot.getKey()).child("users").addValueEventListener(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshots) {
-                                   for (DataSnapshot dataSnapshot : dataSnapshots.getChildren()){
-                                       if (user.getUid().equals(dataSnapshot.getKey())){
-                                           groups.add(group);
-                                           groupsAdapter.notifyDataSetChanged();
-                                       }
-                                   }
+                                    for (DataSnapshot dataSnapshot : dataSnapshots.getChildren()) {
+                                        if (user.getUid().equals(dataSnapshot.getKey())) {
+                                            groups.add(group);
+                                            groupsAdapter.notifyDataSetChanged();
+                                        }
+                                    }
 
                                 }
 

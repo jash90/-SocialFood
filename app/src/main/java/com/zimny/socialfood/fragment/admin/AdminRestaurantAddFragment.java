@@ -61,7 +61,7 @@ public class AdminRestaurantAddFragment extends Fragment {
                     DatabaseReference databaseReference = firebaseDatabase.getReference();
                     if (!nameRestaurant.getText().toString().isEmpty() && !phone.getText().toString().isEmpty()) {
                         String uid = databaseReference.child("restaurants").push().getKey();
-                        final Restaurant restaurant = new Restaurant(nameRestaurant.getText().toString(), Integer.valueOf(phone.getText().toString()),new SimpleDateFormat("yyyy.MM.dd HH:mm:ss").format(new Date()));
+                        final Restaurant restaurant = new Restaurant(nameRestaurant.getText().toString(), Integer.valueOf(phone.getText().toString()), new SimpleDateFormat("yyyy.MM.dd HH:mm:ss").format(new Date()));
                         Address address = new Address();
                         if (!city.getText().toString().isEmpty()) {
                             address.setCity(city.getText().toString());

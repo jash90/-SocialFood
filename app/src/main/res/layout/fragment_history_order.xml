@@ -5,19 +5,6 @@
     android:orientation="vertical"
     tools:context="com.zimny.socialfood.fragment.HistoryOrderFragment">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginTop="10dp"
-        android:gravity="center"
-        android:text="History"
-        android:textColor="@color/primary"
-        android:textSize="22sp"
-        android:textStyle="bold" />
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">

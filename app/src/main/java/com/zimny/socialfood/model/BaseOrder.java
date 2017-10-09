@@ -26,6 +26,7 @@ public class BaseOrder {
         this.uid = "";
     }
 
+    @Exclude
     public String getUid() {
         return uid;
     }

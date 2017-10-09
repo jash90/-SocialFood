@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.elvishew.xlog.XLog;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -21,7 +20,6 @@ import com.zimny.socialfood.model.Restaurant;
 import com.zimny.socialfood.model.Tag;
 import com.zimny.socialfood.model.User;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 import butterknife.BindView;
@@ -62,37 +60,32 @@ public class InfoFragment extends Fragment {
             final String json = getActivity().getIntent().getStringExtra("user");
             if (json != null) {
                 user = new Gson().fromJson(json, User.class);
-                if (user.getAddress().getCity()!=null) {
+                if (user.getAddress().getCity() != null) {
                     cityLayout.setVisibility(View.VISIBLE);
                     city.setText(user.getAddress().getCity());
-                }
-                else {
+                } else {
                     cityLayout.setVisibility(View.GONE);
                 }
-                if (user.getPhone()>0) {
+                if (user.getPhone() > 0) {
                     phoneLayout.setVisibility(View.VISIBLE);
                     phone.setText(String.valueOf(user.getPhone()));
-                }
-                else {
+                } else {
                     phoneLayout.setVisibility(View.GONE);
                 }
-                if (user.getUsername()!=null) {
+                if (user.getUsername() != null) {
                     mailLayout.setVisibility(View.VISIBLE);
                     mail.setText(user.getUsername());
-                }
-                else {
+                } else {
                     mailLayout.setVisibility(View.GONE);
                 }
-                if (user.getBirthday()!=null) {
+                if (user.getBirthday() != null) {
                     birthdayLayout.setVisibility(View.VISIBLE);
                     birthday.setText(new SimpleDateFormat("dd.MM.yyyy").format(user.getBirthday()));
-                }
-                else {
+                } else {
                     birthdayLayout.setVisibility(View.GONE);
                 }
             }
-        }
-        else if (getActivity().getIntent().getStringExtra("group")!=null) {
+        } else if (getActivity().getIntent().getStringExtra("group") != null) {
             final String json = getActivity().getIntent().getStringExtra("group");
             if (json != null) {
                 group = new Gson().fromJson(json, Group.class);
@@ -132,13 +125,12 @@ public class InfoFragment extends Fragment {
                     mailLayout.setVisibility(View.GONE);
                 }
                 birthdayLayout.setVisibility(View.GONE);
-                if (group.getTags()!=null) {
+                if (group.getTags() != null) {
                     tagGroup.setTags(Tag.getStringTags(group.getTags()));
                 }
 
             }
-        }
-        else if (getActivity().getIntent().getStringExtra("restaurant")!=null){
+        } else if (getActivity().getIntent().getStringExtra("restaurant") != null) {
             final String json = getActivity().getIntent().getStringExtra("restaurant");
             if (json != null) {
                 restaurant = new Gson().fromJson(json, Restaurant.class);
@@ -156,7 +148,7 @@ public class InfoFragment extends Fragment {
                 }
                 mailLayout.setVisibility(View.GONE);
                 birthdayLayout.setVisibility(View.GONE);
-                if (restaurant.getTags()!=null) {
+                if (restaurant.getTags() != null) {
                     tagGroup.setTags(Tag.getStringTags(restaurant.getTags()));
                 }
 

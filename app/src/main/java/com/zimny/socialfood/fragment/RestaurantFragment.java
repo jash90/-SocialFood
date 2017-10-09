@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.elvishew.xlog.XLog;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -72,10 +71,10 @@ public class RestaurantFragment extends Fragment {
             }
         } else {
             String json = getActivity().getIntent().getStringExtra("user");
-           // XLog.d(json);
+            // XLog.d(json);
             if (json != null) {
                 user = new Gson().fromJson(json, User.class);
-               // XLog.d(user);
+                // XLog.d(user);
                 FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
                 final DatabaseReference databaseReference = firebaseDatabase.getReference();
                 databaseReference.child("orders").orderByChild("uidUser").equalTo(user.getUid()).addChildEventListener(new ChildEventListener() {
@@ -94,7 +93,7 @@ public class RestaurantFragment extends Fragment {
                                             for (DataSnapshot dataSnapshot : dataSnapshots.getChildren()) {
                                                 for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
                                                     if (dataSnapshot1.getKey().equals(uidFood)) {
-                                                        String uidRestaurant  = dataSnapshot1.child("restaurant").getValue(String.class);
+                                                        String uidRestaurant = dataSnapshot1.child("restaurant").getValue(String.class);
                                                         databaseReference.child("restaurants").child(uidRestaurant).addValueEventListener(new ValueEventListener() {
                                                             @Override
                                                             public void onDataChange(DataSnapshot dataSnapshot) {

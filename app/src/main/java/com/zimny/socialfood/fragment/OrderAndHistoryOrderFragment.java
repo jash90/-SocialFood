@@ -76,7 +76,7 @@ public class OrderAndHistoryOrderFragment extends Fragment {
             Locale l = Locale.getDefault();
             switch (position) {
                 case 0:
-                    return "Order".toUpperCase(l);
+                    return "Basket".toUpperCase(l);
                 case 1:
                     return "History".toUpperCase(l);
             }

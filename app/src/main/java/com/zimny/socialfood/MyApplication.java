@@ -1,6 +1,5 @@
 package com.zimny.socialfood;
 
-import android.app.Application;
 import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
 
