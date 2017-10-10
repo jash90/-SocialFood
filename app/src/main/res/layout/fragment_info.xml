@@ -37,11 +37,11 @@
                     android:layout_gravity="center"
                     android:layout_marginBottom="10dp"
                     android:layout_marginLeft="16dp"
-                    android:textColor="@color/primary"
                     android:layout_marginRight="16dp"
                     android:layout_marginTop="10dp"
                     android:layout_weight="1"
-                    android:text="New York" />
+                    android:text="New York"
+                    android:textColor="@color/primary" />
             </LinearLayout>
 
             <LinearLayout
@@ -68,9 +68,9 @@
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
                     android:layout_marginTop="10dp"
-                    android:textColor="@color/primary"
                     android:layout_weight="1"
-                    android:text="99.99.9999" />
+                    android:text="99.99.9999"
+                    android:textColor="@color/primary" />
             </LinearLayout>
 
             <LinearLayout
@@ -95,11 +95,11 @@
                     android:layout_gravity="center"
                     android:layout_marginBottom="10dp"
                     android:layout_marginLeft="16dp"
-                    android:textColor="@color/primary"
                     android:layout_marginRight="16dp"
                     android:layout_marginTop="10dp"
                     android:layout_weight="1"
-                    android:text="email.com" />
+                    android:text="email.com"
+                    android:textColor="@color/primary" />
             </LinearLayout>
 
             <LinearLayout
@@ -124,11 +124,11 @@
                     android:layout_gravity="center"
                     android:layout_marginBottom="10dp"
                     android:layout_marginLeft="16dp"
-                    android:textColor="@color/primary"
                     android:layout_marginRight="16dp"
                     android:layout_marginTop="10dp"
                     android:layout_weight="1"
-                    android:text="789456123" />
+                    android:text="789456123"
+                    android:textColor="@color/primary" />
             </LinearLayout>
 
             <me.gujun.android.taggroup.TagGroup

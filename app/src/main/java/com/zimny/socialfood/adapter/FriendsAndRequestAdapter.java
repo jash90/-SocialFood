@@ -12,16 +12,12 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.signature.StringSignature;
-import com.elvishew.xlog.XLog;
 import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.gson.Gson;
@@ -29,7 +25,6 @@ import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.mikepenz.iconics.IconicsDrawable;
 import com.zimny.socialfood.R;
 import com.zimny.socialfood.activity.details.UserDetailsActivity;
-import com.zimny.socialfood.model.User;
 import com.zimny.socialfood.model.UserRequest;
 
 import org.joda.time.LocalDate;
@@ -57,21 +52,21 @@ public class FriendsAndRequestAdapter extends RecyclerView.Adapter<RecyclerView.
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-       snackbar = Snackbar.make(parent,"Friends Request rejected.",Snackbar.LENGTH_SHORT);
-       if (viewType==2){
-           View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_friend,parent,false);
-           return new FriendsHolder(v);
-       }else if (viewType==1){
-           View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_request_friend,parent,false);
-           return new FriendsRequestHolder(v);
-       }else{
+        snackbar = Snackbar.make(parent, "Friends Request rejected.", Snackbar.LENGTH_SHORT);
+        if (viewType == 2) {
+            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_friend, parent, false);
+            return new FriendsHolder(v);
+        } else if (viewType == 1) {
+            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_request_friend, parent, false);
+            return new FriendsRequestHolder(v);
+        } else {
             return null;
         }
     }
 
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder viewHolder, final int position) {
-        if (userRequests.get(position).isRequest()){
+        if (userRequests.get(position).isRequest()) {
             FriendsHolder holder = (FriendsHolder) viewHolder;
             final UserRequest user = userRequests.get(position);
             holder.firstname.setText(user.getFirstname());
@@ -104,8 +99,7 @@ public class FriendsAndRequestAdapter extends RecyclerView.Adapter<RecyclerView.
                     view.getContext().startActivity(intent);
                 }
             });
-        }
-        else{
+        } else {
             final FriendsRequestHolder holder = (FriendsRequestHolder) viewHolder;
             final UserRequest user = userRequests.get(position);
             holder.firstname.setText(user.getFirstname());
@@ -147,7 +141,7 @@ public class FriendsAndRequestAdapter extends RecyclerView.Adapter<RecyclerView.
                         @Override
                         public void onSuccess(Void aVoid) {
                             snackbar.setText("XDD");
-                                        snackbar.show();
+                            snackbar.show();
 
                         }
                     }).addOnFailureListener(new OnFailureListener() {
@@ -166,7 +160,7 @@ public class FriendsAndRequestAdapter extends RecyclerView.Adapter<RecyclerView.
                     databaseReference.child("relationships").child("deliveryrequest").child(firebaseAuth.getCurrentUser().getUid()).child(userRequests.get(position).getUid()).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
-                                          snackbar.setText("Add");
+                            snackbar.setText("Add");
                             snackbar.show();
 
                         }
@@ -191,7 +185,7 @@ public class FriendsAndRequestAdapter extends RecyclerView.Adapter<RecyclerView.
 
     @Override
     public int getItemViewType(int position) {
-        return userRequests.get(position).isRequest()?2:1;
+        return userRequests.get(position).isRequest() ? 2 : 1;
     }
 
     public class FriendsHolder extends RecyclerView.ViewHolder {
@@ -211,6 +205,7 @@ public class FriendsAndRequestAdapter extends RecyclerView.Adapter<RecyclerView.
             ButterKnife.bind(this, itemView);
         }
     }
+
     public class FriendsRequestHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.userImageCircle)
         CircleImageView userImageCircle;

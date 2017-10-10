@@ -2,6 +2,7 @@ package com.zimny.socialfood.activity;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -100,8 +101,26 @@ public class FlatMainActivity extends AppCompatActivity {
             }
         });
         bottomNavigationView.setSelectedItemId(R.id.food);
-//        Intent intent = new Intent(FlatMainActivity.this, AdminActivity.class);
-//        startActivity(intent);
+        searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+//                Intent intent = new Intent();
+//                intent.setAction("searchend");
+//                sendBroadcast(intent);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                Intent intent = new Intent();
+                intent.setAction("search");
+                intent.putExtra("search", newText);
+                intent.putExtra("empty", newText.isEmpty());
+                sendBroadcast(intent);
+                return false;
+            }
+        });
+
 
     }
 
@@ -138,4 +157,6 @@ public class FlatMainActivity extends AppCompatActivity {
 
         return super.onCreateOptionsMenu(menu);
     }
+
+
 }

@@ -1,6 +1,9 @@
 package com.zimny.socialfood.fragment;
 
-import android.net.wifi.p2p.WifiP2pManager;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -22,9 +25,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 import com.zimny.socialfood.R;
 import com.zimny.socialfood.adapter.FriendsAndRequestAdapter;
-import com.zimny.socialfood.adapter.RequestFriendsAdapter;
-import com.zimny.socialfood.adapter.UsersAdapter;
-import com.zimny.socialfood.model.FoodOrder;
 import com.zimny.socialfood.model.Group;
 import com.zimny.socialfood.model.User;
 import com.zimny.socialfood.model.UserRequest;
@@ -45,9 +45,35 @@ public class UsersFragment extends Fragment {
     ArrayList<UserRequest> users;
     FriendsAndRequestAdapter usersAdapter;
     FirebaseAuth firebaseAuth;
-    RequestFriendsAdapter requestFriendsAdapter;
+    ArrayList<UserRequest> userRequests;
     User user;
     Group group;
+    private IntentFilter intentFilter = new IntentFilter("search");
+    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            for (Iterator<UserRequest> iterator = users.iterator(); iterator.hasNext(); ) {
+                UserRequest userRequest = iterator.next();
+                if (!userRequest.getFirstname().startsWith(intent.getStringExtra("search"))) {
+                    iterator.remove();
+                    usersAdapter.notifyDataSetChanged();
+                }
+
+            }
+            if (intent.getBooleanExtra("empty", false)) {
+                users = userRequests;
+                usersAdapter.notifyDataSetChanged();
+
+            }
+            XLog.d(users);
+            XLog.d(userRequests);
+        }
+
+
+    };
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -55,6 +81,7 @@ public class UsersFragment extends Fragment {
         ButterKnife.bind(this, v);
         firebaseAuth = FirebaseAuth.getInstance();
         users = new ArrayList<>();
+        userRequests = new ArrayList<>();
         usersAdapter = new FriendsAndRequestAdapter(users);
         final RecyclerView.LayoutManager userlayoutManager = new LinearLayoutManager(getContext());
         userView.setLayoutManager(userlayoutManager);
@@ -82,7 +109,8 @@ public class UsersFragment extends Fragment {
                                         e.printStackTrace();
                                     }
                                 }
-                                users.add(new UserRequest(user,true));
+                                users.add(new UserRequest(user, true));
+                                userRequests.add(new UserRequest(user, true));
                                 usersAdapter.notifyDataSetChanged();
                             }
 
@@ -116,33 +144,32 @@ public class UsersFragment extends Fragment {
 
 
             }
-        }
-        else if(getActivity().getIntent().getStringExtra("group")!=null) {
+        } else if (getActivity().getIntent().getStringExtra("group") != null) {
             final String json = getActivity().getIntent().getStringExtra("group");
-            XLog.d("GROUP "+json);
+            XLog.d("GROUP " + json);
             if (json != null) {
                 group = new Gson().fromJson(json, Group.class);
-                for (User user : group.getUsers()){
-                   databaseReference.child("users").child(user.getUid()).addValueEventListener(new ValueEventListener() {
-                       @Override
-                       public void onDataChange(DataSnapshot dataSnapshot) {
-                        User user = dataSnapshot.getValue(User.class);
-                        user.setUid(dataSnapshot.getKey());
-                        users.add(new UserRequest(user,true));
-                        group.setUsers(users);
-                        XLog.d(user);
-                        usersAdapter.notifyDataSetChanged();
-                           XLog.d(dataSnapshot);
-                       }
+                for (User user : group.getUsers()) {
+                    databaseReference.child("users").child(user.getUid()).addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            User user = dataSnapshot.getValue(User.class);
+                            user.setUid(dataSnapshot.getKey());
+                            users.add(new UserRequest(user, true));
+                            group.setUsers(users);
+                            XLog.d(user);
+                            usersAdapter.notifyDataSetChanged();
+                            XLog.d(dataSnapshot);
+                        }
 
-                       @Override
-                       public void onCancelled(DatabaseError databaseError) {
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
 
-                       }
-                   });
+                        }
+                    });
                 }
-            //    users=group.getUsers();
-             //   usersAdapter.notifyDataSetChanged();
+                //    users=group.getUsers();
+                //   usersAdapter.notifyDataSetChanged();
             }
         } else {
             if (firebaseAuth.getCurrentUser() != null) {
@@ -162,7 +189,7 @@ public class UsersFragment extends Fragment {
                                         e.printStackTrace();
                                     }
                                 }
-                                users.add(new UserRequest(user,false));
+                                users.add(new UserRequest(user, false));
                                 usersAdapter.notifyDataSetChanged();
                             }
 
@@ -182,7 +209,7 @@ public class UsersFragment extends Fragment {
                     public void onChildRemoved(DataSnapshot dataSnapshot) {
                         for (Iterator<UserRequest> iterator = users.iterator(); iterator.hasNext(); ) {
                             UserRequest userRequest = iterator.next();
-                            if (userRequest.getUid() ==dataSnapshot.getKey() && !userRequest.isRequest()) {
+                            if (userRequest.getUid() == dataSnapshot.getKey() && !userRequest.isRequest()) {
                                 iterator.remove();
                             }
                         }
@@ -217,7 +244,7 @@ public class UsersFragment extends Fragment {
                                         e.printStackTrace();
                                     }
                                 }
-                                users.add(new UserRequest(user,true));
+                                users.add(new UserRequest(user, true));
                                 usersAdapter.notifyDataSetChanged();
                             }
 
@@ -252,39 +279,52 @@ public class UsersFragment extends Fragment {
 
             }
 
+        }
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                databaseReference.child("users").addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                        databaseReference.child("relationships").child("deliveryrequest").child(firebaseAuth.getCurrentUser().getUid()).child(dataSnapshot.getKey()).setValue(true);
+                    }
+
+                    @Override
+                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+                    }
+
+                    @Override
+                    public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                    }
+
+                    @Override
+                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
             }
-            button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    databaseReference.child("users").addChildEventListener(new ChildEventListener() {
-                        @Override
-                        public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                           databaseReference.child("relationships").child("deliveryrequest").child(firebaseAuth.getCurrentUser().getUid()).child(dataSnapshot.getKey()).setValue(true);
-                        }
-
-                        @Override
-                        public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-                        }
-
-                        @Override
-                        public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-                        }
-
-                        @Override
-                        public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-                        }
-
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-
-                        }
-                    });
-                }
-            });
+        });
         return v;
     }
 
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getActivity().registerReceiver(broadcastReceiver, intentFilter);
+    }
+
+
+    @Override
+    public void onPause() {
+        getActivity().unregisterReceiver(broadcastReceiver);
+        super.onPause();
+    }
 }

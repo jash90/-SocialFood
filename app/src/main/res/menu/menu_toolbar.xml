@@ -7,10 +7,9 @@
         android:title="@string/abc_search_hint"
         app:showAsAction="always" />
     <item
-        android:title="Account"
         android:id="@+id/account"
         android:icon="@drawable/person"
-        app:showAsAction="always"
-        />
+        android:title="Account"
+        app:showAsAction="always" />
 
 </menu>

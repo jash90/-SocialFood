@@ -39,12 +39,12 @@ public class RequestFriendsAdapter extends RecyclerView.Adapter<RequestFriendsAd
     ArrayList<User> users = new ArrayList<>();
 
     public RequestFriendsAdapter(ArrayList<User> users) {
-        this.users=users;
+        this.users = users;
     }
 
     @Override
     public RequestFriendsAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_request_friend,parent,false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_request_friend, parent, false);
         return new RequestFriendsAdapter.ViewHolder(v);
     }
 
@@ -83,7 +83,6 @@ public class RequestFriendsAdapter extends RecyclerView.Adapter<RequestFriendsAd
             }
         });
     }
-
 
 
     @Override

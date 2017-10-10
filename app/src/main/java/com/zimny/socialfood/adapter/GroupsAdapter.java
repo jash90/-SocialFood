@@ -167,7 +167,7 @@ public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.ViewHolder
                 //  XLog.d(position + " NO GROUP " + dataSnapshot);
                 User user = new User();
                 user.setUid(dataSnapshot.getKey());
-                users.add(new UserRequest(user,true));
+                users.add(new UserRequest(user, true));
                 userArrayList.add(user);
                 group.setUsers(users);
                 //XLog.d(group);
