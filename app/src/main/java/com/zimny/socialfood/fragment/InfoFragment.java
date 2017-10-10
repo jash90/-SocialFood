@@ -104,7 +104,7 @@ public class InfoFragment extends Fragment {
                 if (group.getUidAdmin() != null) {
                     FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
                     DatabaseReference databaseReference = firebaseDatabase.getReference();
-                    databaseReference.child("users").child(group.getUidAdmin()).addValueEventListener(new ValueEventListener() {
+                    databaseReference.child("friends").child(group.getUidAdmin()).addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             User user = dataSnapshot.getValue(User.class);

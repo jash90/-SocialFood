@@ -20,6 +20,7 @@ import com.zimny.socialfood.activity.details.GroupDetailsActivity;
 import com.zimny.socialfood.model.Group;
 import com.zimny.socialfood.model.Tag;
 import com.zimny.socialfood.model.User;
+import com.zimny.socialfood.model.UserRequest;
 import com.zimny.socialfood.view.MultiCircleView;
 
 import java.util.ArrayList;
@@ -159,14 +160,14 @@ public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.ViewHolder
 //            }
 //        });
 
-        final ArrayList<User> users = new ArrayList<>();
+        final ArrayList<UserRequest> users = new ArrayList<>();
         databaseReference.child("groups").child(group.getUid()).child("users").orderByKey().addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 //  XLog.d(position + " NO GROUP " + dataSnapshot);
                 User user = new User();
                 user.setUid(dataSnapshot.getKey());
-                users.add(user);
+                users.add(new UserRequest(user,true));
                 userArrayList.add(user);
                 group.setUsers(users);
                 //XLog.d(group);

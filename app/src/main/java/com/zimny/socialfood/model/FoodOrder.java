@@ -60,6 +60,6 @@ public class FoodOrder extends Food {
 
     @Override
     public String toString() {
-        return String.format("%s %.2f zł %d szt.",super.getName(),super.getPrice(),getCount());
+        return String.format("%s %.2f zł %d szt.", super.getName(), super.getPrice(), getCount());
     }
 }

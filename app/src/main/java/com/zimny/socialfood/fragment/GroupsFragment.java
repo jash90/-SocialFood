@@ -23,6 +23,7 @@ import com.zimny.socialfood.adapter.GroupsAdapter;
 import com.zimny.socialfood.model.Group;
 import com.zimny.socialfood.model.Tag;
 import com.zimny.socialfood.model.User;
+import com.zimny.socialfood.model.UserRequest;
 
 import java.util.ArrayList;
 
@@ -68,7 +69,7 @@ public class GroupsFragment extends Fragment {
                             group.setUid(dataSnapshot.getKey());
                             //XLog.d(group);
 
-                            group.setUsers(new ArrayList<User>());
+                            group.setUsers(new ArrayList<UserRequest>());
                             groups.add(group);
                             groupsAdapter.notifyDataSetChanged();
                         }
@@ -94,8 +95,8 @@ public class GroupsFragment extends Fragment {
                         for (DataSnapshot dataSnapshot : dataSnapshots.getChildren()) {
                             final Group group = dataSnapshot.getValue(Group.class);
                             group.setUid(dataSnapshot.getKey());
-                            group.setUsers(new ArrayList<User>());
-                            databaseReference.child("groups").child(dataSnapshot.getKey()).child("users").addValueEventListener(new ValueEventListener() {
+                            group.setUsers(new ArrayList<UserRequest>());
+                            databaseReference.child("groups").child(dataSnapshot.getKey()).child("friends").addValueEventListener(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshots) {
                                     for (DataSnapshot dataSnapshot : dataSnapshots.getChildren()) {

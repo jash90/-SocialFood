@@ -107,7 +107,7 @@ public class MyAccountFragment extends Fragment implements FullScreenDialogConte
                 //  XLog.d(exception.getLocalizedMessage());
             }
         });
-        databaseReference.child("users").child(firebaseUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+        databaseReference.child("friends").child(firebaseUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 user = dataSnapshot.getValue(User.class);
@@ -258,7 +258,7 @@ public class MyAccountFragment extends Fragment implements FullScreenDialogConte
         if (!numberHome.getText().toString().isEmpty()) {
             user.getAddress().setNumberHouse(numberHome.getText().toString());
         }
-        databaseReference.child("users").child(firebaseUser.getUid()).setValue(user);
+        databaseReference.child("friends").child(firebaseUser.getUid()).setValue(user);
         if (userProfile != null) {
             FirebaseStorage storage = FirebaseStorage.getInstance();
             StorageReference storageRef = storage.getReference();

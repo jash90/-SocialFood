@@ -5,7 +5,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -45,7 +44,7 @@ public class RequestFriendsAdapter extends RecyclerView.Adapter<RequestFriendsAd
 
     @Override
     public RequestFriendsAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_request_friends,parent);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_request_friend,parent,false);
         return new RequestFriendsAdapter.ViewHolder(v);
     }
 

@@ -24,6 +24,7 @@ import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.mikepenz.iconics.IconicsDrawable;
 import com.zimny.socialfood.R;
 import com.zimny.socialfood.model.User;
+import com.zimny.socialfood.model.UserRequest;
 
 import java.util.ArrayList;
 
@@ -90,7 +91,7 @@ public class MultiCircleView extends LinearLayout {
         parseAttrs(context, attrs, defStyleAttr, defStyleRes);
     }
 
-    public static void setupMultiCircleView(MultiCircleView multiCircleView, ArrayList<User> users) {
+    public static void setupMultiCircleView(MultiCircleView multiCircleView, ArrayList<UserRequest> users) {
         multiCircleView.setItemsCount(users.size());
         FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
         StorageReference storageReference = firebaseStorage.getReference();

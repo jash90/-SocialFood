@@ -70,7 +70,7 @@ public class HistoryOrderFragment extends Fragment {
                     orders.remove(order);
                     XLog.d(orders.contains(order));
                     orderAdapter.notifyDataSetChanged();
-                    XLog.d("REMOVE "+dataSnapshot);
+                    XLog.d("REMOVE " + dataSnapshot);
 
                 }
 

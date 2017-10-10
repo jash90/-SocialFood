@@ -110,6 +110,7 @@
     <orderEntry type="library" exported="" name="support-core-ui-26.0.1" level="project" />
     <orderEntry type="library" exported="" name="stetho-okhttp3-1.5.0" level="project" />
     <orderEntry type="library" exported="" name="fontawesome-typeface-4.7.0.1" level="project" />
+    <orderEntry type="library" exported="" name="carousel-1.2.1" level="project" />
     <orderEntry type="library" exported="" scope="TEST" name="runner-0.5" level="project" />
     <orderEntry type="library" exported="" name="support-media-compat-26.0.1" level="project" />
     <orderEntry type="library" exported="" name="support-v13-26.0.1" level="project" />

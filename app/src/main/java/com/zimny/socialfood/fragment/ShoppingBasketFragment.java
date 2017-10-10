@@ -150,13 +150,13 @@ public class ShoppingBasketFragment extends Fragment {
         confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String orders= "";
+                String orders = "";
                 Double sumPrice = 0.0;
-                for (FoodOrder foodOrder : foodOrders){
-                    orders+=foodOrder.toString()+'\n';
+                for (FoodOrder foodOrder : foodOrders) {
+                    orders += foodOrder.toString() + '\n';
                     sumPrice = sumPrice + (foodOrder.getPrice() * foodOrder.getCount());
                 }
-                orders+=String.format("Sum : %.2f zł \n",sumPrice);
+                orders += String.format("Sum : %.2f zł \n", sumPrice);
                 new MaterialDialog.Builder(getContext())
                         .title("Order")
                         .content(orders)
