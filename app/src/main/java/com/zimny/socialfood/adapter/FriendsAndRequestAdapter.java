@@ -8,6 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -32,6 +34,7 @@ import org.joda.time.Period;
 import org.joda.time.PeriodType;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -41,13 +44,17 @@ import de.hdodenhof.circleimageview.CircleImageView;
  * Created by ideo7 on 10.10.2017.
  */
 
-public class FriendsAndRequestAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    ArrayList<UserRequest> userRequests = new ArrayList<>();
-    Snackbar snackbar;
+public class FriendsAndRequestAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements Filterable {
+    private ArrayList<UserRequest> allUserRequest = new ArrayList<>();
+    private ArrayList<UserRequest> originalUserRequest = new ArrayList<>();
+    private ArrayList<UserRequest> userRequests = new ArrayList<>();
+    private Snackbar snackbar;
+    private Filter friendsFilter;
 
-
-    public FriendsAndRequestAdapter(ArrayList<UserRequest> userRequests) {
+    public FriendsAndRequestAdapter(ArrayList<UserRequest> userRequests, ArrayList<UserRequest> allPlanetList) {
+        this.originalUserRequest = userRequests;
         this.userRequests = userRequests;
+        this.allUserRequest = allPlanetList;
     }
 
     @Override
@@ -137,7 +144,7 @@ public class FriendsAndRequestAdapter extends RecyclerView.Adapter<RecyclerView.
                 public void onClick(final View view) {
                     DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
                     FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-                    databaseReference.child("relationships").child("deliveryrequest").child(firebaseAuth.getCurrentUser().getUid()).child(userRequests.get(position).getUid()).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+                    databaseReference.child("relationships").child("deliveryrequest").child(firebaseAuth.getCurrentUser().getUid()).child(originalUserRequest.get(position).getUid()).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
                             snackbar.setText("XDD");
@@ -157,7 +164,7 @@ public class FriendsAndRequestAdapter extends RecyclerView.Adapter<RecyclerView.
                 public void onClick(View view) {
                     DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
                     FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-                    databaseReference.child("relationships").child("deliveryrequest").child(firebaseAuth.getCurrentUser().getUid()).child(userRequests.get(position).getUid()).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+                    databaseReference.child("relationships").child("deliveryrequest").child(firebaseAuth.getCurrentUser().getUid()).child(originalUserRequest.get(position).getUid()).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
                             snackbar.setText("Add");
@@ -170,7 +177,11 @@ public class FriendsAndRequestAdapter extends RecyclerView.Adapter<RecyclerView.
 
                         }
                     });
-                    databaseReference.child("relationships").child("friends").child(firebaseAuth.getCurrentUser().getUid()).child(userRequests.get(position).getUid()).setValue(true);
+                    databaseReference.child("relationships").child("sendrequest").child(originalUserRequest.get(position).getUid()).child(firebaseAuth.getCurrentUser().getUid()).removeValue();
+                    databaseReference.child("relationships").child("friends").child(firebaseAuth.getCurrentUser().getUid()).child(originalUserRequest.get(position).getUid()).setValue(true);
+                    databaseReference.child("relationships").child("friends").child(originalUserRequest.get(position).getUid()).child(firebaseAuth.getCurrentUser().getUid()).setValue(true);
+
+
 
                 }
 
@@ -186,6 +197,18 @@ public class FriendsAndRequestAdapter extends RecyclerView.Adapter<RecyclerView.
     @Override
     public int getItemViewType(int position) {
         return userRequests.get(position).isRequest() ? 2 : 1;
+    }
+
+    public void resetData() {
+        userRequests = originalUserRequest;
+    }
+
+    @Override
+    public Filter getFilter() {
+        if (friendsFilter == null)
+            friendsFilter = new FriendsFilter();
+
+        return friendsFilter;
     }
 
     public class FriendsHolder extends RecyclerView.ViewHolder {
@@ -229,4 +252,40 @@ public class FriendsAndRequestAdapter extends RecyclerView.Adapter<RecyclerView.
     }
 
 
+    private class FriendsFilter extends Filter {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            FilterResults results = new FilterResults();
+            // We implement here the filter logic
+            if (constraint == null || constraint.length() == 0) {
+                // No filter implemented we return all the list
+                results.values = originalUserRequest;
+                results.count = originalUserRequest.size();
+            } else {
+                // We perform filtering operation
+                List<UserRequest> resultList = new ArrayList<>();
+
+                for (UserRequest p : allUserRequest) {
+                    if (p.getFirstname().toUpperCase().startsWith(constraint.toString().toUpperCase()) || p.getLastname().toUpperCase().startsWith(constraint.toString().toUpperCase()) || p.getAddress().getCity().toUpperCase().startsWith(constraint.toString().toUpperCase()))
+                        resultList.add(p);
+                }
+
+                results.values = resultList;
+                results.count = resultList.size();
+
+            }
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            if (results.count != 0) {
+                userRequests = (ArrayList<UserRequest>) results.values;
+                notifyDataSetChanged();
+            } else {
+                userRequests = new ArrayList<>();
+                notifyDataSetChanged();
+            }
+        }
+    }
 }

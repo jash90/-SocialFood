@@ -1,5 +1,9 @@
 package com.zimny.socialfood.fragment;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -35,6 +39,17 @@ public class RestaurantFragment extends Fragment {
     RestaurantAdapter restaurantAdapter;
     FirebaseAuth firebaseAuth;
     User user;
+    private IntentFilter intentFilter = new IntentFilter("restaurantsearch");
+    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            restaurantAdapter.getFilter().filter(intent.getStringExtra("search"));
+
+        }
+
+
+    };
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -86,7 +101,7 @@ public class RestaurantFragment extends Fragment {
                             @Override
                             public void onDataChange(final DataSnapshot dataSnapshotsFoodOrders) {
                                 for (final DataSnapshot dataSnapshotsFoodOrder : dataSnapshotsFoodOrders.getChildren()) {
-                                    final String uidFood = dataSnapshotsFoodOrder.child("uidFood").getValue(String.class);
+                                    final String uidFood = dataSnapshotsFoodOrder.child("uid").getValue(String.class);
                                     databaseReference.child("foods").orderByKey().addValueEventListener(new ValueEventListener() {
                                         @Override
                                         public void onDataChange(DataSnapshot dataSnapshots) {
@@ -156,6 +171,19 @@ public class RestaurantFragment extends Fragment {
 
         }
         return v;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getActivity().registerReceiver(broadcastReceiver, intentFilter);
+    }
+
+
+    @Override
+    public void onPause() {
+        getActivity().unregisterReceiver(broadcastReceiver);
+        super.onPause();
     }
 
 }

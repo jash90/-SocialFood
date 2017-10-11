@@ -19,6 +19,8 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.gson.Gson;
@@ -87,7 +89,7 @@ public class UserDetailsActivity extends AppCompatActivity implements MaterialTa
                 age.setVisibility(View.GONE);
             }
             collapsingToolbarLayout.setTitle(String.format("%s %s", user.getFirstname(), user.getLastname()));
-            FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
+            final FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
             StorageReference storageReference = firebaseStorage.getReference();
             StorageReference imageRef = storageReference.child(String.format("%s.png", user.getUid()));
             Glide.with(getApplicationContext())
@@ -107,13 +109,14 @@ public class UserDetailsActivity extends AppCompatActivity implements MaterialTa
                     if (!invite) {
                         floatingActionButton.setImageDrawable(new IconicsDrawable(getApplicationContext()).icon(GoogleMaterial.Icon.gmd_person).color(Color.WHITE).sizeDp(20));
                         Snackbar snackbar = Snackbar.make(view, "Add user from relationship", Snackbar.LENGTH_SHORT);
-                        //  snackbar.getView().setBackgroundResource(R.color.white);
+                        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+                        databaseReference.child("relationships").child("sendrequest").child(firebaseAuth.getCurrentUser().getUid()).child(user.getUid()).setValue(true);
+                        databaseReference.child("relationships").child("deliveryrequest").child(user.getUid()).child(firebaseAuth.getCurrentUser().getUid()).setValue(true);
                         snackbar.show();
                         invite = !invite;
                     } else {
                         floatingActionButton.setImageDrawable(new IconicsDrawable(getApplicationContext()).icon(GoogleMaterial.Icon.gmd_person_add).color(Color.WHITE).sizeDp(20));
                         Snackbar snackbar = Snackbar.make(view, "Remove user from relationship", Snackbar.LENGTH_SHORT);
-                        // snackbar.getView().setBackgroundResource(R.color.white);
                         snackbar.show();
                         invite = !invite;
                     }

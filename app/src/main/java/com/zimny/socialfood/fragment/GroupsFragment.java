@@ -1,5 +1,9 @@
 package com.zimny.socialfood.fragment;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -10,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.elvishew.xlog.XLog;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -37,11 +42,23 @@ public class GroupsFragment extends Fragment {
     RecyclerView recyclerView;
     GroupsAdapter groupsAdapter;
     ArrayList<Group> groups;
+    ArrayList<Group> allGroups;
     ArrayList<Tag> tags;
     FirebaseAuth firebaseAuth;
     FirebaseUser firebaseUser;
     FirebaseDatabase firebaseDatabase;
     User user;
+    private IntentFilter intentFilter = new IntentFilter("groupsearch");
+    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            groupsAdapter.getFilter().filter(intent.getStringExtra("search"));
+
+        }
+
+
+    };
 
     @Nullable
     @Override
@@ -51,8 +68,9 @@ public class GroupsFragment extends Fragment {
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
         groups = new ArrayList<>();
+        allGroups = new ArrayList<>();
         tags = new ArrayList<>();
-        groupsAdapter = new GroupsAdapter(groups);
+        groupsAdapter = new GroupsAdapter(groups, allGroups);
         recyclerView.setAdapter(groupsAdapter);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
@@ -67,8 +85,7 @@ public class GroupsFragment extends Fragment {
                         for (DataSnapshot dataSnapshot : dataSnapshots.getChildren()) {
                             final Group group = dataSnapshot.getValue(Group.class);
                             group.setUid(dataSnapshot.getKey());
-                            //XLog.d(group);
-
+                            allGroups.add(group);
                             group.setUsers(new ArrayList<UserRequest>());
                             groups.add(group);
                             groupsAdapter.notifyDataSetChanged();
@@ -96,7 +113,7 @@ public class GroupsFragment extends Fragment {
                             final Group group = dataSnapshot.getValue(Group.class);
                             group.setUid(dataSnapshot.getKey());
                             group.setUsers(new ArrayList<UserRequest>());
-                            databaseReference.child("groups").child(dataSnapshot.getKey()).child("friends").addValueEventListener(new ValueEventListener() {
+                            databaseReference.child("groups").child(dataSnapshot.getKey()).child("users").addValueEventListener(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshots) {
                                     for (DataSnapshot dataSnapshot : dataSnapshots.getChildren()) {
@@ -104,6 +121,7 @@ public class GroupsFragment extends Fragment {
                                             groups.add(group);
                                             groupsAdapter.notifyDataSetChanged();
                                         }
+
                                     }
 
                                 }
@@ -127,5 +145,18 @@ public class GroupsFragment extends Fragment {
 
         return v;
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getActivity().registerReceiver(broadcastReceiver, intentFilter);
+    }
+
+
+    @Override
+    public void onPause() {
+        getActivity().unregisterReceiver(broadcastReceiver);
+        super.onPause();
     }
 }

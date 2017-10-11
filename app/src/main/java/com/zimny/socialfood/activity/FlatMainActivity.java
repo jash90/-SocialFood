@@ -41,6 +41,7 @@ public class FlatMainActivity extends AppCompatActivity {
     @BindView(R.id.search_view)
     MaterialSearchView searchView;
     FullScreenDialogFragment fullScreenDialogFragment;
+    int navigation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,6 +98,7 @@ public class FlatMainActivity extends AppCompatActivity {
                         break;
                     }
                 }
+                searchView.closeSearch();
                 return true;
             }
         });
@@ -113,9 +115,21 @@ public class FlatMainActivity extends AppCompatActivity {
             @Override
             public boolean onQueryTextChange(String newText) {
                 Intent intent = new Intent();
-                intent.setAction("search");
+                switch (navigation) {
+                    case 0:
+                        intent.setAction("foodsearch");
+                        break;
+                    case 1:
+                        intent.setAction("restaurantsearch");
+                        break;
+                    case 2:
+                        intent.setAction("friendsearch");
+                        break;
+                    case 3:
+                        intent.setAction("groupsearch");
+                        break;
+                }
                 intent.putExtra("search", newText);
-                intent.putExtra("empty", newText.isEmpty());
                 sendBroadcast(intent);
                 return false;
             }
@@ -156,6 +170,10 @@ public class FlatMainActivity extends AppCompatActivity {
 
 
         return super.onCreateOptionsMenu(menu);
+    }
+
+    public void setItemNavigation(int item) {
+        this.navigation = item;
     }
 
 

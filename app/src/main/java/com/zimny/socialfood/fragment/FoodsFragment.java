@@ -1,5 +1,9 @@
 package com.zimny.socialfood.fragment;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -42,6 +46,17 @@ public class FoodsFragment extends Fragment {
     ArrayList<Food> foods;
     User user;
     Restaurant restaurant;
+    private IntentFilter intentFilter = new IntentFilter("foodsearch");
+    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            foodAdapter.getFilter().filter(intent.getStringExtra("search"));
+
+        }
+
+
+    };
 
     @Nullable
     @Override
@@ -73,35 +88,37 @@ public class FoodsFragment extends Fragment {
                             @Override
                             public void onDataChange(final DataSnapshot dataSnapshotsFoodOrders) {
                                 for (final DataSnapshot dataSnapshotsFoodOrder : dataSnapshotsFoodOrders.getChildren()) {
-                                    final String uidFood = dataSnapshotsFoodOrder.child("uidFood").getValue(String.class);
+                                    final String uidFood = dataSnapshotsFoodOrder.child("uid").getValue(String.class);
                                     databaseReference.child("foods").orderByKey().addValueEventListener(new ValueEventListener() {
                                         @Override
                                         public void onDataChange(DataSnapshot dataSnapshots) {
                                             for (DataSnapshot dataSnapshot : dataSnapshots.getChildren()) {
                                                 for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
-                                                    if (uidFood.equals(dataSnapshot1.getKey())) {
-                                                        final Food food = dataSnapshot1.getValue(Food.class);
-                                                        food.setUid(dataSnapshot1.getKey());
-                                                        food.setType(dataSnapshot.getKey());
-                                                        databaseReference.child("restaurants").child(dataSnapshot1.child("restaurant").getValue(String.class)).addValueEventListener(new ValueEventListener() {
-                                                            @Override
-                                                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                                                Restaurant restaurant = dataSnapshot.getValue(Restaurant.class);
-                                                                restaurant.setUid(dataSnapshot.getKey());
-                                                                food.setRestaurant(restaurant);
-                                                                if (!foods.contains(food)) {
-                                                                    foods.add(food);
-                                                                    // XLog.d(foods);
-                                                                    foodAdapter.notifyDataSetChanged();
+                                                    if (dataSnapshot1.getKey() != null) {
+                                                        if (uidFood.equals(dataSnapshot1.getKey())) {
+                                                            final Food food = dataSnapshot1.getValue(Food.class);
+                                                            food.setUid(dataSnapshot1.getKey());
+                                                            food.setType(dataSnapshot.getKey());
+                                                            databaseReference.child("restaurants").child(dataSnapshot1.child("restaurant").getValue(String.class)).addValueEventListener(new ValueEventListener() {
+                                                                @Override
+                                                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                                                    Restaurant restaurant = dataSnapshot.getValue(Restaurant.class);
+                                                                    restaurant.setUid(dataSnapshot.getKey());
+                                                                    food.setRestaurant(restaurant);
+                                                                    if (!foods.contains(food)) {
+                                                                        foods.add(food);
+                                                                        // XLog.d(foods);
+                                                                        foodAdapter.notifyDataSetChanged();
+                                                                    }
                                                                 }
-                                                            }
 
-                                                            @Override
-                                                            public void onCancelled(DatabaseError databaseError) {
+                                                                @Override
+                                                                public void onCancelled(DatabaseError databaseError) {
 
-                                                            }
-                                                        });
+                                                                }
+                                                            });
 
+                                                        }
                                                     }
                                                 }
                                             }
@@ -254,5 +271,18 @@ public class FoodsFragment extends Fragment {
 
 
         return v;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getActivity().registerReceiver(broadcastReceiver, intentFilter);
+    }
+
+
+    @Override
+    public void onPause() {
+        getActivity().unregisterReceiver(broadcastReceiver);
+        super.onPause();
     }
 }

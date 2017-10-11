@@ -5,6 +5,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -24,6 +26,7 @@ import com.zimny.socialfood.model.UserRequest;
 import com.zimny.socialfood.view.MultiCircleView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -33,11 +36,17 @@ import me.gujun.android.taggroup.TagGroup;
  * Created by ideo7 on 22.08.2017.
  */
 
-public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.ViewHolder> {
+public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.ViewHolder> implements Filterable {
 
     ArrayList<Group> groups = new ArrayList<>();
+    ArrayList<Group> originalGroups = new ArrayList<>();
+    ArrayList<Group> allGroups = new ArrayList<>();
+    Filter groupsFilter;
 
-    public GroupsAdapter(ArrayList<Group> groups) {
+
+    public GroupsAdapter(ArrayList<Group> groups, ArrayList<Group> allGroups) {
+        this.allGroups = allGroups;
+        this.originalGroups = groups;
         this.groups = groups;
     }
 
@@ -263,6 +272,18 @@ public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.ViewHolder
         return groups.size();
     }
 
+    public void resetData() {
+        groups = originalGroups;
+    }
+
+    @Override
+    public Filter getFilter() {
+        if (groupsFilter == null)
+            groupsFilter = new GroupsFilter();
+
+        return groupsFilter;
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.nameGroup)
@@ -284,4 +305,35 @@ public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.ViewHolder
         }
     }
 
+    private class GroupsFilter extends Filter {
+        @Override
+        protected FilterResults performFiltering(CharSequence charSequence) {
+            FilterResults results = new FilterResults();
+            if (charSequence == null || charSequence.length() == 0) {
+                results.values = originalGroups;
+                results.count = originalGroups.size();
+            } else {
+                List<Group> resultList = new ArrayList<>();
+                for (Group g : allGroups) {
+                    if (g.getName().toUpperCase().startsWith(charSequence.toString().toUpperCase()))
+                        resultList.add(g);
+                }
+                results.values = resultList;
+                results.count = resultList.size();
+
+            }
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+            if (filterResults.count != 0) {
+                groups = (ArrayList<Group>) filterResults.values;
+                notifyDataSetChanged();
+            } else {
+                groups = new ArrayList<>();
+                notifyDataSetChanged();
+            }
+        }
+    }
 }

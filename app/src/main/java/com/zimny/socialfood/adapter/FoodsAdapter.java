@@ -7,6 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -28,17 +30,22 @@ import com.zimny.socialfood.model.FoodOrder;
 import com.zimny.socialfood.model.Tag;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 import me.gujun.android.taggroup.TagGroup;
 
-public class FoodsAdapter extends RecyclerView.Adapter<FoodsAdapter.ViewHolder> {
+public class FoodsAdapter extends RecyclerView.Adapter<FoodsAdapter.ViewHolder> implements Filterable {
     ArrayList<Food> foods = new ArrayList<>();
+    ArrayList<Food> allfoods = new ArrayList<>();
+
+    Filter foodFilter;
 
     public FoodsAdapter(ArrayList<Food> foods) {
         this.foods = foods;
+        this.allfoods = foods;
     }
 
     @Override
@@ -154,6 +161,14 @@ public class FoodsAdapter extends RecyclerView.Adapter<FoodsAdapter.ViewHolder> 
         return foods.size();
     }
 
+    @Override
+    public Filter getFilter() {
+        if (foodFilter == null) {
+            foodFilter = new FoodFilter();
+        }
+        return foodFilter;
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.foodImageCircle)
         CircleImageView foodImageCircle;
@@ -169,6 +184,38 @@ public class FoodsAdapter extends RecyclerView.Adapter<FoodsAdapter.ViewHolder> 
         public ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+        }
+    }
+
+    private class FoodFilter extends Filter {
+        @Override
+        protected FilterResults performFiltering(CharSequence charSequence) {
+            FilterResults results = new FilterResults();
+            if (charSequence == null || charSequence.length() == 0) {
+                results.values = allfoods;
+                results.count = allfoods.size();
+            } else {
+                List<Food> resultList = new ArrayList<>();
+                for (Food f : allfoods) {
+                    if (f.getName().toUpperCase().startsWith(charSequence.toString().toUpperCase()))
+                        resultList.add(f);
+                }
+                results.values = resultList;
+                results.count = resultList.size();
+
+            }
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+            if (filterResults.count != 0) {
+                foods = (ArrayList<Food>) filterResults.values;
+                notifyDataSetChanged();
+            } else {
+                foods = new ArrayList<>();
+                notifyDataSetChanged();
+            }
         }
     }
 }

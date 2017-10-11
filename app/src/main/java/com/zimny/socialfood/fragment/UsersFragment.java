@@ -40,34 +40,19 @@ import butterknife.ButterKnife;
 public class UsersFragment extends Fragment {
     @BindView(R.id.userView)
     RecyclerView userView;
-    @BindView(R.id.button)
-    Button button;
     ArrayList<UserRequest> users;
     FriendsAndRequestAdapter usersAdapter;
     FirebaseAuth firebaseAuth;
-    ArrayList<UserRequest> userRequests;
+    ArrayList<UserRequest> alluserRequests;
     User user;
     Group group;
-    private IntentFilter intentFilter = new IntentFilter("search");
+    private IntentFilter intentFilter = new IntentFilter("friendsearch");
     private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
 
-            for (Iterator<UserRequest> iterator = users.iterator(); iterator.hasNext(); ) {
-                UserRequest userRequest = iterator.next();
-                if (!userRequest.getFirstname().startsWith(intent.getStringExtra("search"))) {
-                    iterator.remove();
-                    usersAdapter.notifyDataSetChanged();
-                }
+            usersAdapter.getFilter().filter(intent.getStringExtra("search"));
 
-            }
-            if (intent.getBooleanExtra("empty", false)) {
-                users = userRequests;
-                usersAdapter.notifyDataSetChanged();
-
-            }
-            XLog.d(users);
-            XLog.d(userRequests);
         }
 
 
@@ -81,8 +66,8 @@ public class UsersFragment extends Fragment {
         ButterKnife.bind(this, v);
         firebaseAuth = FirebaseAuth.getInstance();
         users = new ArrayList<>();
-        userRequests = new ArrayList<>();
-        usersAdapter = new FriendsAndRequestAdapter(users);
+        alluserRequests = new ArrayList<>();
+        usersAdapter = new FriendsAndRequestAdapter(users, alluserRequests);
         final RecyclerView.LayoutManager userlayoutManager = new LinearLayoutManager(getContext());
         userView.setLayoutManager(userlayoutManager);
         userView.setItemAnimator(new DefaultItemAnimator());
@@ -93,9 +78,11 @@ public class UsersFragment extends Fragment {
             final String json = getActivity().getIntent().getStringExtra("user");
             if (json != null) {
                 user = new Gson().fromJson(json, User.class);
-                databaseReference.child("relationships").child("friends").child(firebaseAuth.getCurrentUser().getUid()).addChildEventListener(new ChildEventListener() {
+                XLog.d("users");
+                databaseReference.child("relationships").child("friends").child(user.getUid()).addChildEventListener(new ChildEventListener() {
                     @Override
                     public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                        XLog.d(dataSnapshot);
                         databaseReference.child("users").child(dataSnapshot.getKey()).addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -109,8 +96,8 @@ public class UsersFragment extends Fragment {
                                         e.printStackTrace();
                                     }
                                 }
+                                XLog.d(user);
                                 users.add(new UserRequest(user, true));
-                                userRequests.add(new UserRequest(user, true));
                                 usersAdapter.notifyDataSetChanged();
                             }
 
@@ -276,17 +263,20 @@ public class UsersFragment extends Fragment {
                     }
                 });
 
-
-            }
-
-        }
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
                 databaseReference.child("users").addChildEventListener(new ChildEventListener() {
                     @Override
                     public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                        databaseReference.child("relationships").child("deliveryrequest").child(firebaseAuth.getCurrentUser().getUid()).child(dataSnapshot.getKey()).setValue(true);
+                        User user = dataSnapshot.getValue(User.class);
+                        user.setUid(dataSnapshot.getKey());
+                        if (dataSnapshot.child("birthday").exists()) {
+                            String date = dataSnapshot.child("birthday").getValue(String.class);
+                            try {
+                                user.setBirthday(new SimpleDateFormat("dd.MM.yyyy").parse(date));
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        alluserRequests.add(new UserRequest(user, true));
                     }
 
                     @Override
@@ -309,8 +299,12 @@ public class UsersFragment extends Fragment {
 
                     }
                 });
+
+
             }
-        });
+
+        }
+
         return v;
     }
 

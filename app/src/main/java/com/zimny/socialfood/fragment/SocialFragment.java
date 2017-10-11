@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.zimny.socialfood.R;
+import com.zimny.socialfood.activity.FlatMainActivity;
 
 import net.yanzm.mth.MaterialTabHost;
 
@@ -47,6 +48,7 @@ public class SocialFragment extends Fragment {
             @Override
             public void onTabSelected(int position) {
                 viewPager.setCurrentItem(position);
+                ((FlatMainActivity) getActivity()).setItemNavigation(position + 2);
             }
         });
         return v;
