@@ -56,8 +56,7 @@ public class FlatMainActivity extends AppCompatActivity {
         }
 
         fullScreenDialogFragment = new FullScreenDialogFragment.Builder(FlatMainActivity.this)
-                .setTitle("SocialFood")
-                .setConfirmButton("Save")
+                .setTitle("Settings")
                 .setContent(MyAccountFragment.class, savedInstanceState)
                 .build();
 
