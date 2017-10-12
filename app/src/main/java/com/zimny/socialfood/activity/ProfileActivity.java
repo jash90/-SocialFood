@@ -1,25 +1,22 @@
-package com.zimny.socialfood.fragment;
+package com.zimny.socialfood.activity;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Toast;
 
-import com.franmontiel.fullscreendialog.FullScreenDialogContent;
-import com.franmontiel.fullscreendialog.FullScreenDialogController;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -35,7 +32,6 @@ import com.google.firebase.storage.UploadTask;
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.squareup.picasso.Picasso;
 import com.zimny.socialfood.R;
-import com.zimny.socialfood.activity.LoginActivity;
 import com.zimny.socialfood.model.Address;
 import com.zimny.socialfood.model.User;
 
@@ -46,7 +42,7 @@ import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 
-public class ProfileFragment extends Fragment implements FullScreenDialogContent {
+public class ProfileActivity extends AppCompatActivity {
 
 
     private static final int REQUEST_CODE_PICKER = 2000;
@@ -64,12 +60,12 @@ public class ProfileFragment extends Fragment implements FullScreenDialogContent
     MaterialEditText city;
     @BindView(R.id.postalCode)
     MaterialEditText postalCode;
-    @BindView(R.id.logout)
-    Button logout;
+    @BindView(R.id.save)
+    Button save;
     @BindView(R.id.image)
     CircleImageView image;
-    // @BindView(R.id.logout)
-    //  Button logout;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
     SharedPreferences sharedPreferences;
 
     SharedPreferences.Editor sharedPreferencesEditor;
@@ -79,12 +75,16 @@ public class ProfileFragment extends Fragment implements FullScreenDialogContent
     Bitmap userProfile = null;
     private User user;
 
-    @Nullable
+
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_myaccount, container, false);
-        ButterKnife.bind(this, v);
-        sharedPreferences = getActivity().getSharedPreferences("Name", Context.MODE_PRIVATE);
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.fragment_profile);
+        ButterKnife.bind(this);
+        setSupportActionBar(toolbar);
+        toolbar.setTitle("My Account");
+        toolbar.setTitleTextColor(Color.WHITE);
+        sharedPreferences = getSharedPreferences("Name", Context.MODE_PRIVATE);
         sharedPreferencesEditor = sharedPreferences.edit();
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
@@ -96,7 +96,7 @@ public class ProfileFragment extends Fragment implements FullScreenDialogContent
         storageRef.child(String.format("%s.png", firebaseUser.getUid())).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
-                Picasso.with(getContext())
+                Picasso.with(getApplicationContext())
                         .load(uri)
                         .into(image);
             }
@@ -174,7 +174,7 @@ public class ProfileFragment extends Fragment implements FullScreenDialogContent
             }
         });
 
-//        logout.setOnClickListener(new View.OnClickListener() {
+//        save.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
 //                firebaseAuth.signOut();
@@ -183,17 +183,63 @@ public class ProfileFragment extends Fragment implements FullScreenDialogContent
 //            }
 //        });
 
-        logout.setOnClickListener(new View.OnClickListener() {
+        save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                firebaseAuth.signOut();
-                Intent intent = new Intent(getContext(), LoginActivity.class);
-                intent.putExtra("logout", false);
+                if (!firstname.getText().toString().isEmpty()) {
+                    user.setFirstname(firstname.getText().toString());
+                }
+                if (!lastname.getText().toString().isEmpty()) {
+                    user.setLastname(lastname.getText().toString());
+                }
+                if (!street.getText().toString().isEmpty()) {
+                    user.getAddress().setNameStreet(street.getText().toString());
+                }
+                if (!city.getText().toString().isEmpty()) {
+                    user.getAddress().setCity(city.getText().toString());
+                }
+                if (!postalCode.getText().toString().isEmpty()) {
+                    user.getAddress().setPostalCode(postalCode.getText().toString());
+                }
+                if (!numberBuilding.getText().toString().isEmpty()) {
+                    user.getAddress().setNumberBuilding(numberBuilding.getText().toString());
+                }
+                if (!numberHome.getText().toString().isEmpty()) {
+                    user.getAddress().setNumberHouse(numberHome.getText().toString());
+                }
+                databaseReference.child("friends").child(firebaseUser.getUid()).setValue(user);
+                if (userProfile != null) {
+                    FirebaseStorage storage = FirebaseStorage.getInstance();
+                    StorageReference storageRef = storage.getReference();
+                    StorageReference mountainsRef = storageRef.child(String.format("%s.png", firebaseUser.getUid()));
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    userProfile.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                    byte[] data = baos.toByteArray();
+                    UploadTask uploadTask = mountainsRef.putBytes(data);
+                    uploadTask.addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception exception) {
+                            Toast.makeText(getApplicationContext(), exception.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent();
+                            intent.setAction("changeImageProfile");
+                            sendBroadcast(intent);
+                        }
+                    }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                        }
+                    });
+                }
+                Toast.makeText(getApplicationContext(), "Dane zmienione", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                intent.putExtra("save", false);
                 startActivity(intent);
             }
         });
-        return v;
     }
+
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -203,91 +249,20 @@ public class ProfileFragment extends Fragment implements FullScreenDialogContent
                 return;
             }
             try {
-//                Glide.with(this)
-//                        .load(data.getData())
-//                        .into(image);
-                Picasso.with(getContext())
+                Picasso.with(getApplicationContext())
                         .load(data.getData())
                         .into(image);
 
-                userProfile = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), data.getData());
+                userProfile = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), data.getData());
                 sharedPreferencesEditor.putString("image", data.getData().toString());
                 sharedPreferencesEditor.commit();
             } catch (java.io.IOException e) {
-                Toast.makeText(getContext(), e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
             }
         }
     }
 
-    public void editTextToString(String string, EditText editText) {
-        if (!editText.getText().toString().isEmpty()) {
-            string = editText.getText().toString();
-        }
-    }
 
-    public void stringToEditText(EditText editText, String string) {
-        if (string != null) {
-            editText.setText(string);
-        }
-    }
 
-    @Override
-    public void onDialogCreated(FullScreenDialogController dialogController) {
-    }
 
-    @Override
-    public boolean onConfirmClick(FullScreenDialogController dialogController) {
-        if (!firstname.getText().toString().isEmpty()) {
-            user.setFirstname(firstname.getText().toString());
-        }
-        if (!lastname.getText().toString().isEmpty()) {
-            user.setLastname(lastname.getText().toString());
-        }
-        if (!street.getText().toString().isEmpty()) {
-            user.getAddress().setNameStreet(street.getText().toString());
-        }
-        if (!city.getText().toString().isEmpty()) {
-            user.getAddress().setCity(city.getText().toString());
-        }
-        if (!postalCode.getText().toString().isEmpty()) {
-            user.getAddress().setPostalCode(postalCode.getText().toString());
-        }
-        if (!numberBuilding.getText().toString().isEmpty()) {
-            user.getAddress().setNumberBuilding(numberBuilding.getText().toString());
-        }
-        if (!numberHome.getText().toString().isEmpty()) {
-            user.getAddress().setNumberHouse(numberHome.getText().toString());
-        }
-        databaseReference.child("friends").child(firebaseUser.getUid()).setValue(user);
-        if (userProfile != null) {
-            FirebaseStorage storage = FirebaseStorage.getInstance();
-            StorageReference storageRef = storage.getReference();
-            StorageReference mountainsRef = storageRef.child(String.format("%s.png", firebaseUser.getUid()));
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            userProfile.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-            byte[] data = baos.toByteArray();
-            UploadTask uploadTask = mountainsRef.putBytes(data);
-            uploadTask.addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception exception) {
-                    Toast.makeText(getContext(), exception.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent();
-                    intent.setAction("changeImageProfile");
-                    getActivity().sendBroadcast(intent);
-                }
-            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-
-                }
-            });
-        }
-        Toast.makeText(getContext(), "Dane zmienione", Toast.LENGTH_SHORT).show();
-        return true;
-    }
-
-    @Override
-    public boolean onDiscardClick(FullScreenDialogController dialogController) {
-        return false;
-    }
 }

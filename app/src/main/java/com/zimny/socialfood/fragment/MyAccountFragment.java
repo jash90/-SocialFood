@@ -1,36 +1,21 @@
 package com.zimny.socialfood.fragment;
 
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.signature.StringSignature;
-import com.elvishew.xlog.XLog;
 import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.franmontiel.fullscreendialog.FullScreenDialogContent;
 import com.franmontiel.fullscreendialog.FullScreenDialogController;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -38,15 +23,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
-import com.rengwuxian.materialedittext.MaterialEditText;
-import com.squareup.picasso.Picasso;
 import com.zimny.socialfood.R;
 import com.zimny.socialfood.activity.LoginActivity;
-import com.zimny.socialfood.model.Address;
+import com.zimny.socialfood.activity.ProfileActivity;
 import com.zimny.socialfood.model.User;
-
-import java.io.ByteArrayOutputStream;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -62,7 +42,12 @@ public class MyAccountFragment extends Fragment implements FullScreenDialogConte
     LinearLayout myAccount;
     @BindView(R.id.settings)
     LinearLayout settings;
+    @BindView(R.id.firstname)
+    TextView firstname;
+    @BindView(R.id.lastname)
+    TextView lastname;
     User user;
+    FullScreenDialogController fullScreenDialogController;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -84,11 +69,22 @@ public class MyAccountFragment extends Fragment implements FullScreenDialogConte
                         .placeholder(R.drawable.person)
                         .signature(new StringSignature(user.getImageUpload()))
                         .into(userIcon);
+                firstname.setText(user.getFirstname());
+                lastname.setText(user.getLastname());
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
+            }
+        });
+
+        myAccount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent intent = new Intent(getContext(), ProfileActivity.class);
+                startActivity(intent);
             }
         });
         logout.setOnClickListener(new View.OnClickListener() {
@@ -108,7 +104,7 @@ public class MyAccountFragment extends Fragment implements FullScreenDialogConte
 
     @Override
     public void onDialogCreated(FullScreenDialogController dialogController) {
-
+        fullScreenDialogController=dialogController;
     }
 
     @Override

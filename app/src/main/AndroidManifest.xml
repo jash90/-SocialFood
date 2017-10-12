@@ -26,6 +26,7 @@
         <activity android:name=".activity.details.FoodDetailsActivity" />
         <activity android:name=".activity.FlatMainActivity"
             android:windowSoftInputMode="adjustPan"/>
+        <activity android:name=".activity.ProfileActivity" />
         <activity android:name=".activity.details.OrderDetailsActivity" />
         <activity android:name=".activity.details.UserDetailsActivity" />
         <activity android:name=".activity.details.RestaurantDetailsActivity" />
