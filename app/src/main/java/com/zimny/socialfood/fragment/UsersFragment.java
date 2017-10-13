@@ -12,7 +12,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import com.elvishew.xlog.XLog;
 import com.google.firebase.auth.FirebaseAuth;
@@ -136,27 +135,54 @@ public class UsersFragment extends Fragment {
             XLog.d("GROUP " + json);
             if (json != null) {
                 group = new Gson().fromJson(json, Group.class);
-                for (User user : group.getUsers()) {
-                    databaseReference.child("users").child(user.getUid()).addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            User user = dataSnapshot.getValue(User.class);
-                            user.setUid(dataSnapshot.getKey());
-                            users.add(new UserRequest(user, true));
-                            group.setUsers(users);
-                            XLog.d(user);
-                            usersAdapter.notifyDataSetChanged();
-                            XLog.d(dataSnapshot);
-                        }
+                databaseReference.child("groups").child(group.getUid()).child("users").addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                        databaseReference.child("users").child(dataSnapshot.getKey()).addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                User user = dataSnapshot.getValue(User.class);
+                                user.setUid(dataSnapshot.getKey());
+                                users.add(new UserRequest(user, true));
+                                group.setUsers(users);
+                                XLog.d(user);
+                                usersAdapter.notifyDataSetChanged();
+                                XLog.d(dataSnapshot);
+                            }
 
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
 
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+                    }
+
+                    @Override
+                    public void onChildRemoved(DataSnapshot dataSnapshot) {
+                        for (Iterator<UserRequest> iterator = users.iterator(); iterator.hasNext(); ) {
+                            UserRequest userRequest = iterator.next();
+                            if (userRequest.getUid().equals(dataSnapshot.getKey())) {
+                                iterator.remove();
+                            }
                         }
-                    });
-                }
-                //    users=group.getUsers();
-                //   usersAdapter.notifyDataSetChanged();
+                        usersAdapter.notifyDataSetChanged();
+                    }
+
+                    @Override
+                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
             }
         } else {
             if (firebaseAuth.getCurrentUser() != null) {
@@ -177,6 +203,7 @@ public class UsersFragment extends Fragment {
                                     }
                                 }
                                 users.add(new UserRequest(user, false));
+                               // XLog.d(user);
                                 usersAdapter.notifyDataSetChanged();
                             }
 
@@ -196,7 +223,7 @@ public class UsersFragment extends Fragment {
                     public void onChildRemoved(DataSnapshot dataSnapshot) {
                         for (Iterator<UserRequest> iterator = users.iterator(); iterator.hasNext(); ) {
                             UserRequest userRequest = iterator.next();
-                            if (userRequest.getUid() == dataSnapshot.getKey() && !userRequest.isRequest()) {
+                            if (userRequest.getUid().equals(dataSnapshot.getKey()) && !userRequest.isRequest()) {
                                 iterator.remove();
                             }
                         }
@@ -249,7 +276,13 @@ public class UsersFragment extends Fragment {
 
                     @Override
                     public void onChildRemoved(DataSnapshot dataSnapshot) {
-                        XLog.d(dataSnapshot);
+                        for (Iterator<UserRequest> iterator = users.iterator(); iterator.hasNext(); ) {
+                            UserRequest userRequest = iterator.next();
+                            if (userRequest.getUid().equals(dataSnapshot.getKey())) {
+                                iterator.remove();
+                            }
+                        }
+                        usersAdapter.notifyDataSetChanged();
                     }
 
                     @Override

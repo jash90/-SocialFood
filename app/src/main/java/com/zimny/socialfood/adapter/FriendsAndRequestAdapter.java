@@ -182,7 +182,6 @@ public class FriendsAndRequestAdapter extends RecyclerView.Adapter<RecyclerView.
                     databaseReference.child("relationships").child("friends").child(originalUserRequest.get(position).getUid()).child(firebaseAuth.getCurrentUser().getUid()).setValue(true);
 
 
-
                 }
 
             });

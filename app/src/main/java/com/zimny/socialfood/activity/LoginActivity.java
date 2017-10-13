@@ -4,6 +4,8 @@ package com.zimny.socialfood.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -58,6 +60,8 @@ public class LoginActivity extends AppCompatActivity {
         progressWheel.setVisibility(View.INVISIBLE);
         firebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+        login.setText(sharedPreferences.getString("login", ""));
+        password.setText(sharedPreferences.getString("password", ""));
         signIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -72,32 +76,37 @@ public class LoginActivity extends AppCompatActivity {
             login(user, pass);
         }
         if (firebaseUser != null) {
-            progressWheel.setVisibility(View.VISIBLE);
-            Toast.makeText(getApplicationContext(), String.format("You sign as %s .", firebaseUser.getEmail()), Toast.LENGTH_SHORT).show();
-            FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-            final DatabaseReference databaseReference = firebaseDatabase.getReference();
-            databaseReference.child("users").child(firebaseUser.getUid()).child("admin").addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    if (dataSnapshot.exists()) {
-                        Intent loginActivity = new Intent(LoginActivity.this, FlatMainActivity.class);
-                        loginActivity.putExtra("admin", true);
-                        startActivity(loginActivity);
-                        finish();
-                    } else {
-                        Intent loginActivity = new Intent(LoginActivity.this, FlatMainActivity.class);
-                        startActivity(loginActivity);
-                        finish();
+            if (isNetworkAvailable()) {
+                progressWheel.setVisibility(View.VISIBLE);
+                Toast.makeText(getApplicationContext(), String.format("You sign as %s .", firebaseUser.getEmail()), Toast.LENGTH_SHORT).show();
+                FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+                final DatabaseReference databaseReference = firebaseDatabase.getReference();
+                databaseReference.child("users").child(firebaseUser.getUid()).child("admin").addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.exists()) {
+                            Intent loginActivity = new Intent(LoginActivity.this, FlatMainActivity.class);
+                            sharedPreferencesEditor.putString("login", login.getText().toString());
+                            sharedPreferencesEditor.putString("password", password.getText().toString());
+                            sharedPreferencesEditor.commit();
+                            loginActivity.putExtra("admin", true);
+                            startActivity(loginActivity);
+                            finish();
+                        } else {
+                            Intent loginActivity = new Intent(LoginActivity.this, FlatMainActivity.class);
+                            startActivity(loginActivity);
+                            finish();
 
+                        }
+                        progressWheel.setVisibility(View.INVISIBLE);
                     }
-                    progressWheel.setVisibility(View.INVISIBLE);
-                }
 
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-                    progressWheel.setVisibility(View.INVISIBLE);
-                }
-            });
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        progressWheel.setVisibility(View.INVISIBLE);
+                    }
+                });
+            }
 
 
         }
@@ -112,7 +121,7 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    public void login(final String username, String password) {
+    public void login(final String username, final String password) {
         try {
             progressWheel.setVisibility(View.VISIBLE);
             firebaseAuth = FirebaseAuth.getInstance();
@@ -128,11 +137,17 @@ public class LoginActivity extends AppCompatActivity {
                                 public void onDataChange(DataSnapshot dataSnapshot) {
                                     if (dataSnapshot.exists()) {
                                         Intent loginActivity = new Intent(LoginActivity.this, FlatMainActivity.class);
+                                        sharedPreferencesEditor.putString("login", username);
+                                        sharedPreferencesEditor.putString("password", password);
+                                        sharedPreferencesEditor.commit();
                                         loginActivity.putExtra("admin", true);
                                         startActivity(loginActivity);
                                         finish();
                                     } else {
                                         Intent loginActivity = new Intent(LoginActivity.this, FlatMainActivity.class);
+                                        sharedPreferencesEditor.putString("login", username);
+                                        sharedPreferencesEditor.putString("password", password);
+                                        sharedPreferencesEditor.commit();
                                         startActivity(loginActivity);
                                         finish();
                                     }
@@ -150,7 +165,7 @@ public class LoginActivity extends AppCompatActivity {
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(getApplicationContext(), "Firebase : " + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), "Check connection internet.", Toast.LENGTH_SHORT).show();
                             progressWheel.setVisibility(View.INVISIBLE);
                         }
                     });
@@ -160,6 +175,13 @@ public class LoginActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "App : " + ex.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
             progressWheel.setVisibility(View.INVISIBLE);
         }
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
 

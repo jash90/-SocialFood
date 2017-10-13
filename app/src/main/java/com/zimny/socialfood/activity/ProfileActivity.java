@@ -232,13 +232,12 @@ public class ProfileActivity extends AppCompatActivity {
                     });
                 }
                 Toast.makeText(getApplicationContext(), "Dane zmienione", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                 intent.putExtra("save", false);
                 startActivity(intent);
             }
         });
     }
-
 
 
     @Override
@@ -261,8 +260,6 @@ public class ProfileActivity extends AppCompatActivity {
             }
         }
     }
-
-
 
 
 }

@@ -2,22 +2,30 @@ package com.zimny.socialfood.activity.details;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.elvishew.xlog.XLog;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.gson.Gson;
@@ -60,7 +68,7 @@ public class GroupDetailsActivity extends AppCompatActivity implements MaterialT
     FragmentAdapter fragmentAdapter;
     private FirebaseAuth firebaseAuth;
     private FirebaseUser firebaseUser;
-
+    boolean invite = true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -102,15 +110,76 @@ public class GroupDetailsActivity extends AppCompatActivity implements MaterialT
         materialTabHost.getTabAt(0).setIcon((new IconicsDrawable(getBaseContext()).icon(GoogleMaterial.Icon.gmd_person).color(Color.WHITE)).sizeDp(20));
         materialTabHost.getTabAt(1).setIcon(new IconicsDrawable(getApplicationContext()).icon(GoogleMaterial.Icon.gmd_info).color(Color.WHITE).sizeDp(20));
 
-//        toolbar.setBackgroundColor(ContextCompat.getColor(this, R.color.primary));
-//        toolbar.setSubtitleTextColor(ContextCompat.getColor(this, android.R.color.white));
-//        toolbar.setTitleTextColor(ContextCompat.getColor(this, android.R.color.white));
-//        toolbar.setNavigationIcon(new
-//
-//                IconicsDrawable(this).
-//                icon(GoogleMaterial.Icon.gmd_menu).
-//                color(Color.WHITE).
-//                sizeDp(16));
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+        databaseReference.child("groups").child(group.getUid()).child("users").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshots) {
+                for (DataSnapshot dataSnapshot : dataSnapshots.getChildren()){
+                    if (dataSnapshot.getKey().equals(firebaseAuth.getCurrentUser().getUid())){
+                        invite=false;
+                    }
+                    XLog.d("GG GROUP "+dataSnapshot);
+                }
+                if (invite){
+                 //   floatingActionButton.setImageResource(R.drawable.plus);
+                    floatingActionButton.setImageDrawable(new IconicsDrawable(getApplicationContext()).icon(GoogleMaterial.Icon.gmd_group_add).color(Color.WHITE));
+                }else{
+                   // floatingActionButton.setImageResource(R.drawable.minus);
+                    floatingActionButton.setImageDrawable(new IconicsDrawable(getApplicationContext()).icon(GoogleMaterial.Icon.gmd_group).color(Color.WHITE));
+
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (invite) {
+                    new MaterialDialog.Builder(view.getContext())
+                            .title("Groups")
+                            .content(String.format("Do you want join to %s ?", group.getName()))
+                            .positiveText("Send")
+                            .negativeText("Cancel")
+                            .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                @Override
+                                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                    floatingActionButton.setImageDrawable(new IconicsDrawable(getApplicationContext()).icon(GoogleMaterial.Icon.gmd_person).color(Color.WHITE).sizeDp(20));
+                                    Snackbar snackbar = Snackbar.make(getCurrentFocus(), String.format("Added to %s", group.getName()), Snackbar.LENGTH_SHORT);
+                                    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+                                    databaseReference.child("groups").child(group.getUid()).child("users").child(firebaseAuth.getCurrentUser().getUid()).setValue(true);
+                                    snackbar.show();
+                                    invite = !invite;
+                                }
+                            })
+                            .show();
+                } else {
+                    new MaterialDialog.Builder(view.getContext())
+                            .title("Groups")
+                            .content(String.format("Do you want remove from %s ?", group.getName()))
+                            .positiveText("Remove")
+                            .negativeText("Cancel")
+                            .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                @Override
+                                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                    floatingActionButton.setImageDrawable(new IconicsDrawable(getApplicationContext()).icon(GoogleMaterial.Icon.gmd_person_add).color(Color.WHITE).sizeDp(20));
+                                    Snackbar snackbar = Snackbar.make(getCurrentFocus(), String.format("Your remove from %s", group.getName()), Snackbar.LENGTH_SHORT);
+                                    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+                                    databaseReference.child("groups").child(group.getUid()).child("users").child(firebaseAuth.getCurrentUser().getUid()).removeValue();
+                                    snackbar.show();
+                                    invite = !invite;
+                                }
+                            })
+                            .show();
+
+
+                }
+            }
+        });
+
     }
 
     @Override

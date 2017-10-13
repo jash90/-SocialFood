@@ -33,7 +33,7 @@ import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 
-public class MyAccountFragment extends Fragment implements FullScreenDialogContent{
+public class MyAccountFragment extends Fragment implements FullScreenDialogContent {
     @BindView(R.id.userIcon)
     CircleImageView userIcon;
     @BindView(R.id.logout)
@@ -48,6 +48,7 @@ public class MyAccountFragment extends Fragment implements FullScreenDialogConte
     TextView lastname;
     User user;
     FullScreenDialogController fullScreenDialogController;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -82,7 +83,6 @@ public class MyAccountFragment extends Fragment implements FullScreenDialogConte
         myAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 Intent intent = new Intent(getContext(), ProfileActivity.class);
                 startActivity(intent);
             }
@@ -104,7 +104,7 @@ public class MyAccountFragment extends Fragment implements FullScreenDialogConte
 
     @Override
     public void onDialogCreated(FullScreenDialogController dialogController) {
-        fullScreenDialogController=dialogController;
+        fullScreenDialogController = dialogController;
     }
 
     @Override

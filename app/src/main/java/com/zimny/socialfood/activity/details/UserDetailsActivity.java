@@ -3,6 +3,7 @@ package com.zimny.socialfood.activity.details;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -16,11 +17,18 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.bumptech.glide.Glide;
+import com.elvishew.xlog.XLog;
 import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.gson.Gson;
@@ -62,7 +70,7 @@ public class UserDetailsActivity extends AppCompatActivity implements MaterialTa
     ViewPager viewPager;
     @BindView(R.id.multiple_actions)
     FloatingActionButton floatingActionButton;
-    Boolean invite = false;
+    Boolean invite = true;
     User user;
     ArrayList<Fragment> fragments;
     FragmentAdapter fragmentAdapter;
@@ -97,28 +105,75 @@ public class UserDetailsActivity extends AppCompatActivity implements MaterialTa
                     .load(imageRef)
                     .into(userImageView);
 
-            if (invite) {
-                floatingActionButton.setImageDrawable(new IconicsDrawable(getApplicationContext()).icon(GoogleMaterial.Icon.gmd_person).color(Color.WHITE).sizeDp(20));
-            } else {
-                floatingActionButton.setImageDrawable(new IconicsDrawable(getApplicationContext()).icon(GoogleMaterial.Icon.gmd_person_add).color(Color.WHITE).sizeDp(20));
-            }
 
+            if (firebaseAuth.getCurrentUser().getUid().equals(user.getUid())){
+                floatingActionButton.setVisibility(View.GONE);
+            }else {
+                final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+                databaseReference.child("relationships").child("friends").child(firebaseAuth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshots) {
+                        for (DataSnapshot dataSnapshot : dataSnapshots.getChildren()){
+                            if (dataSnapshot.getKey().equals(user.getUid())){
+                                invite=false;
+                            }
+                        }
+                        if (invite) {
+                            floatingActionButton.setImageDrawable(new IconicsDrawable(getApplicationContext()).icon(GoogleMaterial.Icon.gmd_person_add).color(Color.WHITE).sizeDp(20));
+                        } else {
+                            floatingActionButton.setImageDrawable(new IconicsDrawable(getApplicationContext()).icon(GoogleMaterial.Icon.gmd_person).color(Color.WHITE).sizeDp(20));
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+            }
             floatingActionButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (!invite) {
-                        floatingActionButton.setImageDrawable(new IconicsDrawable(getApplicationContext()).icon(GoogleMaterial.Icon.gmd_person).color(Color.WHITE).sizeDp(20));
-                        Snackbar snackbar = Snackbar.make(view, "Add user from relationship", Snackbar.LENGTH_SHORT);
-                        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
-                        databaseReference.child("relationships").child("sendrequest").child(firebaseAuth.getCurrentUser().getUid()).child(user.getUid()).setValue(true);
-                        databaseReference.child("relationships").child("deliveryrequest").child(user.getUid()).child(firebaseAuth.getCurrentUser().getUid()).setValue(true);
-                        snackbar.show();
-                        invite = !invite;
+                    if (invite) {
+                        new MaterialDialog.Builder(view.getContext())
+                                .title("Relationships")
+                                .content(String.format("Do you want send invite to %s %s ?",user.getFirstname(),user.getLastname()))
+                                .positiveText("Send")
+                                .negativeText("Cancel")
+                                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                    @Override
+                                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                        floatingActionButton.setImageDrawable(new IconicsDrawable(getApplicationContext()).icon(GoogleMaterial.Icon.gmd_person).color(Color.WHITE).sizeDp(20));
+                                        Snackbar snackbar = Snackbar.make(getCurrentFocus(), "Send invite to relationship.", Snackbar.LENGTH_SHORT);
+                                        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+                                        databaseReference.child("relationships").child("sendrequest").child(firebaseAuth.getCurrentUser().getUid()).child(user.getUid()).setValue(true);
+                                        databaseReference.child("relationships").child("deliveryrequest").child(user.getUid()).child(firebaseAuth.getCurrentUser().getUid()).setValue(true);
+                                        snackbar.show();
+                                        invite = !invite;
+                                    }
+                                })
+                                .show();
                     } else {
-                        floatingActionButton.setImageDrawable(new IconicsDrawable(getApplicationContext()).icon(GoogleMaterial.Icon.gmd_person_add).color(Color.WHITE).sizeDp(20));
-                        Snackbar snackbar = Snackbar.make(view, "Remove user from relationship", Snackbar.LENGTH_SHORT);
-                        snackbar.show();
-                        invite = !invite;
+                        new MaterialDialog.Builder(view.getContext())
+                                .title("Relationships")
+                                .content(String.format("Do you want remove relationships with %s %s ?",user.getFirstname(),user.getLastname()))
+                                .positiveText("Remove")
+                                .negativeText("Cancel")
+                                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                    @Override
+                                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                        floatingActionButton.setImageDrawable(new IconicsDrawable(getApplicationContext()).icon(GoogleMaterial.Icon.gmd_person_add).color(Color.WHITE).sizeDp(20));
+                                        Snackbar snackbar = Snackbar.make(getCurrentFocus(), "Remove user from relationship", Snackbar.LENGTH_SHORT);
+                                        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+                                        databaseReference.child("relationships").child("friends").child(firebaseAuth.getCurrentUser().getUid()).child(user.getUid()).removeValue();
+                                        databaseReference.child("relationships").child("friends").child(user.getUid()).child(firebaseAuth.getCurrentUser().getUid()).removeValue();
+                                        snackbar.show();
+                                        invite = !invite;
+                                    }
+                                })
+                                .show();
+
+
                     }
                 }
             });

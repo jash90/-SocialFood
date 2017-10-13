@@ -69,7 +69,7 @@ public class ShoppingBasketFragment extends Fragment {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        final FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         final DatabaseReference databaseReference = firebaseDatabase.getReference();
         firebaseAuth = FirebaseAuth.getInstance();
         if (firebaseAuth.getCurrentUser() != null) {
@@ -116,10 +116,14 @@ public class ShoppingBasketFragment extends Fragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshots) {
                 for (DataSnapshot dataSnapshot : dataSnapshots.getChildren()) {
-                    Group group = dataSnapshot.getValue(Group.class);
-                    group.setUid(dataSnapshot.getKey());
-                    groups.add(group);
-                    groupsAdapter.notifyDataSetChanged();
+                    for (DataSnapshot user :dataSnapshot.child("users").getChildren()){
+                        if (user.getKey().equals(firebaseAuth.getCurrentUser().getUid())){
+                            Group group = dataSnapshot.getValue(Group.class);
+                            group.setUid(dataSnapshot.getKey());
+                            groups.add(group);
+                            groupsAdapter.notifyDataSetChanged();
+                        }
+                    }
                 }
             }
 
