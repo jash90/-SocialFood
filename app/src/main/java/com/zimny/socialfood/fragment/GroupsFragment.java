@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,8 +15,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.franmontiel.fullscreendialog.FullScreenDialogFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -46,6 +49,8 @@ public class GroupsFragment extends Fragment {
     FirebaseAuth firebaseAuth;
     FirebaseUser firebaseUser;
     FirebaseDatabase firebaseDatabase;
+    @BindView(R.id.floatingActionButton)
+    FloatingActionButton fab;
     User user;
     private IntentFilter intentFilter = new IntentFilter("groupsearch");
     private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
@@ -61,7 +66,7 @@ public class GroupsFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable final Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_group, container, false);
         ButterKnife.bind(this, v);
         firebaseAuth = FirebaseAuth.getInstance();
@@ -74,21 +79,39 @@ public class GroupsFragment extends Fragment {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
+        final FullScreenDialogFragment fullScreenDialogFragment =
+                new FullScreenDialogFragment.Builder(getActivity().getApplicationContext())
+                        .setTitle("New Group")
+                        .setConfirmButton("Add")
+                        .setContent(GroupAddFragment.class, savedInstanceState)
+                        .build();
         if (getActivity().getIntent().getStringExtra("user") == null) {
             if (firebaseAuth != null) {
                 firebaseDatabase = FirebaseDatabase.getInstance();
                 final DatabaseReference databaseReference = firebaseDatabase.getReference();
-                databaseReference.child("groups").addValueEventListener(new ValueEventListener() {
+                databaseReference.child("groups").addChildEventListener(new ChildEventListener() {
                     @Override
-                    public void onDataChange(DataSnapshot dataSnapshots) {
-                        for (DataSnapshot dataSnapshot : dataSnapshots.getChildren()) {
-                            final Group group = dataSnapshot.getValue(Group.class);
-                            group.setUid(dataSnapshot.getKey());
-                            allGroups.add(group);
-                            group.setUsers(new ArrayList<UserRequest>());
-                            groups.add(group);
-                            groupsAdapter.notifyDataSetChanged();
-                        }
+                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                        final Group group = dataSnapshot.getValue(Group.class);
+                        group.setUid(dataSnapshot.getKey());
+                        allGroups.add(group);
+                        group.setUsers(new ArrayList<UserRequest>());
+                        groups.add(group);
+                        groupsAdapter.notifyDataSetChanged();
+                    }
+
+                    @Override
+                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+                    }
+
+                    @Override
+                    public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                    }
+
+                    @Override
+                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
 
                     }
 
@@ -141,6 +164,14 @@ public class GroupsFragment extends Fragment {
                 });
             }
         }
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                fullScreenDialogFragment.show(getActivity().getSupportFragmentManager(), null);
+
+            }
+        });
 
         return v;
 

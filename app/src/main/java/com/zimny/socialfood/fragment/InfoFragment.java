@@ -101,10 +101,10 @@ public class InfoFragment extends Fragment {
                 } else {
                     phoneLayout.setVisibility(View.GONE);
                 }
-                if (group.getUidAdmin() != null) {
+                if (group.getAdmin() != null) {
                     FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
                     DatabaseReference databaseReference = firebaseDatabase.getReference();
-                    databaseReference.child("friends").child(group.getUidAdmin()).addValueEventListener(new ValueEventListener() {
+                    databaseReference.child("users").child(group.getAdmin()).addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             User user = dataSnapshot.getValue(User.class);

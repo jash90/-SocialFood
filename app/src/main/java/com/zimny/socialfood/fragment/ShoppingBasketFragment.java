@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -56,7 +57,7 @@ public class ShoppingBasketFragment extends Fragment {
     ArrayList<Group> groups;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_shopping_basket, container, false);
         ButterKnife.bind(this, v);
@@ -72,6 +73,18 @@ public class ShoppingBasketFragment extends Fragment {
         final FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         final DatabaseReference databaseReference = firebaseDatabase.getReference();
         firebaseAuth = FirebaseAuth.getInstance();
+        if (foodOrders.size() == 0) {
+            confirm.setEnabled(false);
+            clear.setEnabled(false);
+            confirm.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.round_button_disable));
+            clear.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.round_button_disable));
+
+        } else {
+            confirm.setEnabled(true);
+            clear.setEnabled(true);
+            confirm.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.round_button_blue));
+            clear.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.round_button_blue));
+        }
         if (firebaseAuth.getCurrentUser() != null) {
             databaseReference.child("baskets").child(firebaseAuth.getCurrentUser().getUid()).child("foodOrders").addChildEventListener(new ChildEventListener() {
                 @Override
@@ -79,6 +92,18 @@ public class ShoppingBasketFragment extends Fragment {
                     FoodOrder foodOrder = dataSnapshot.getValue(FoodOrder.class);
                     foodOrders.add(foodOrder);
                     foodOrderAdapter.notifyDataSetChanged();
+                    if (foodOrders.size() == 0) {
+                        confirm.setEnabled(false);
+                        clear.setEnabled(false);
+                        confirm.setBackgroundResource(R.drawable.round_button_disable);
+                        clear.setBackgroundResource(R.drawable.round_button_disable);
+
+                    } else {
+                        confirm.setEnabled(true);
+                        clear.setEnabled(true);
+                        confirm.setBackgroundResource(R.drawable.round_button_blue);
+                        clear.setBackgroundResource(R.drawable.round_button_blue);
+                    }
                 }
 
                 @Override
@@ -99,6 +124,18 @@ public class ShoppingBasketFragment extends Fragment {
                     FoodOrder foodOrder = dataSnapshot.getValue(FoodOrder.class);
                     foodOrders.remove(foodOrder);
                     foodOrderAdapter.notifyDataSetChanged();
+                    if (foodOrders.size() == 0) {
+                        confirm.setEnabled(false);
+                        clear.setEnabled(false);
+                        confirm.setBackgroundResource(R.drawable.round_button_disable);
+                        clear.setBackgroundResource(R.drawable.round_button_disable);
+
+                    } else {
+                        confirm.setEnabled(true);
+                        clear.setEnabled(true);
+                        confirm.setBackgroundResource(R.drawable.round_button_blue);
+                        clear.setBackgroundResource(R.drawable.round_button_blue);
+                    }
                 }
 
                 @Override
@@ -112,18 +149,26 @@ public class ShoppingBasketFragment extends Fragment {
                 }
             });
         }
+
         databaseReference.child("groups").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshots) {
                 for (DataSnapshot dataSnapshot : dataSnapshots.getChildren()) {
-                    for (DataSnapshot user :dataSnapshot.child("users").getChildren()){
-                        if (user.getKey().equals(firebaseAuth.getCurrentUser().getUid())){
+                    for (DataSnapshot user : dataSnapshot.child("users").getChildren()) {
+                        if (user.getKey().equals(firebaseAuth.getCurrentUser().getUid())) {
                             Group group = dataSnapshot.getValue(Group.class);
                             group.setUid(dataSnapshot.getKey());
                             groups.add(group);
                             groupsAdapter.notifyDataSetChanged();
                         }
                     }
+                }
+                if (groups.size() == 0) {
+                    confirm.setEnabled(false);
+                    clear.setEnabled(false);
+                    confirm.setBackgroundResource(R.drawable.round_button_disable);
+                    clear.setBackgroundResource(R.drawable.round_button_disable);
+
                 }
             }
 
@@ -138,6 +183,18 @@ public class ShoppingBasketFragment extends Fragment {
                 databaseReference.child("baskets").child(firebaseAuth.getCurrentUser().getUid()).child("foodOrders").removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
+                        if (foodOrders.size() == 0) {
+                            confirm.setEnabled(false);
+                            clear.setEnabled(false);
+                            confirm.setBackgroundResource(R.drawable.round_button_disable);
+                            clear.setBackgroundResource(R.drawable.round_button_disable);
+
+                        } else {
+                            confirm.setEnabled(true);
+                            clear.setEnabled(true);
+                            confirm.setBackgroundResource(R.drawable.round_button_blue);
+                            clear.setBackgroundResource(R.drawable.round_button_blue);
+                        }
                         Snackbar snackbar = Snackbar.make(view, "Shopping Basket is clear.", Snackbar.LENGTH_SHORT);
                         snackbar.show();
                     }
@@ -199,6 +256,18 @@ public class ShoppingBasketFragment extends Fragment {
                             }
                         })
                         .show();
+                if (foodOrders.size() == 0) {
+                    confirm.setEnabled(false);
+                    clear.setEnabled(false);
+                    confirm.setBackgroundResource(R.drawable.round_button_disable);
+                    clear.setBackgroundResource(R.drawable.round_button_disable);
+
+                } else {
+                    confirm.setEnabled(true);
+                    clear.setEnabled(true);
+                    confirm.setBackgroundResource(R.drawable.round_button_blue);
+                    clear.setBackgroundResource(R.drawable.round_button_blue);
+                }
             }
         });
         return v;

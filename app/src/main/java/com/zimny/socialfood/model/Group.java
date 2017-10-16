@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public class Group extends Info {
     private String uid;
     private ArrayList<UserRequest> users;
-    private String uidAdmin;
+    private String admin;
     private ArrayList<Tag> tags;
     private String name;
     private String imageUpload;
@@ -21,7 +21,7 @@ public class Group extends Info {
         this.users = users;
         super.setAddress(address);
         super.setPhone(phone);
-        this.uidAdmin = uidAdmin;
+        this.admin = uidAdmin;
         this.tags = tags;
         this.name = name;
         this.imageUpload = imageUpload;
@@ -52,12 +52,12 @@ public class Group extends Info {
         this.users = users;
     }
 
-    public String getUidAdmin() {
-        return uidAdmin;
+    public String getAdmin() {
+        return admin;
     }
 
-    public void setUidAdmin(String uidAdmin) {
-        this.uidAdmin = uidAdmin;
+    public void setAdmin(String admin) {
+        this.admin = admin;
     }
 
     public String getImageUpload() {

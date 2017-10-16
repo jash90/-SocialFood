@@ -203,7 +203,7 @@ public class UsersFragment extends Fragment {
                                     }
                                 }
                                 users.add(new UserRequest(user, false));
-                               // XLog.d(user);
+                                // XLog.d(user);
                                 usersAdapter.notifyDataSetChanged();
                             }
 
