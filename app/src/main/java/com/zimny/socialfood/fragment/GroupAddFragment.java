@@ -68,6 +68,12 @@ public class GroupAddFragment extends Fragment implements FullScreenDialogConten
     SearchUserAdapter adapter;
     User user;
 
+    public static void hideSoftKeyboard(Activity activity) {
+        InputMethodManager inputMethodManager = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        if (activity.getCurrentFocus() != null) {
+            inputMethodManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
+        }
+    }
 
     @Nullable
     @Override
@@ -181,7 +187,7 @@ public class GroupAddFragment extends Fragment implements FullScreenDialogConten
         }
         if (!numberHouse.getText().toString().equals(null)) {
             address.setNumberHouse(numberHouse.getText().toString());
-        }else {
+        } else {
             return true;
         }
         if (!numberBuilding.getText().toString().equals(null)) {
@@ -208,17 +214,15 @@ public class GroupAddFragment extends Fragment implements FullScreenDialogConten
             databaseReference.child("tags").orderByChild("name").equalTo(tag).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshots) {
-                   if (dataSnapshots.exists()){
-                       for(DataSnapshot dataSnapshot : dataSnapshots.getChildren()){
-                           databaseReference.child("groups").child(uidGroup).child("tags").child(dataSnapshot.getKey()).setValue(true);
-                       }
+                    if (dataSnapshots.exists()) {
+                        for (DataSnapshot dataSnapshot : dataSnapshots.getChildren()) {
+                            databaseReference.child("groups").child(uidGroup).child("tags").child(dataSnapshot.getKey()).setValue(true);
+                        }
 
-                    }
-                    else{
-                       final String uidTag = databaseReference.child("tags").push().getKey();
-                       databaseReference.child("tags").child(uidTag).child("name").setValue(tag);
-                       databaseReference.child("groups").child(uidGroup).child("tags").child(uidTag).setValue(true);
-
+                    } else {
+                        final String uidTag = databaseReference.child("tags").push().getKey();
+                        databaseReference.child("tags").child(uidTag).child("name").setValue(tag);
+                        databaseReference.child("groups").child(uidGroup).child("tags").child(uidTag).setValue(true);
 
 
                     }
@@ -230,8 +234,8 @@ public class GroupAddFragment extends Fragment implements FullScreenDialogConten
                 }
             });
         }
-        for(UserRequest user : groupUsers){
-            if (user.isRequest()){
+        for (UserRequest user : groupUsers) {
+            if (user.isRequest()) {
                 databaseReference.child("groups").child(uidGroup).child("users").child(user.getUid()).setValue(true);
 
             }
@@ -239,7 +243,7 @@ public class GroupAddFragment extends Fragment implements FullScreenDialogConten
         databaseReference.child("groups").child(uidGroup).child("users").child(user.getUid()).setValue(true);
         //databaseReference.child("groups").child(uidGroup).child("admin").child(user.getUid()).setValue(true);
         hideSoftKeyboard(getActivity());
-        Toast.makeText(getContext(),"Add Group "+name.getText().toString(),Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), "Add Group " + name.getText().toString(), Toast.LENGTH_SHORT).show();
 
         return false;
     }
@@ -247,11 +251,5 @@ public class GroupAddFragment extends Fragment implements FullScreenDialogConten
     @Override
     public boolean onDiscardClick(FullScreenDialogController dialogController) {
         return false;
-    }
-    public static void hideSoftKeyboard(Activity activity) {
-        InputMethodManager inputMethodManager = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
-        if (activity.getCurrentFocus() != null) {
-            inputMethodManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
-        }
     }
 }

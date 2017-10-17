@@ -66,14 +66,15 @@ public class UsersFragment extends Fragment {
         firebaseAuth = FirebaseAuth.getInstance();
         users = new ArrayList<>();
         alluserRequests = new ArrayList<>();
-        usersAdapter = new FriendsAndRequestAdapter(users, alluserRequests);
-        final RecyclerView.LayoutManager userlayoutManager = new LinearLayoutManager(getContext());
-        userView.setLayoutManager(userlayoutManager);
-        userView.setItemAnimator(new DefaultItemAnimator());
-        userView.setAdapter(usersAdapter);
+
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         final DatabaseReference databaseReference = firebaseDatabase.getReference();
         if (getActivity().getIntent().getStringExtra("user") != null) {
+            usersAdapter = new FriendsAndRequestAdapter(users, alluserRequests);
+            final RecyclerView.LayoutManager userlayoutManager = new LinearLayoutManager(getContext());
+            userView.setLayoutManager(userlayoutManager);
+            userView.setItemAnimator(new DefaultItemAnimator());
+            userView.setAdapter(usersAdapter);
             final String json = getActivity().getIntent().getStringExtra("user");
             if (json != null) {
                 user = new Gson().fromJson(json, User.class);
@@ -135,6 +136,11 @@ public class UsersFragment extends Fragment {
             XLog.d("GROUP " + json);
             if (json != null) {
                 group = new Gson().fromJson(json, Group.class);
+                usersAdapter = new FriendsAndRequestAdapter(users, alluserRequests, group);
+                final RecyclerView.LayoutManager userlayoutManager = new LinearLayoutManager(getContext());
+                userView.setLayoutManager(userlayoutManager);
+                userView.setItemAnimator(new DefaultItemAnimator());
+                userView.setAdapter(usersAdapter);
                 databaseReference.child("groups").child(group.getUid()).child("users").addChildEventListener(new ChildEventListener() {
                     @Override
                     public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -186,6 +192,11 @@ public class UsersFragment extends Fragment {
             }
         } else {
             if (firebaseAuth.getCurrentUser() != null) {
+                usersAdapter = new FriendsAndRequestAdapter(users, alluserRequests);
+                final RecyclerView.LayoutManager userlayoutManager = new LinearLayoutManager(getContext());
+                userView.setLayoutManager(userlayoutManager);
+                userView.setItemAnimator(new DefaultItemAnimator());
+                userView.setAdapter(usersAdapter);
                 databaseReference.child("relationships").child("deliveryrequest").child(firebaseAuth.getCurrentUser().getUid()).addChildEventListener(new ChildEventListener() {
                     @Override
                     public void onChildAdded(DataSnapshot dataSnapshot, String s) {

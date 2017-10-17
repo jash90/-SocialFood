@@ -10,10 +10,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.signature.StringSignature;
+import com.elvishew.xlog.XLog;
 import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -27,6 +29,7 @@ import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.mikepenz.iconics.IconicsDrawable;
 import com.zimny.socialfood.R;
 import com.zimny.socialfood.activity.details.UserDetailsActivity;
+import com.zimny.socialfood.model.Group;
 import com.zimny.socialfood.model.UserRequest;
 
 import org.joda.time.LocalDate;
@@ -48,13 +51,22 @@ public class FriendsAndRequestAdapter extends RecyclerView.Adapter<RecyclerView.
     private ArrayList<UserRequest> allUserRequest = new ArrayList<>();
     private ArrayList<UserRequest> originalUserRequest = new ArrayList<>();
     private ArrayList<UserRequest> userRequests = new ArrayList<>();
+    private Group group;
     private Snackbar snackbar;
     private Filter friendsFilter;
 
-    public FriendsAndRequestAdapter(ArrayList<UserRequest> userRequests, ArrayList<UserRequest> allPlanetList) {
+    public FriendsAndRequestAdapter(ArrayList<UserRequest> userRequests, ArrayList<UserRequest> allUsers) {
         this.originalUserRequest = userRequests;
         this.userRequests = userRequests;
-        this.allUserRequest = allPlanetList;
+        this.allUserRequest = allUsers;
+    }
+
+
+    public FriendsAndRequestAdapter(ArrayList<UserRequest> userRequests, ArrayList<UserRequest> allUsers, Group group) {
+        this.originalUserRequest = userRequests;
+        this.userRequests = userRequests;
+        this.allUserRequest = allUsers;
+        this.group = group;
     }
 
     @Override
@@ -76,6 +88,20 @@ public class FriendsAndRequestAdapter extends RecyclerView.Adapter<RecyclerView.
         if (userRequests.get(position).isRequest()) {
             FriendsHolder holder = (FriendsHolder) viewHolder;
             final UserRequest user = userRequests.get(position);
+            if (group == null) {
+                holder.admin.setVisibility(View.GONE);
+            } else {
+                if (group.getAdmin() == null) {
+                    holder.admin.setVisibility(View.GONE);
+                } else {
+                    if (group.getAdmin().equals(user.getUid())) {
+                        holder.admin.setVisibility(View.VISIBLE);
+                    } else {
+                        holder.admin.setVisibility(View.GONE);
+                    }
+                }
+            }
+            XLog.d("ADMIN : " + group);
             holder.firstname.setText(user.getFirstname());
             holder.lastname.setText(user.getLastname());
             holder.city.setText(user.getAddress().getCity());
@@ -221,6 +247,8 @@ public class FriendsAndRequestAdapter extends RecyclerView.Adapter<RecyclerView.
         TextView age;
         @BindView(R.id.city)
         TextView city;
+        @BindView(R.id.admin)
+        ImageView admin;
 
         public FriendsHolder(View itemView) {
             super(itemView);

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:fab="http://schemas.android.com/tools"
     android:background="@android:color/background_light"
     android:fitsSystemWindows="true">
 
@@ -118,16 +118,41 @@
 
     </LinearLayout>
 
-    <com.getbase.floatingactionbutton.FloatingActionsMenu
-        android:id="@+id/floatingActionButton"
+
+    <com.github.clans.fab.FloatingActionMenu
+        android:id="@+id/menu_yellow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        fab:fab_addButtonColorNormal="@color/white"
-        fab:fab_addButtonColorPressed="@color/white_pressed"
-        fab:fab_addButtonSize="mini"
-        fab:fab_addButtonPlusIconColor="@color/half_black"
-        fab:fab_addButtonStrokeVisible="false"
-        android:layout_gravity="end|right|bottom"
-        app:fab_labelStyle="@style/menu_labels_style"
-        />
+        android:layout_gravity="bottom|end|right"
+        android:layout_margin="16dp"
+        fab:menu_icon="@drawable/group"
+        >
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/leaveGroup"
+            style="@style/MenuButtonsStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_exit_to_app_white_24dp"
+            fab:fab_label="Leave Group" />
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/deleteGroup"
+            style="@style/MenuButtonsStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_delete_white_24dp"
+            fab:fab_label="Delete group" />
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/changeImage"
+            style="@style/MenuButtonsStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_image_white_24dp"
+            fab:fab_label="Change image" />
+
+    </com.github.clans.fab.FloatingActionMenu>
+
+
 </android.support.design.widget.CoordinatorLayout>

@@ -127,13 +127,13 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginTop="10dp"
-                app:atg_inputHint="Add Tag"
-                app:atg_isAppendMode="true"
                 app:atg_borderColor="@color/colorPrimary"
-                app:atg_inputTextColor="@color/colorPrimary"
-                app:atg_textColor="@color/colorPrimary"
+                app:atg_checkedBackgroundColor="@color/colorPrimary"
                 app:atg_checkedBorderColor="@color/colorPrimary"
-                app:atg_checkedBackgroundColor="@color/colorPrimary">
+                app:atg_inputHint="Add Tag"
+                app:atg_inputTextColor="@color/colorPrimary"
+                app:atg_isAppendMode="true"
+                app:atg_textColor="@color/colorPrimary">
 
             </me.gujun.android.taggroup.TagGroup>
 
