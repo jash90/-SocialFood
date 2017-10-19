@@ -52,7 +52,7 @@ public class MultiCircleView extends LinearLayout {
     private Integer itemsCount;
     private int backgroundColorIcon;
     private int iconColor;
-    private Drawable defaultIcon;
+    private Drawable defaultIcon = new IconicsDrawable(this.getContext()).icon(FontAwesome.Icon.faw_user_circle).sizeDp(40);
     private Drawable icon1;
     private Drawable icon2;
     private Drawable icon3;
@@ -92,30 +92,37 @@ public class MultiCircleView extends LinearLayout {
     }
 
     public static void setupMultiCircleView(MultiCircleView multiCircleView, ArrayList<UserRequest> users) {
-        multiCircleView.setItemsCount(users.size());
-        FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
-        StorageReference storageReference = firebaseStorage.getReference();
-        StorageReference imageReference = storageReference.child(String.format("%s.png", users.get(0).getUid()));
-        Glide.with(multiCircleView.getContext())
-                .using(new FirebaseImageLoader())
-                .load(imageReference)
-                .asBitmap()
-                .placeholder(new IconicsDrawable(multiCircleView.getContext())
-                        .icon(FontAwesome.Icon.faw_user_circle).sizeDp(40))
-                .into(multiCircleView.getCircle1());
-        if (users.size() > 1) {
-            switch (users.size()) {
-                case 2: {
-                    setupCircle(multiCircleView, 2, users.get(1), multiCircleView.getContext());
+        if (users.size() > 0) {
+            multiCircleView.setItemsCount(users.size());
+            FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
+            StorageReference storageReference = firebaseStorage.getReference();
+            StorageReference imageReference = storageReference.child(String.format("%s.png", users.get(0).getUid()));
+            Glide.with(multiCircleView.getContext())
+                    .using(new FirebaseImageLoader())
+                    .load(imageReference)
+                    .asBitmap()
+                    .placeholder(new IconicsDrawable(multiCircleView.getContext())
+                            .icon(FontAwesome.Icon.faw_user_circle).sizeDp(40))
+                    .error(new IconicsDrawable(multiCircleView.getContext())
+                            .icon(FontAwesome.Icon.faw_user_circle).sizeDp(40))
+                    .into(multiCircleView.getCircle1());
+            if (users.size() > 1) {
+                switch (users.size()) {
+                    case 2: {
+                        setupCircle(multiCircleView, 2, users.get(1), multiCircleView.getContext());
+                    }
+                    break;
+                    default: {
+                        setupCircle(multiCircleView, 2, users.get(1), multiCircleView.getContext());
+                        setupCircle(multiCircleView, 3, users.get(2), multiCircleView.getContext());
+                    }
+                    break;
                 }
-                break;
-                default: {
-                    setupCircle(multiCircleView, 2, users.get(1), multiCircleView.getContext());
-                    setupCircle(multiCircleView, 3, users.get(2), multiCircleView.getContext());
-                }
-                break;
-            }
 
+            }
+        } else {
+            multiCircleView.setIcon1(new IconicsDrawable(multiCircleView.getContext())
+                    .icon(FontAwesome.Icon.faw_user_circle).sizeDp(40));
         }
     }
 
@@ -172,7 +179,6 @@ public class MultiCircleView extends LinearLayout {
     private void parseTypedArray(Context context, TypedArray typedArray) {
         try {
             itemsCount = typedArray.getInteger(R.styleable.MultiCircleView_itemsCount, 1);
-            defaultIcon = typedArray.getDrawable(R.styleable.MultiCircleView_defaultIcon);
             iconColor = typedArray.getColor(R.styleable.MultiCircleView_iconColor, defaultColorIcon);
             backgroundColorIcon = typedArray.getColor(R.styleable.MultiCircleView_backgroundColorIcon, defaultBackgroundColor);
             text = typedArray.getString(R.styleable.MultiCircleView_text);

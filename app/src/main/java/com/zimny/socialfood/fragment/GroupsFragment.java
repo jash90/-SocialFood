@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.elvishew.xlog.XLog;
 import com.franmontiel.fullscreendialog.FullScreenDialogFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -31,8 +32,10 @@ import com.zimny.socialfood.model.Group;
 import com.zimny.socialfood.model.Tag;
 import com.zimny.socialfood.model.User;
 import com.zimny.socialfood.model.UserRequest;
+import com.zimny.socialfood.view.MultiCircleView;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -107,7 +110,13 @@ public class GroupsFragment extends Fragment {
 
                     @Override
                     public void onChildRemoved(DataSnapshot dataSnapshot) {
-
+                        for (Iterator<Group> iterator = groups.iterator(); iterator.hasNext(); ) {
+                            Group group = iterator.next();
+                            if (group.getUid().equals(dataSnapshot.getKey())) {
+                                iterator.remove();
+                            }
+                        }
+                       groupsAdapter.notifyDataSetChanged();
                     }
 
                     @Override

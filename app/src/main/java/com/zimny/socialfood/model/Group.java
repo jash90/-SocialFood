@@ -77,6 +77,18 @@ public class Group extends Info {
         this.tags = tags;
     }
 
+
+    public String alltoString() {
+        return "Group{" +
+                "uid='" + uid + '\'' +
+                ", users=" + users +
+                ", admin='" + admin + '\'' +
+                ", tags=" + tags +
+                ", name='" + name + '\'' +
+                ", imageUpload='" + imageUpload + '\'' +
+                '}';
+    }
+
     @Override
     public String toString() {
         return String.format("%s", name);

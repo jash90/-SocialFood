@@ -9,6 +9,7 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
 
+import com.elvishew.xlog.XLog;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -17,6 +18,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
+import com.mikepenz.fontawesome_typeface_library.FontAwesome;
+import com.mikepenz.iconics.IconicsDrawable;
 import com.zimny.socialfood.R;
 import com.zimny.socialfood.activity.details.GroupDetailsActivity;
 import com.zimny.socialfood.model.Group;
@@ -26,6 +29,7 @@ import com.zimny.socialfood.model.UserRequest;
 import com.zimny.socialfood.view.MultiCircleView;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import butterknife.BindView;
@@ -110,7 +114,7 @@ public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.ViewHolder
 
             }
         });
-
+       // holder.usersIcon.setDefaultIcon(new IconicsDrawable(holder.itemView.getContext()).icon(FontAwesome.Icon.faw_user_circle_o).sizeDp(40));
 //        databaseReference.child("relationships").addValueEventListener(new ValueEventListener() {
 //            @Override
 //            public void onDataChange(DataSnapshot dataSnapshots) {
@@ -173,17 +177,13 @@ public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.ViewHolder
         databaseReference.child("groups").child(group.getUid()).child("users").orderByKey().addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                //  XLog.d(position + " NO GROUP " + dataSnapshot);
                 User user = new User();
                 user.setUid(dataSnapshot.getKey());
                 users.add(new UserRequest(user, true));
                 userArrayList.add(user);
                 group.setUsers(users);
-                //XLog.d(group);
-                //    XLog.d("TAGS " + group);
                 MultiCircleView.setupMultiCircleView(holder.usersIcon, users);
-                //  XLog.d("TAGS " + users);
-
+                XLog.d(group.alltoString());
             }
 
             @Override
@@ -193,7 +193,23 @@ public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.ViewHolder
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
-
+                for (Iterator<UserRequest> iterator = users.iterator(); iterator.hasNext(); ) {
+                    UserRequest userRequest = iterator.next();
+                    if (userRequest.getUid().equals(dataSnapshot.getKey())) {
+                        iterator.remove();
+                    }
+                }
+                for (Iterator<User> iterator = userArrayList.iterator(); iterator.hasNext(); ) {
+                    User user = iterator.next();
+                    if (user.getUid().equals(dataSnapshot.getKey())) {
+                        iterator.remove();
+                    }
+                }
+                group.setUsers(users);
+                XLog.d("REMOVE " + dataSnapshot);
+                XLog.d(group);
+                XLog.d(users);
+                MultiCircleView.setupMultiCircleView(holder.usersIcon, users);
             }
 
             @Override
@@ -203,10 +219,9 @@ public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.ViewHolder
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
+                XLog.d(databaseError);
             }
         });
-
 
 //        databaseReference.child("groups").child(group.getUid()).child("users").addChildEventListener(new ChildEventListener() {
 //            @Override

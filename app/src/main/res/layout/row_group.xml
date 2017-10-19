@@ -24,7 +24,6 @@
             app:borderColorText="@color/primary"
             app:borderWidthIcon="4"
             app:borderWidthText="4"
-            app:defaultIcon="@drawable/person"
             app:iconColor="@color/primary"
             app:textColor="@color/white" />
 

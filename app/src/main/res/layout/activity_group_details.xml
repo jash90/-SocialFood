@@ -24,8 +24,8 @@
 
             <ImageView
                 android:id="@+id/groupImageView"
-                android:layout_width="192dp"
-                android:layout_height="192dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:fitsSystemWindows="true"
                 android:gravity="center"
@@ -124,9 +124,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end|right"
-        android:layout_margin="16dp"
+        fab:menu_colorNormal="#1565C0"
+        fab:menu_colorPressed="#2272CD"
+        fab:menu_colorRipple="#62B2FF"
         fab:menu_icon="@drawable/group"
+        android:layout_margin="16dp"
         >
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/joinGroup"
+            style="@style/MenuButtonsStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/group_add_white"
+            fab:fab_label="join to group" />
 
         <com.github.clans.fab.FloatingActionButton
             android:id="@+id/leaveGroup"
@@ -153,6 +163,7 @@
             fab:fab_label="Change image" />
 
     </com.github.clans.fab.FloatingActionMenu>
+
 
 
 </android.support.design.widget.CoordinatorLayout>

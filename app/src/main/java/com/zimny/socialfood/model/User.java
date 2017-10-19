@@ -158,6 +158,24 @@ public class User extends Info {
         this.imageUpload = imageUpload;
     }
 
+
+    public String alltoString() {
+        return "User{" +
+                "uid='" + uid + '\'' +
+                ", username='" + username + '\'' +
+                ", firstname='" + firstname + '\'' +
+                ", lastname='" + lastname + '\'' +
+                ", birthday=" + birthday +
+                ", restaurants=" + restaurants +
+                ", foods=" + foods +
+                ", groups=" + groups +
+                ", orders=" + orders +
+                ", shoppingBasket=" + shoppingBasket +
+                ", relationships=" + relationships +
+                ", imageUpload='" + imageUpload + '\'' +
+                '}';
+    }
+
     @Override
     public String toString() {
         return String.format("%s %s, %s", firstname, lastname, getAddress().getCity());
