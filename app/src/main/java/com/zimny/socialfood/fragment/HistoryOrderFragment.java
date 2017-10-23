@@ -16,8 +16,10 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.gson.Gson;
 import com.zimny.socialfood.R;
 import com.zimny.socialfood.adapter.OrderAdapter;
+import com.zimny.socialfood.model.Group;
 import com.zimny.socialfood.model.Order;
 
 import java.util.ArrayList;
@@ -32,6 +34,7 @@ public class HistoryOrderFragment extends Fragment {
     ArrayList<Order> orders;
     OrderAdapter orderAdapter;
     FirebaseAuth firebaseAuth;
+    Group group;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -45,48 +48,94 @@ public class HistoryOrderFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-        final DatabaseReference databaseReference = firebaseDatabase.getReference();
-        firebaseAuth = FirebaseAuth.getInstance();
-        if (firebaseAuth.getCurrentUser() != null) {
-            databaseReference.child("orders").orderByChild("uidUser").equalTo(firebaseAuth.getCurrentUser().getUid()).addChildEventListener(new ChildEventListener() {
-                @Override
-                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                    Order order = dataSnapshot.getValue(Order.class);
-                    order.setUid(dataSnapshot.getKey());
-                    orders.add(order);
-                    orderAdapter.notifyDataSetChanged();
-                    XLog.d("ADD");
-                }
-
-                @Override
-                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-                }
-
-                @Override
-                public void onChildRemoved(DataSnapshot dataSnapshot) {
-                    Order order = dataSnapshot.getValue(Order.class);
-                    order.setUid(dataSnapshot.getKey());
-                    orders.remove(order);
-                    XLog.d(orders.contains(order));
-                    orderAdapter.notifyDataSetChanged();
-                    XLog.d("REMOVE " + dataSnapshot);
-
-                }
-
-                @Override
-                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
-            });
-
-
-        }
+//        final DatabaseReference databaseReference = firebaseDatabase.getReference();
+//        firebaseAuth = FirebaseAuth.getInstance();
+//        if (getActivity().getIntent().getStringExtra("group") == null) {
+//            if (firebaseAuth.getCurrentUser() != null) {
+//                databaseReference.child("orders").orderByChild("uidUser").equalTo(firebaseAuth.getCurrentUser().getUid()).addChildEventListener(new ChildEventListener() {
+//                    @Override
+//                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+//                        Order order = dataSnapshot.getValue(Order.class);
+//                        order.setUid(dataSnapshot.getKey());
+//                        orders.add(order);
+//                        orderAdapter.notifyDataSetChanged();
+//                        XLog.d("ADD");
+//                    }
+//
+//                    @Override
+//                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onChildRemoved(DataSnapshot dataSnapshot) {
+//                        Order order = dataSnapshot.getValue(Order.class);
+//                        order.setUid(dataSnapshot.getKey());
+//                        orders.remove(order);
+//                        XLog.d(orders.contains(order));
+//                        orderAdapter.notifyDataSetChanged();
+//                        XLog.d("REMOVE " + dataSnapshot);
+//
+//                    }
+//
+//                    @Override
+//                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onCancelled(DatabaseError databaseError) {
+//
+//                    }
+//                });
+//
+//
+//            }
+//        } else if (getActivity().getIntent().getStringExtra("group") != null) {
+//            String json = getActivity().getIntent().getStringExtra("group");
+//            if (json != null) {
+//                group = new Gson().fromJson(json, Group.class);
+//                XLog.d(group);
+//                databaseReference.child("orders").orderByChild("uidGroup").equalTo(group.getUid()).addChildEventListener(new ChildEventListener() {
+//                    @Override
+//                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+//                        Order order = dataSnapshot.getValue(Order.class);
+//                        order.setUid(dataSnapshot.getKey());
+//                        orders.add(order);
+//                        orderAdapter.notifyDataSetChanged();
+//                        XLog.d("ADD");
+//                    }
+//
+//                    @Override
+//                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onChildRemoved(DataSnapshot dataSnapshot) {
+//                        Order order = dataSnapshot.getValue(Order.class);
+//                        order.setUid(dataSnapshot.getKey());
+//                        orders.remove(order);
+//                        XLog.d(orders.contains(order));
+//                        orderAdapter.notifyDataSetChanged();
+//                        XLog.d("REMOVE " + dataSnapshot);
+//
+//                    }
+//
+//                    @Override
+//                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onCancelled(DatabaseError databaseError) {
+//
+//                    }
+//                });
+//
+//            }
+//
+//        }
 
         return v;
     }

@@ -29,7 +29,7 @@
                 android:layout_gravity="center"
                 android:fitsSystemWindows="true"
                 android:gravity="center"
-                android:scaleType="centerCrop"
+                android:scaleType="fitCenter"
                 android:src="@drawable/group"
                 app:layout_collapseMode="parallax" />
 
@@ -161,6 +161,14 @@
             android:layout_height="wrap_content"
             android:src="@drawable/ic_image_white_24dp"
             fab:fab_label="Change image" />
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/changeOrder"
+            style="@style/MenuButtonsStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/order"
+            fab:fab_label="Change order" />
 
     </com.github.clans.fab.FloatingActionMenu>
 

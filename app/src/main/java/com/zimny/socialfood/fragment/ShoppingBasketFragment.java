@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -230,8 +231,8 @@ public class ShoppingBasketFragment extends Fragment {
                                 databaseReference.child("baskets").child(firebaseAuth.getCurrentUser().getUid()).child("foodOrders").addListenerForSingleValueEvent(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(DataSnapshot dataSnapshots) {
-                                        String orderKey = databaseReference.child("orders").push().getKey();
-                                        Order order = new Order();
+                                        final String orderKey = databaseReference.child("orders").push().getKey();
+                                        final Order order = new Order();
                                         ArrayList<FoodOrder> foodOrders = new ArrayList<FoodOrder>();
                                         for (DataSnapshot dataSnapshot : dataSnapshots.getChildren()) {
                                             FoodOrder foodOrder = dataSnapshot.getValue(FoodOrder.class);
@@ -242,8 +243,20 @@ public class ShoppingBasketFragment extends Fragment {
                                         order.setDate(new SimpleDateFormat("dd.MM.yyyy HH:mm z").format(new Date().getTime()));
                                         order.setPaying(false);
                                         order.setFoodOrders(foodOrders);
-                                        databaseReference.child("orders").child(orderKey).setValue(order);
-                                        XLog.d(order.toString());
+                                        databaseReference.child("orders").child("groups").child("open").child(((Group) group.getSelectedItem()).getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(DataSnapshot dataSnapshots) {
+                                                XLog.d(dataSnapshots);
+
+                                            }
+
+                                            @Override
+                                            public void onCancelled(DatabaseError databaseError) {
+
+                                            }
+                                        });
+                                      //  databaseReference.child("orders").child("groups").child(orderKey).setValue(order);
+                                       // XLog.d(order.toString());
                                     }
 
                                     @Override
@@ -251,8 +264,7 @@ public class ShoppingBasketFragment extends Fragment {
 
                                     }
                                 });
-                                databaseReference.child("baskets").child(firebaseAuth.getCurrentUser().getUid()).child("foodOrders").removeValue();
-                                foodOrderAdapter.notifyDataSetChanged();
+
                             }
                         })
                         .show();

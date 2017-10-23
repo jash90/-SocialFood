@@ -15,7 +15,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.elvishew.xlog.XLog;
 import com.franmontiel.fullscreendialog.FullScreenDialogFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -32,7 +31,6 @@ import com.zimny.socialfood.model.Group;
 import com.zimny.socialfood.model.Tag;
 import com.zimny.socialfood.model.User;
 import com.zimny.socialfood.model.UserRequest;
-import com.zimny.socialfood.view.MultiCircleView;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -91,6 +89,7 @@ public class GroupsFragment extends Fragment {
         if (getActivity().getIntent().getStringExtra("user") == null) {
             if (firebaseAuth != null) {
                 firebaseDatabase = FirebaseDatabase.getInstance();
+                fab.setVisibility(View.VISIBLE);
                 final DatabaseReference databaseReference = firebaseDatabase.getReference();
                 databaseReference.child("groups").addChildEventListener(new ChildEventListener() {
                     @Override
@@ -116,7 +115,7 @@ public class GroupsFragment extends Fragment {
                                 iterator.remove();
                             }
                         }
-                       groupsAdapter.notifyDataSetChanged();
+                        groupsAdapter.notifyDataSetChanged();
                     }
 
                     @Override
@@ -135,6 +134,7 @@ public class GroupsFragment extends Fragment {
             final String json = getActivity().getIntent().getStringExtra("user");
             if (json != null) {
                 user = new Gson().fromJson(json, User.class);
+                fab.setVisibility(View.GONE);
                 firebaseDatabase = FirebaseDatabase.getInstance();
                 final DatabaseReference databaseReference = firebaseDatabase.getReference();
                 databaseReference.child("groups").addValueEventListener(new ValueEventListener() {
@@ -176,7 +176,6 @@ public class GroupsFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 fullScreenDialogFragment.show(getActivity().getSupportFragmentManager(), null);
 
             }

@@ -18,8 +18,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
-import com.mikepenz.fontawesome_typeface_library.FontAwesome;
-import com.mikepenz.iconics.IconicsDrawable;
 import com.zimny.socialfood.R;
 import com.zimny.socialfood.activity.details.GroupDetailsActivity;
 import com.zimny.socialfood.model.Group;
@@ -114,7 +112,7 @@ public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.ViewHolder
 
             }
         });
-       // holder.usersIcon.setDefaultIcon(new IconicsDrawable(holder.itemView.getContext()).icon(FontAwesome.Icon.faw_user_circle_o).sizeDp(40));
+        // holder.usersIcon.setDefaultIcon(new IconicsDrawable(holder.itemView.getContext()).icon(FontAwesome.Icon.faw_user_circle_o).sizeDp(40));
 //        databaseReference.child("relationships").addValueEventListener(new ValueEventListener() {
 //            @Override
 //            public void onDataChange(DataSnapshot dataSnapshots) {
