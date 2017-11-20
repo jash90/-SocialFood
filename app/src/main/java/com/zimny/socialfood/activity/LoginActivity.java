@@ -59,60 +59,28 @@ public class LoginActivity extends AppCompatActivity {
         sharedPreferencesEditor = sharedPreferences.edit();
         progressWheel.setVisibility(View.INVISIBLE);
         firebaseAuth = FirebaseAuth.getInstance();
-        FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
-        login.setText(sharedPreferences.getString("login", ""));
-        password.setText(sharedPreferences.getString("password", ""));
+        login.setText(sharedPreferences.getString("login",""));
+        password.setText(sharedPreferences.getString("password",""));
+        if (sharedPreferences.getBoolean("logout",false)){
+            login(login.getText().toString(), password.getText().toString());
+        }
+        if (firebaseAuth.getCurrentUser()!=null){
+            login(login.getText().toString(), password.getText().toString());
+        }
         signIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 login(login.getText().toString(), password.getText().toString());
             }
         });
-        final Intent intent = getIntent();
-        Boolean logoutFlag = intent.getBooleanExtra("logout", true);
-        String user = intent.getStringExtra("user");
-        String pass = intent.getStringExtra("pass");
-        if (user != null && pass != null) {
-            login(user, pass);
-        }
-        if (firebaseUser != null) {
-            if (isNetworkAvailable()) {
-                progressWheel.setVisibility(View.VISIBLE);
-                Toast.makeText(getApplicationContext(), String.format("You sign as %s .", firebaseUser.getEmail()), Toast.LENGTH_SHORT).show();
-                FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-                final DatabaseReference databaseReference = firebaseDatabase.getReference();
-                databaseReference.child("users").child(firebaseUser.getUid()).child("admin").addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        if (dataSnapshot.exists()) {
-                            Intent loginActivity = new Intent(LoginActivity.this, FlatMainActivity.class);
-                            sharedPreferencesEditor.putString("login", login.getText().toString());
-                            sharedPreferencesEditor.putString("password", password.getText().toString());
-                            sharedPreferencesEditor.commit();
-                            loginActivity.putExtra("admin", true);
-                            startActivity(loginActivity);
-                            finish();
-                        } else {
-                            Intent loginActivity = new Intent(LoginActivity.this, FlatMainActivity.class);
-                            startActivity(loginActivity);
-                            finish();
-
-                        }
-                        progressWheel.setVisibility(View.INVISIBLE);
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-                        progressWheel.setVisibility(View.INVISIBLE);
-                    }
-                });
-            }
 
 
-        }
         signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (progressWheel.isSpinning()){
+                    return;
+                }
                 Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
                 startActivity(intent);
             }
@@ -122,6 +90,10 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void login(final String username, final String password) {
+        if (!isNetworkAvailable()){
+            Toast.makeText(getApplicationContext(),"Network is Disconnected.",Toast.LENGTH_SHORT).show();
+            return;
+        }
         try {
             progressWheel.setVisibility(View.VISIBLE);
             firebaseAuth = FirebaseAuth.getInstance();
@@ -139,6 +111,7 @@ public class LoginActivity extends AppCompatActivity {
                                         Intent loginActivity = new Intent(LoginActivity.this, FlatMainActivity.class);
                                         sharedPreferencesEditor.putString("login", username);
                                         sharedPreferencesEditor.putString("password", password);
+                                        sharedPreferencesEditor.putBoolean("logout", false);
                                         sharedPreferencesEditor.commit();
                                         loginActivity.putExtra("admin", true);
                                         startActivity(loginActivity);
@@ -147,6 +120,7 @@ public class LoginActivity extends AppCompatActivity {
                                         Intent loginActivity = new Intent(LoginActivity.this, FlatMainActivity.class);
                                         sharedPreferencesEditor.putString("login", username);
                                         sharedPreferencesEditor.putString("password", password);
+                                        sharedPreferencesEditor.putBoolean("logout", false);
                                         sharedPreferencesEditor.commit();
                                         startActivity(loginActivity);
                                         finish();

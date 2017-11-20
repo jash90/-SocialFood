@@ -44,6 +44,13 @@ public class User extends Info {
         this.username = username;
     }
 
+    public User(String username, String firstname, String lastname, String city) {
+        super(city);
+        this.username = username;
+        this.firstname = firstname;
+        this.lastname = lastname;
+    }
+
     public User(String uid, String username, String firstname, String lastname, Address address, Date birthday, ArrayList<Restaurant> restaurants, ArrayList<Food> foods, ArrayList<Group> groups, ArrayList<Order> orders, Order shoppingBasket, ArrayList<Relationship> relationships, String imageUpload, int phone) {
         this.uid = uid;
         this.username = username;

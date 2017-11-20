@@ -16,9 +16,13 @@ public class Info {
         this.phone = phone;
     }
 
+    public Info(String city){
+        this.address=new Address("","",city,"");
+    }
     public Address getAddress() {
         return address;
     }
+
 
     public void setAddress(Address address) {
         this.address = address;

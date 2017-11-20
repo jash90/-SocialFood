@@ -1,6 +1,8 @@
 package com.zimny.socialfood.fragment;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -48,12 +50,16 @@ public class MyAccountFragment extends Fragment implements FullScreenDialogConte
     TextView lastname;
     User user;
     FullScreenDialogController fullScreenDialogController;
+    SharedPreferences sharedPreferences;
+    SharedPreferences.Editor sharedPreferencesEditor;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_myaccount, container, false);
         ButterKnife.bind(this, v);
+        sharedPreferences = getActivity().getSharedPreferences("Name", Context.MODE_PRIVATE);
+        sharedPreferencesEditor = sharedPreferences.edit();
         final FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
         final StorageReference storageReference = FirebaseStorage.getInstance().getReference();
         final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
@@ -92,7 +98,7 @@ public class MyAccountFragment extends Fragment implements FullScreenDialogConte
             public void onClick(View view) {
                 firebaseAuth.signOut();
                 Intent intent = new Intent(getContext(), LoginActivity.class);
-                intent.putExtra("logout", false);
+                sharedPreferencesEditor.putBoolean("logout",true);
                 startActivity(intent);
             }
         });
